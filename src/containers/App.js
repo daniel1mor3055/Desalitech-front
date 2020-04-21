@@ -6,7 +6,7 @@ import {Redirect, Route, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl'
 import "assets/vendors/style"
-import defaultTheme from './themes/defaultTheme';
+import cyanTheme from './themes/cyanTheme';
 import AppLocale from '../lngProvider';
 
 import MainApp from 'app/index';
@@ -19,12 +19,16 @@ class App extends Component {
     window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
   }
 
+  componentDidMount() {
+    document.body.classList.add('cyan');
+  }
+
   render() {
     const {match, location, locale, isDirectionRTL} = this.props;
+    const applyTheme = createMuiTheme(cyanTheme);
     if (location.pathname === '/') {
-      return ( <Redirect to={'/app/sample-page'}/> );
+      return ( <Redirect to={'/app/dashboard'}/> );
     }
-    const applyTheme = createMuiTheme(defaultTheme);
 
     if (isDirectionRTL) {
       applyTheme.direction = 'rtl';
