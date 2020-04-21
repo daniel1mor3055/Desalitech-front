@@ -29,7 +29,7 @@ class AddContact extends React.Component {
     const {id, name, email, phone, designation, selected, starred, frequently} = this.state;
     let {thumb} = this.state;
     if (!thumb) {
-      thumb = 'https://via.placeholder.com/225x225';
+      thumb = require('assets/images/placeholder.jpg');
     }
     return (
       <Modal className="modal-box" toggle={onContactClose} isOpen={open}>

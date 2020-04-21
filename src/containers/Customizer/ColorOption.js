@@ -1,6 +1,5 @@
 import React from 'react';
 import Drawer from '@material-ui/core/Drawer';
-import URLSearchParams from 'url-search-params'
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
 import {connect} from 'react-redux';
@@ -55,12 +54,7 @@ class ColorOption extends React.Component {
   }
 
   componentDidMount() {
-    const params = new URLSearchParams(this.props.location.search);
-    if (params.has("theme-name")) {
-      document.body.classList.add(params.get('theme-name'));
-    } else {
-      document.body.classList.add(this.props.themeColor);
-    }
+    document.body.classList.add(this.props.themeColor);
   }
 
   render() {
@@ -88,73 +82,73 @@ class ColorOption extends React.Component {
               <h3>Light Sidenav</h3>
               <ul className="color-option">
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, INDIGO)}
-                  className={`jr-link bg-indigo ${themeColor === INDIGO && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, INDIGO)}
+                       className={`jr-link bg-indigo ${themeColor === INDIGO && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, CYAN)}
-                  className={`jr-link bg-cyan ${themeColor === CYAN && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, CYAN)}
+                       className={`jr-link bg-cyan ${themeColor === CYAN && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, AMBER)}
-                  className={`jr-link bg-amber ${themeColor === AMBER && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, AMBER)}
+                       className={`jr-link bg-amber ${themeColor === AMBER && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DEEP_ORANGE)}
-                  className={`jr-link bg-deep-orange ${themeColor === DEEP_ORANGE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DEEP_ORANGE)}
+                       className={`jr-link bg-deep-orange ${themeColor === DEEP_ORANGE && 'active'}`}/>
                 </li>
 
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, PINK)}
-                  className={`jr-link bg-pink ${themeColor === PINK && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, PINK)}
+                       className={`jr-link bg-pink ${themeColor === PINK && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, BLUE)}
-                  className={`jr-link bg-blue ${themeColor === BLUE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, BLUE)}
+                       className={`jr-link bg-blue ${themeColor === BLUE && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DEEP_PURPLE)}
-                  className={`jr-link bg-deep-purple ${themeColor === DEEP_PURPLE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DEEP_PURPLE)}
+                       className={`jr-link bg-deep-purple ${themeColor === DEEP_PURPLE && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, GREEN)}
-                  className={`jr-link bg-green ${themeColor === GREEN && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, GREEN)}
+                       className={`jr-link bg-green ${themeColor === GREEN && 'active'}`}/>
                 </li>
               </ul>
               <h3>Dark Sidenav</h3>
               <ul className="color-option cr-op-dark-sidebar">
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_INDIGO)}
-                  className={`jr-link bg-indigo ${themeColor === DARK_INDIGO && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_INDIGO)}
+                       className={`jr-link bg-indigo ${themeColor === DARK_INDIGO && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_CYAN)}
-                  className={`jr-link bg-cyan ${themeColor === DARK_CYAN && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_CYAN)}
+                       className={`jr-link bg-cyan ${themeColor === DARK_CYAN && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_AMBER)}
-                  className={`jr-link bg-amber ${themeColor === DARK_AMBER && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_AMBER)}
+                       className={`jr-link bg-amber ${themeColor === DARK_AMBER && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_DEEP_ORANGE)}
-                  className={`jr-link bg-deep-orange ${themeColor === DARK_DEEP_ORANGE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_DEEP_ORANGE)}
+                       className={`jr-link bg-deep-orange ${themeColor === DARK_DEEP_ORANGE && 'active'}`}/>
                 </li>
 
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_PINK)}
-                  className={`jr-link bg-pink ${themeColor === DARK_PINK && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_PINK)}
+                       className={`jr-link bg-pink ${themeColor === DARK_PINK && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_BLUE)}
-                  className={`jr-link bg-blue ${themeColor === DARK_BLUE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_BLUE)}
+                       className={`jr-link bg-blue ${themeColor === DARK_BLUE && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_DEEP_PURPLE)}
-                  className={`jr-link bg-deep-purple ${themeColor === DARK_DEEP_PURPLE && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_DEEP_PURPLE)}
+                       className={`jr-link bg-deep-purple ${themeColor === DARK_DEEP_PURPLE && 'active'}`}/>
                 </li>
                 <li><span
-                  onClick={this.handleThemeColor.bind(this, DARK_GREEN)}
-                  className={`jr-link bg-green ${themeColor === DARK_GREEN && 'active'}`}/>
+                       onClick={this.handleThemeColor.bind(this, DARK_GREEN)}
+                       className={`jr-link bg-green ${themeColor === DARK_GREEN && 'active'}`}/>
                 </li>
               </ul>
               <div className="row text-left">

@@ -1,7 +1,7 @@
 export const notifications = [
   {
     id: 1,
-    image: 'https://via.placeholder.com/208x208',
+    image:'https://via.placeholder.com/150x150',
     name: "Domnic Brown",
     time: "6:19 PM",
     message: "There are many variations of passages of...",
@@ -16,7 +16,7 @@ export const notifications = [
   },
   {
     id: 3,
-    image: 'https://via.placeholder.com/150x150',
+    image:'https://via.placeholder.com/150x150',
     name: "John Smith",
     time: "7:10 PM",
     message: "The point of using Lorem Ipsum is that it has a...",
@@ -24,7 +24,7 @@ export const notifications = [
   },
   {
     id: 4,
-    image: 'https://via.placeholder.com/128x128',
+    image: 'https://via.placeholder.com/150x150',
     name: "alex dolgove",
     time: "5:10 PM",
     message: "It is a long established fact that a reader will...",

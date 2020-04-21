@@ -24,7 +24,7 @@ const galleryData = [
     title: 'Honey',
   },
   {
-    img: 'https://via.placeholder.com/500x330',
+    img: 'https://via.placeholder.com/500x333',
     title: 'Vegetables',
   },
   {
@@ -40,11 +40,11 @@ const galleryData = [
     title: 'Olive oil',
   },
   {
-    img: 'https://via.placeholder.com/500x330',
+    img: 'https://via.placeholder.com/500x333',
     title: 'Sea star',
   },
   {
-    img: 'https://via.placeholder.com/500x330',
+    img: 'https://via.placeholder.com/500x333',
     title: 'Bike'
   },
 ];

@@ -32,18 +32,18 @@ class Statistics extends React.Component {
 
           {value === 0 ?
             <div>
-              <Chart
-                borderColor="#FFF"
-                pointBorderColor='#FFF'
-                pointBackgroundColor='#FFF'
-                height={200}
-                pointHoverBorderColor='#4CB050'
-                borderWidth={4}
-                labels={lableList}
-                chartdata={[20, 35, 26, 40, 30, 45, 30, 55]}
-              />
+            <Chart
+              borderColor="#FFF"
+              pointBorderColor='#FFF'
+              pointBackgroundColor='#FFF'
+              height={200}
+              pointHoverBorderColor='#4CB050'
+              borderWidth={4}
+              labels={lableList}
+              chartdata={[20, 35, 26, 40, 30, 45,30,55]}
+            />
               <div className="bg-black d-flex align-items-center justify-content-between py-2">
-                {lableList.map((lable, index) => <div key={index}>{lable}</div>)}
+                {lableList.map((lable,index)=><div key={index}>{lable}</div>)}
               </div>
 
             </div>
@@ -58,14 +58,14 @@ class Statistics extends React.Component {
                   pointHoverBorderColor='#4CB050'
                   borderWidth={4}
                   labels={lableList}
-                  chartdata={[30, 16, 32, 20, 44, 70, 50]}
+                  chartdata={[30, 16,32,20, 44, 70,50]}
                 />
                 <div className="bg-black d-flex align-items-center justify-content-between py-2">
-                  {lableList.map((lable, index) => <div key={index}>{lable}</div>)}
+                  {lableList.map((lable,index)=><div key={index}>{lable}</div>)}
                 </div>
 
               </div>
-              : <div>
+              :  <div>
                 <Chart
                   borderColor="#FFF"
                   pointBorderColor='#FFF'
@@ -74,10 +74,10 @@ class Statistics extends React.Component {
                   pointHoverBorderColor='#4CB050'
                   borderWidth={4}
                   labels={lableList}
-                  chartdata={[40, 25, 55, 40, 44, 70, 40]}
+                  chartdata={[40, 25, 55, 40, 44, 70,40]}
                 />
                 <div className="bg-black d-flex align-items-center justify-content-between py-2">
-                  {lableList.map((lable, index) => <div key={index}>{lable}</div>)}
+                  {lableList.map((lable,index)=><div key={index}>{lable}</div>)}
                 </div>
               </div>
           }

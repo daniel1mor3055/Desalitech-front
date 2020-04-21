@@ -8,7 +8,7 @@ const ProfileHeader = () => {
         <div className="jr-profile-banner-top">
           <div className="jr-profile-banner-top-left">
             <div className="jr-profile-banner-avatar">
-              <Avatar className="size-90" alt="..." src='https://via.placeholder.com/124x106'/>
+              <Avatar className="size-90" alt="..." src={'https://via.placeholder.com/150x150'}/>
             </div>
             <div className="jr-profile-banner-avatar-info">
               <h2 className="mb-2 jr-mb-sm-3 jr-fs-xxl jr-font-weight-light">Kiley Brown</h2>

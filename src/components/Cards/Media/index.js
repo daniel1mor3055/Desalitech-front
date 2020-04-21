@@ -8,7 +8,7 @@ function MediaCard() {
   return (
     <div className="col-md-8">
       <Card>
-        <CardMedia className="height-200" image='https://via.placeholder.com/500x330'
+        <CardMedia className="height-200" image="https://via.placeholder.com/500x330"
                    title="Contemplative Reptile"/>
         <CardContent>
           <Typography variant="headline" component="h2">

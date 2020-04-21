@@ -9,7 +9,7 @@ const PostCard = () => {
         <div className="user-profile d-flex flex-row align-items-center">
           <Avatar
             alt="..."
-            src='https://via.placeholder.com/150x150'
+            src="https://via.placeholder.com/150x150"
             className="user-avatar"
           />
           <div className="user-detail">
@@ -18,7 +18,7 @@ const PostCard = () => {
           </div>
         </div>
       </div>
-      <img className="img-fluid" src='https://via.placeholder.com/500x330' alt="Card image cap"/>
+      <img className="img-fluid" src="https://via.placeholder.com/500x330" alt="Card image cap"/>
       <div className="card-body">
         <p className="card-text text-muted">
           Some quick example text to build on the card title and make up the bulk of the card's content. Lorem

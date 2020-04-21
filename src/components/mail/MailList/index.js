@@ -6,7 +6,7 @@ const MailList = ({mails, onMailSelect, onMailChecked, onStartSelect, width}) =>
   return (
     <div className="module-list mail-list">
       <CustomScrollbars className="module-list-scroll scrollbar"
-                        style={{height: width >= 1200 ? 'calc(100vh - 259px)' : 'calc(100vh - 238px)'}}>
+                        style={{height: width >= 1200 ? 'calc(100vh - 265px)' : 'calc(100vh - 245px)'}}>
         {mails.map((mail, index) =>
           <MailListItem key={index} mail={mail} onMailSelect={onMailSelect} onMailChecked={onMailChecked}
                         onStartSelect={onStartSelect}/>

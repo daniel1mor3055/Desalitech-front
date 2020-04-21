@@ -4,8 +4,7 @@ const SentMessageCell = ({conversation}) => {
   return (
     <div className="d-flex flex-nowrap chat-item flex-row-reverse">
 
-      <img className="rounded-circle avatar size-40 align-self-end"
-           src='https://via.placeholder.com/150x150'
+      <img className="rounded-circle avatar size-40 align-self-end" src="https://via.placeholder.com/150x150"
            alt={conversation.name}/>
 
       <div className="bubble jambo-card">

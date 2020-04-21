@@ -9,7 +9,7 @@ const Callout = ({styleName, callout}) => {
       <div className="product-col product-thumb ">
         <div className="grid-thumb-equal">
           <span
-            className="jr-link grid-thumb-cover">
+             className="jr-link grid-thumb-cover">
             <img alt="Special Edition Party Spas"
                  src={image}/>
           </span>

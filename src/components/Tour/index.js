@@ -102,7 +102,7 @@ class Tour extends React.PureComponent {
       steps: joyride.steps || this.state.steps,
       type: joyride.type || 'continuous'
     };
-    return (<Joyride
+    return ( <Joyride
         {...joyrideProps}
         ref={c => (this.joyride = c)}/>
 

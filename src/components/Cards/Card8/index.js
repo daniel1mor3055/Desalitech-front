@@ -6,7 +6,7 @@ const GalleryCard = () => {
     <div className="jambo-card" style={{width: 245, height: 340}}>
 
       <div className="card-media card-img-top">
-        <img src='https://via.placeholder.com/500x330' style={{width: 245, height: 270}}/>
+        <img src="https://via.placeholder.com/500x330" style={{width: 245, height: 270}}/>
       </div>
       <div className="d-flex flex-row align-items-center  justify-content-around card-actions"
            style={{height: 70}}>

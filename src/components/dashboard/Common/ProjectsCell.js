@@ -8,7 +8,7 @@ const ProjectsCell = ({data}) => {
 
     <tr
       tabIndex={-1}
-      key={'projects-' + id}>
+      key={'projects-'+id}>
 
       <td className="max-width-100">
         <p className="text-truncate mb-0">{name}</p>

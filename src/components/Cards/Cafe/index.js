@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 const CafeCard = () => {
   return (
     <Card className="shadow border-0">
-      <CardImg top width="100%" src='https://via.placeholder.com/365x170' alt="Cafe Basilico"/>
+      <CardImg top width="100%" src="https://via.placeholder.com/365x170" alt="Cafe Basilico"/>
       <CardBody>
         <h2 className="mb-0">Cafe Basilico</h2>
         <div className="d-flex align-items-center my-2">

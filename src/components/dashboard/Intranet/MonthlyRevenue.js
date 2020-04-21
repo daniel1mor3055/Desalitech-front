@@ -17,7 +17,7 @@ const MonthlyRevenue = ({chartData}) => (
         </linearGradient>
       </defs>
       <Area type="monotone" dataKey="Expanse" strokeWidth={3} stroke="#3BB4A3" fillOpacity={0.2} fill="url(#income)"/>
-      <Area type="monotone" dataKey="Income" strokeWidth={3} stroke="#FF9800" fillOpacity={0.2} fill="url(#expanse)"/>
+      <Area type="monotone" dataKey="Income" strokeWidth={3}  stroke="#FF9800" fillOpacity={0.2} fill="url(#expanse)"/>
     </AreaChart>
   </ResponsiveContainer>
 );

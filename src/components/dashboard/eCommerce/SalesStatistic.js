@@ -1,5 +1,13 @@
 import React from 'react';
-import {Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis
+} from 'recharts';
 import {salesStatisticData} from "../../../app/routes/dashboard/routes/Listing/data";
 import SalesGauge from "components/dashboard/eCommerce/SalesGauge";
 
@@ -61,8 +69,8 @@ const SalesStatistic = () => {
             <AreaChart data={salesStatisticData}
                        margin={{top: 10, right: 30, left: 0, bottom: 0}}>
               <XAxis dataKey="name"/>
-              <YAxis type="number" domain={[0, 26000]}/>
-              <CartesianGrid strokeDasharray="0" stroke="#DCDEDE"/>
+              <YAxis type="number" domain={[0,26000]}/>
+              <CartesianGrid strokeDasharray="0" stroke="#DCDEDE" />
 
               <Tooltip/>
               <defs>
@@ -72,13 +80,13 @@ const SalesStatistic = () => {
                 </linearGradient>
               </defs>
 
-              <Area type='monotone' dataKey='uv' strokeWidth={2} stroke='#6F82E5' fill="url(#salesStatistic)"/>
+              <Area type='monotone' dataKey='uv' strokeWidth={2} stroke='#6F82E5' fill="url(#salesStatistic)" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
         <div className="col-lg-5 col-12">
           <ResponsiveContainer width="100%">
-            <SalesGauge/>
+          <SalesGauge/>
           </ResponsiveContainer>
         </div>
       </div>

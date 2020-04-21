@@ -12,7 +12,7 @@ const UserProfileCard = ({headerStyle}) => {
         </div>
 
         <img className="rounded-circle size-90 avatar-shadow mb-3"
-             src='https://via.placeholder.com/150x150' alt="Team Member"/>
+             src="https://via.placeholder.com/150x150" alt="Team Member"/>
 
         <div className="jr-card-hd-content">
           <h5 className="mb-0 text-white">Dom Harris</h5>

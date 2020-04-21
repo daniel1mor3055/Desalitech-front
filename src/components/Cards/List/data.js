@@ -1,12 +1,12 @@
 export const post = [
   {
-    image: 'https://via.placeholder.com/500x330',
+    image: 'https://via.placeholder.com/500x333',
     title: "5 DIY tips to use in kitchen",
     date: "28 Oct, 2016",
     description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt."
   },
   {
-    image: 'https://via.placeholder.com/500x330',
+    image: 'https://via.placeholder.com/290x193',
     title: "It allowance prevailed",
     date: "20 Sept, 2016",
     description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. "

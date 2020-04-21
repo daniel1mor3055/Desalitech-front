@@ -12,12 +12,12 @@ class AssignmentTable extends Component {
   state = {
     data: [
       createData('Saans Application', 'Renewal', 'https://via.placeholder.com/150x150', '6:06', '$54.20'),
-      createData('Chatbull Application', 'Support', 'https://via.placeholder.com/128x128', '9:20', '$25.12'),
-      createData('Teri App', 'It was popularised in the 1960s with the', 'https://via.placeholder.com/208x208', '4:30', '$15.99'),
-      createData('Mili Products', 'Marketing', 'https://via.placeholder.com/150x150', '9:20', '$21.25'),
-      createData('G-axon Products', 'Service', 'https://via.placeholder.com/150x150', '4:30', '$2.99'),
-      createData('Wallet Application', 'Renewal, a Latin professor', 'https://via.placeholder.com/120x120', '7:50', '$3.10'),
-      createData('Chatbull Application', 'Support', 'https://via.placeholder.com/150x150', '9:20', '$25.12'),
+      createData('Chatbull Application', 'Support',  'https://via.placeholder.com/150x150', '9:20', '$25.12'),
+      createData('Teri App', 'It was popularised in the 1960s with the', 'https://via.placeholder.com/150x150', '4:30', '$15.99'),
+      createData('Mili Products', 'Marketing',  'https://via.placeholder.com/150x150', '9:20', '$21.25'),
+      createData('G-axon Products', 'Service',  'https://via.placeholder.com/150x150', '4:30', '$2.99'),
+      createData('Wallet Application', 'Renewal, a Latin professor',  'https://via.placeholder.com/150x150', '7:50', '$3.10'),
+      createData('Chatbull Application', 'Support',  'https://via.placeholder.com/150x150', '9:20', '$25.12'),
     ],
   };
 

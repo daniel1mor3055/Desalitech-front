@@ -107,7 +107,7 @@ class ToDoDetail extends React.Component {
     return (
       <div className="module-detail module-list">
         <CustomScrollbars className="module-list-scroll scrollbar"
-                          style={{height: width >= 1200 ? 'calc(100vh - 335px)' : 'calc(100vh - 311px)'}}>
+                          style={{height: width >= 1200 ? 'calc(100vh - 325px)' : 'calc(100vh - 310px)'}}>
 
           <div className="module-detail-item module-detail-header">
             <div className="row">

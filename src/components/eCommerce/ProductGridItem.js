@@ -4,7 +4,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import IntlMessages from 'util/IntlMessages';
 
 const ProductGridItem = ({product}) => {
-  const {thumb, name, price, mrp, offer, variant, rating, description} = product;
+  const {thumb, name, price, mrp, offer, variant, rating,description} = product;
   return (
     <div className="col-xl-3 col-md-4 col-sm-6 col-12">
       <div className="card product-item">

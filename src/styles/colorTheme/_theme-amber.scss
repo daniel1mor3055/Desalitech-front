@@ -611,17 +611,17 @@ $sidebar-text-color-amber: #868e96 !default;
 
 .amber .dropdown-item {
 
-  &.active,
-  &:active {
-    background-color: $app-primary-amber;
-    color: $white;
-  }
+   &.active,
+   &:active {
+     background-color: $app-primary-amber;
+     color: $white;
+   }
 
-  &[class*="text-"] {
+   &[class*="text-"] {
 
-    &.active,
-    &:active {
-      background-color: transparent;
-    }
-  }
-}
+     &.active,
+     &:active {
+       background-color: transparent;
+     }
+   }
+ }

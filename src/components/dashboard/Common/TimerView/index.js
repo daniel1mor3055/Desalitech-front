@@ -36,7 +36,7 @@ class TimerView extends React.Component {
           </div>
 
           <Avatar className="bg-grey lighten-2 avatar-shadow size-90 mx-auto mb-3">
-            <h1 className="m-0 text-primary font-weight-bold">24</h1>
+              <h1 className="m-0 text-primary font-weight-bold">24</h1>
           </Avatar>
 
 

@@ -36,7 +36,7 @@ function MediaControlCard(props) {
         </div>
         <CardMedia
           className={classes.cover}
-          image='https://via.placeholder.com/600x400'
+          image="https://via.placeholder.com/500x330"
           title="Live from space album cover"/>
       </Card>
     </div>

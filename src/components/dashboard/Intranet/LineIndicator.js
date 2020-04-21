@@ -3,13 +3,13 @@ import PropTypes from "prop-types";
 
 import Aux from "util/Auxiliary";
 
-const LineIndicator = ({width, color}) => {
+const LineIndicator = ({width,color}) => {
 
   return (
     <Aux>
       <div className="jr-line-indi-info">
         <div className={`jr-line-indi rounded bg-${color}`} style={{
-          width: Number.parseInt(width) * 4, height: '4px'
+          width: Number.parseInt(width) * 4,height:'4px'
         }}/>
       </div>
     </Aux>

@@ -5,7 +5,7 @@ const InFoWithBgImage = ({data, styleName}) => {
   return (
     <div className="img-overlay-card shadow ripple-effect">
       <div className="center-crop-img">
-        <img src='https://via.placeholder.com/1280x300' alt="card-bg"/>
+        <img src="https://via.placeholder.com/1280x300" alt="card-bg"/>
       </div>
 
       <div className="jr-cart-ab layer">

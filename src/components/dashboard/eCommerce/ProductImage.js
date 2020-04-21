@@ -5,7 +5,7 @@ const ProductImage = () => {
   return (
     <div className="jr-card pb-2">
       <div className="jr-card-thumb">
-        <img className="card-img-top img-fluid" alt="products" src='https://via.placeholder.com/400x400'/>
+        <img className="card-img-top img-fluid" alt="products" src="https://via.placeholder.com/400x400"/>
       </div>
 
       <div className="jr-card-social">

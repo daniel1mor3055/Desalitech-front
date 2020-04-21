@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardBox = ({heading, children, styleName, cardStyle, childrenStyle, headerOutside, headingStyle}) => {
+const CardBox = ({heading, children, styleName, cardStyle, childrenStyle, headerOutside,headingStyle}) => {
 
   return (
     <div className={`${styleName}`}>
@@ -13,7 +13,7 @@ const CardBox = ({heading, children, styleName, cardStyle, childrenStyle, header
 
       <div className={`jr-card ${cardStyle}`}>
         {!headerOutside &&
-        (heading &&
+        ( heading &&
           <div className={`jr-card-header ${headingStyle}`}>
             <h3 className="card-heading">{heading}</h3>
             {children.length > 1 && <div className="sub-heading">{children[0]}</div>}
@@ -31,7 +31,7 @@ export default CardBox;
 
 CardBox.defaultProps = {
   cardStyle: '',
-  headingStyle: '',
+  headingStyle:'',
   childrenStyle: '',
   styleName: 'col-lg-6 col-sm-12'
 };

@@ -12,8 +12,8 @@ class CustomerTable extends Component {
   state = {
     data: [
       createData('John Smith', 'Co-Founder', 'https://via.placeholder.com/150x150', '3'),
-      createData('Alex Dolgove', 'CEO', 'https://via.placeholder.com/128x128', '1'),
-      createData('Domnic Brown', 'Co-Founder', 'https://via.placeholder.com/208x208', '0'),
+      createData('Alex Dolgove', 'CEO',  'https://via.placeholder.com/150x150', '1'),
+      createData('Domnic Brown', 'Co-Founder', 'https://via.placeholder.com/150x150', '0'),
     ],
   };
 

@@ -5,7 +5,7 @@ const GalleryCard = () => {
   return (
     <div className="jambo-card horizontal">
       <div className="card-image">
-        <img src='https://via.placeholder.com/500x330'/>
+        <img src="https://via.placeholder.com/500x330"/>
       </div>
       <div className="card-body card-stacked">
         <div className="card-content">

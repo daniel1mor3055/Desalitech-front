@@ -59,14 +59,14 @@ const data = (canvas) => {
 
         if (chart.ctx.isPointInPath(e.x, e.y)) {
           let dataset = datasets[1];
-          dataset.backgroundColor = gradientHoverRed;
+          dataset.backgroundColor =gradientHoverRed;
           chart.ctx.shadowColor = 'rgba(0, 0, 0, 0.10)';
           chart.ctx.shadowBlur = 10;
           chart.update();
           canvas.style.cursor = 'pointer';
         } else {
           let dataset = datasets[1];
-          dataset.backgroundColor = gradientRed;
+          dataset.backgroundColor =gradientRed;
           chart.ctx.shadowColor = 'rgba(0, 0, 0, 0)';
           chart.ctx.shadowBlur = 0;
           chart.update();
@@ -90,11 +90,11 @@ const data = (canvas) => {
       pointHoverBackgroundColor: "transparent",
       pointHoverBorderColor: "transparent",
       pointHitRadius: 50,
-    }, {
+    },{
       label: "Mireska Sunbreeze",
       data: [80, 70, 80, 80, 75, 40],
       fill: true,
-      backgroundColor: gradientRed,
+      backgroundColor:gradientRed,
       borderColor: "transparent",
       pointBackgroundColor: "transparent",
       pointBorderColor: "transparent",

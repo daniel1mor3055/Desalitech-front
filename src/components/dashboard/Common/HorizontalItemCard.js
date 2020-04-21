@@ -1,6 +1,6 @@
 import React from 'react';
 
-const HorizontalItemCard = ({styleName, title, price, detail, children, styleTitle, chartPosition}) => {
+const HorizontalItemCard = ({styleName,title,price, detail, children, styleTitle, chartPosition}) => {
   if (!styleName)
     styleName = "";
   if (!styleTitle)
