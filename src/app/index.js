@@ -30,6 +30,8 @@ class App extends React.Component {
       document.body.classList.remove('ios-mobile-view-height')
     }
 
+
+
     return (
       <div className={`app-container ${drawerStyle}`}>
         <Tour/>
