@@ -105,14 +105,10 @@ class SidenavContent extends Component {
     return (
       <CustomScrollbars className=" scrollbar">
         <ul className="nav-menu">
-
-          <li className="nav-header">
-            <IntlMessages id="sidebar.main"/>
-          </li>
           <li className="menu no-arrow">
-            <NavLink to="/app/sample-page">
-              <i className="zmdi zmdi-view-dashboard zmdi-hc-fw"/>
-              <span className="nav-text"><IntlMessages id="pages.samplePage"/> </span>
+            <NavLink to="/app/dashboard">
+              <i className="zmdi zmdi-time-countdown zmdi-hc-fw"/>
+              <span className="nav-text"><IntlMessages id="pages.dashboardPage"/> </span>
             </NavLink>
           </li>
         </ul>
