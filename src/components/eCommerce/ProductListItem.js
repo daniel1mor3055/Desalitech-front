@@ -4,7 +4,7 @@ import StarRatingComponent from 'react-star-rating-component';
 import IntlMessages from 'util/IntlMessages';
 
 const ProductListItem = ({product}) => {
-  const {thumb, name, price, mrp, offer, variant, rating, description} = product;
+  const {thumb, name, price, mrp, offer, variant, rating,description} = product;
   return (
     <div className="card product-item-vertical hoverable animation flipInX">
       <div className="row d-flex align-items-sm-center">

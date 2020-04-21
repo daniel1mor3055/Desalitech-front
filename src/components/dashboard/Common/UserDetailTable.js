@@ -1,7 +1,7 @@
 import React from 'react';
 import UserDetailCell from './UserDetailCell';
 
-const UserDetailTable = ({data, tableStyle}) => {
+const UserDetailTable = ({data, tableStyle})  => {
 
   return (
     <div className="table-responsive-material table-userdetail-mmin">

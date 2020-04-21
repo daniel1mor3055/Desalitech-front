@@ -4,8 +4,7 @@ import CardLayout from 'components/CardLayout';
 const HighlightedHeader = () => {
   return (
     <CardLayout styleName="col-lg-6">
-      <img className="card-img-top" src='https://via.placeholder.com/500x330'
-           alt="Card image cap"/>
+      <img className="card-img-top" src="https://via.placeholder.com/500x330" alt="Card image cap"/>
 
       <div className="card-body">
         <h2 className="card-title">Highlighted Header</h2>

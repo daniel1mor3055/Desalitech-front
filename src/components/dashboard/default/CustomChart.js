@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import {Line} from 'react-chartjs-2';
+import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
 
 class CustomChart extends Component {
   render() {
-    const {labels, label, borderColor, chartdata, pointBackgroundColor, pointHoverBorderColor, height, pointBorderColor, borderWidth, xAxes, shadowColor} = this.props;
+    const {labels,label, borderColor, chartdata, pointBackgroundColor,pointHoverBorderColor, height, pointBorderColor, borderWidth, xAxes,shadowColor } = this.props;
     const data = (canvas) => {
       const ctx = canvas.getContext("2d");
       const _stroke = ctx.stroke;
@@ -32,7 +32,7 @@ class CustomChart extends Component {
             pointHoverBackgroundColor: pointBackgroundColor,
             pointHoverBorderColor: pointHoverBorderColor,
             pointHoverBorderWidth: '4',
-            pointHoverRadius: '6',
+            pointHoverRadius:'6',
             pointRadius: 3,
             pointHitRadius: 8,
             data: chartdata,
@@ -55,7 +55,7 @@ class CustomChart extends Component {
           gridLines: {
             display: true,
             drawBorder: false,
-            lineWidth: 3,
+            lineWidth:3,
           }
         }],
 
@@ -69,10 +69,9 @@ class CustomChart extends Component {
       },
     };
     return (
-      <Line data={data} options={options} height={height}/>
+      <Line data={data} options={options} height={height} />
     );
   }
 }
-
 export default CustomChart;
 

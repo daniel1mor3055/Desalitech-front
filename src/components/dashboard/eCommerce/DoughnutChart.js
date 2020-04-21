@@ -21,9 +21,9 @@ const data = (canvas) => {
     ],
     datasets: [{
       data: [100, 300],
-      backgroundColor: ['#FF9800', '#4CAF50'],
-      borderColor: ['#FF9800', '#4CAF50'],
-      hoverBackgroundColor: ['#FF9800', '#4CAF50'],
+      backgroundColor: ['#FF9800','#4CAF50'],
+      borderColor: ['#FF9800','#4CAF50'],
+      hoverBackgroundColor: ['#FF9800','#4CAF50'],
     }],
 
   }
@@ -50,7 +50,7 @@ class DoughnutChart extends Component {
 
   render() {
     return (
-      <Doughnut data={data} options={options} height={250}/>
+      <Doughnut  data={data} options={options} height={250}/>
     );
   }
 }

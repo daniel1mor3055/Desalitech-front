@@ -3,7 +3,6 @@ const galleryData = [
     img: 'https://via.placeholder.com/500x330',
     title: 'Breakfast',
   },
-
   {
     img: 'https://via.placeholder.com/500x330',
     title: 'Honey',
@@ -22,7 +21,7 @@ const galleryData = [
     title: 'Blue Bird',
   },
   {
-    img: 'https://via.placeholder.com/500x330',
+    img: 'https://via.placeholder.com/268x164',
     title: 'Morning',
   },
 

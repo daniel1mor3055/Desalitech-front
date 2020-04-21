@@ -4,7 +4,7 @@ import Avatar from "@material-ui/core/es/Avatar/Avatar";
 import LineIndicator from "components/dashboard/Intranet/LineIndicator";
 
 const ProjectsCell = ({data}) => {
-  const {id, name, date, color, teamList, progressValue} = data;
+  const {id, name, date,color, teamList,progressValue} = data;
   return (
 
     <tr
@@ -17,7 +17,7 @@ const ProjectsCell = ({data}) => {
 
       <td className="text-nowrap">{date}</td>
       <td>
-        <LineIndicator width={progressValue / 4 + "%"} color={color} value={progressValue}/>
+        <LineIndicator width={progressValue/4+"%"} color={color} value={progressValue}/>
       </td>
       <td>
         <ul className="team-list">

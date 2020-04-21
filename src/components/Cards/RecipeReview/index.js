@@ -58,7 +58,7 @@ class RecipeReviewCard extends Component {
             title="Shrimp and Chorizo Paella"
             subheader="September 14, 2016"
           />
-          <CardMedia className={classes.media} image='https://via.placeholder.com/500x330'
+          <CardMedia className={classes.media} image="https://via.placeholder.com/500x330"
                      title="Contemplative Reptile"/>
           <CardContent>
             <Typography variant="caption" component="p">

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Chart, Doughnut} from 'react-chartjs-2';
+import {Chart,Doughnut} from 'react-chartjs-2';
 import '../../../app/routes/dashboard/routes/Misc/test.css'
 
 class YearlyProfitChart extends Component {
@@ -34,7 +34,7 @@ class YearlyProfitChart extends Component {
 
       Chart.pluginService.register({
 
-        beforeDraw: function (chart) {
+        beforeDraw: function(chart) {
           if (chart.options.chartType === chartType) {
             let width = chart.chart.width,
               height = chart.chart.height,
@@ -65,14 +65,14 @@ class YearlyProfitChart extends Component {
           backgroundColor: backgroundColor,
           borderColor: borderColor,
           hoverBorderColor: hoverBorderColor,
-          hoverBorderWidth: hoverBorderWidth
+          hoverBorderWidth:hoverBorderWidth
         }],
       }
     }
 
 
     const options = {
-      maintainAspectRatio: false,
+      maintainAspectRatio : false,
       chartType: chartType,
       legend: {
         display: false,
@@ -82,7 +82,7 @@ class YearlyProfitChart extends Component {
       },
       layout: {
         padding: {
-          top: 5,
+          top:5,
           bottom: 5,
           right: 0,
           left: 0,
@@ -90,7 +90,7 @@ class YearlyProfitChart extends Component {
       },
       cutoutPercentage: 75,
       borderWidth: 0,
-      rotation: (-0.5 * Math.PI) - (25 / rotation * Math.PI)
+      rotation: (-0.5 * Math.PI) - (25/rotation * Math.PI)
     };
     return (
       <Doughnut data={data} options={options} height={height}/>

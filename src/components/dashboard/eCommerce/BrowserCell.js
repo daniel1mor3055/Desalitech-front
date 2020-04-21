@@ -2,7 +2,7 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
 const BrowserCell = ({browser}) => {
-  const {id, image, title, subTitle} = browser;
+  const {id,image,title,subTitle} = browser;
   return (
     <div key={id} className="user-profile d-flex flex-row">
       <Avatar

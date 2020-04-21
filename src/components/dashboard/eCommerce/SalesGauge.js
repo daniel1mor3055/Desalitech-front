@@ -90,7 +90,6 @@ class SalesGauge extends Component {
     chart.cursor = new am4charts.RadarCursor();
 
   }
-
   componentWillUnmount() {
     if (this.chart) {
       this.chart.dispose();

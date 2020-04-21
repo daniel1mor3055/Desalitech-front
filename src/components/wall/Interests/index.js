@@ -9,7 +9,7 @@ const Interests = ({interestList}) => {
       <ul className="list-inline list-inline-3">
         {interestList.map((interest) =>
           <li key={interest.id} className="list-inline-item mr-0 mb-2">
-            <Button variant="contained" className="jr-btn jr-btn-lg bg-white">{interest.interest}</Button>
+            <Button variant="contained" className="jr-btn bg-white">{interest.interest}</Button>
           </li>
         )}
       </ul>

@@ -1,9 +1,7 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar'
-import {connect} from 'react-redux'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {userSignOut} from 'actions/Auth';
 import IntlMessages from 'util/IntlMessages';
 
 class UserInfo extends React.Component {
@@ -45,8 +43,7 @@ class UserInfo extends React.Component {
                   paddingTop: 0,
                   paddingBottom: 0
                 }
-              }}
-        >
+              }}>
           <MenuItem onClick={this.handleRequestClose}>
             <i className="zmdi zmdi-account zmdi-hc-fw mr-2"/>
             <IntlMessages id="popup.profile"/>
@@ -57,7 +54,6 @@ class UserInfo extends React.Component {
           </MenuItem>
           <MenuItem onClick={() => {
             this.handleRequestClose();
-            this.props.userSignOut()
           }}>
             <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-2"/>
 
@@ -69,10 +65,6 @@ class UserInfo extends React.Component {
   }
 }
 
-const mapStateToProps = ({settings}) => {
-  const {locale} = settings;
-  return {locale}
-};
-export default connect(mapStateToProps, {userSignOut})(UserInfo);
+export default UserInfo;
 
 

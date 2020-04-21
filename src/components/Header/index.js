@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, withRouter} from 'react-router-dom';
+import {Link,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
@@ -7,11 +7,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {
-  BELOW_THE_HEADER,
-  COLLAPSED_DRAWER,
-  FIXED_DRAWER,
-  HORIZONTAL_NAVIGATION,
-  INSIDE_THE_HEADER
+    BELOW_THE_HEADER,
+    COLLAPSED_DRAWER,
+    FIXED_DRAWER,
+    HORIZONTAL_NAVIGATION,
+    INSIDE_THE_HEADER
 } from 'constants/ActionTypes';
 import SearchBox from 'components/SearchBox';
 import MailNotification from '../MailNotification/index';
@@ -69,52 +69,6 @@ class Header extends React.Component {
     const val = !this.props.navCollapsed;
     this.props.toggleCollapsedNav(val);
   };
-  Apps = () => {
-    return (
-      <ul className="jr-list jr-list-half">
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/app/calendar/basic">
-            <i className="zmdi zmdi-calendar zmdi-hc-fw"/>
-            <span className="jr-list-text"><IntlMessages id="sidebar.calendar.basic"/></span>
-          </Link>
-        </li>
-
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/app/to-do">
-            <i className="zmdi zmdi-check-square zmdi-hc-fw"/>
-            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.toDo"/></span>
-          </Link>
-        </li>
-
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/app/mail">
-            <i className="zmdi zmdi-email zmdi-hc-fw"/>
-            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.mail"/></span>
-          </Link>
-        </li>
-
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/app/chat">
-            <i className="zmdi zmdi-comment zmdi-hc-fw"/>
-            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.chat"/></span>
-          </Link>
-        </li>
-
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/app/contact">
-            <i className="zmdi zmdi-account-box zmdi-hc-fw"/>
-            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.contact"/></span>
-          </Link>
-        </li>
-
-        <li className="jr-list-item">
-          <Link className="jr-list-link" to="/">
-            <i className="zmdi zmdi-plus-circle-o zmdi-hc-fw"/>
-            <span className="jr-list-text">Add New</span>
-          </Link>
-        </li>
-      </ul>)
-  };
 
   constructor() {
     super();
@@ -134,6 +88,53 @@ class Header extends React.Component {
       searchText: evt.target.value,
     });
   }
+
+  Apps = () => {
+    return (
+      <ul className="jr-list jr-list-half">
+        <li className="jr-list-item">
+            <Link className="jr-list-link" to="/app/calendar/basic">
+                <i className="zmdi zmdi-calendar zmdi-hc-fw"/>
+                <span className="jr-list-text"><IntlMessages id="sidebar.calendar.basic"/></span>
+            </Link>
+        </li>
+
+        <li className="jr-list-item">
+          <Link className="jr-list-link" to="/app/to-do">
+            <i className="zmdi zmdi-check-square zmdi-hc-fw"/>
+            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.toDo"/></span>
+          </Link>
+        </li>
+
+        <li className="jr-list-item">
+          <Link className="jr-list-link" to="/app/mail">
+            <i className="zmdi zmdi-email zmdi-hc-fw"/>
+            <span className="jr-list-text"><IntlMessages id="sidebar.appModule.mail"/></span>
+          </Link>
+        </li>
+
+        <li className="jr-list-item">
+            <Link className="jr-list-link" to="/app/chat">
+                <i className="zmdi zmdi-comment zmdi-hc-fw"/>
+                <span className="jr-list-text"><IntlMessages id="sidebar.appModule.chat"/></span>
+            </Link>
+        </li>
+
+        <li className="jr-list-item">
+            <Link className="jr-list-link" to="/app/contact">
+                <i className="zmdi zmdi-account-box zmdi-hc-fw"/>
+                <span className="jr-list-text"><IntlMessages id="sidebar.appModule.contact"/></span>
+            </Link>
+        </li>
+
+        <li className="jr-list-item">
+            <Link className="jr-list-link" to="/">
+                <i className="zmdi zmdi-plus-circle-o zmdi-hc-fw"/>
+                <span className="jr-list-text">Add New</span>
+            </Link>
+        </li>
+      </ul>)
+  };
 
   render() {
     const {drawerType, locale, navigationStyle, horizontalNavPosition} = this.props;
@@ -307,7 +308,7 @@ class Header extends React.Component {
               </Dropdown>
             </li>}
           </ul>
-
+          
           <div className="ellipse-shape"></div>
         </Toolbar>
       </AppBar>

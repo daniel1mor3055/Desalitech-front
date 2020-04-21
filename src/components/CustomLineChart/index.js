@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Line} from 'react-chartjs-2';
+import React, { Component } from 'react';
+import { Line } from 'react-chartjs-2';
 
 
 class CustomLineChart extends Component {
@@ -59,7 +59,7 @@ class CustomLineChart extends Component {
     }
     // chart options
     const options = {
-      maintainAspectRatio: false,
+      maintainAspectRatio : false,
       legend: {
         display: false
       },
@@ -73,7 +73,7 @@ class CustomLineChart extends Component {
           gridLines: {
             display: gridLinesDisplay,
             drawBorder: false,
-            lineWidth: gridLineWidth
+            lineWidth:gridLineWidth
           }
         }],
         yAxes: [{
@@ -87,10 +87,10 @@ class CustomLineChart extends Component {
       },
       layout: {
         padding: {
-          left: -30,
-          right: 0,
-          top: 10,
-          bottom: -10,
+          left:-30,
+          right:0,
+          top:10,
+          bottom:-10,
         },
       }
     };

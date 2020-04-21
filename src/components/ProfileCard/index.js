@@ -6,7 +6,7 @@ const ProfileCard = () => {
 
       <div className="pi-header">
         <div className="card-image layer">
-          <img className="avatar-circle" src='https://via.placeholder.com/260x260' alt="Team Member"/>
+          <img className="avatar-circle" src="https://via.placeholder.com/150x150" alt="Team Member"/>
         </div>
       </div>
       <div className="pi-content">

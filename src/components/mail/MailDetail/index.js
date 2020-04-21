@@ -35,7 +35,7 @@ class MailDetail extends React.Component {
     return (
       <div className="module-detail mail-detail">
         <CustomScrollbars className="module-list-scroll scrollbar" style={{
-          height: width >= 1200 ? 'calc(100vh - 309px)' : 'calc(100vh - 288px)'
+          height: width >= 1200 ? 'calc(100vh - 315px)' : 'calc(100vh - 295px)'
         }}>
           <div className="mail-header">
 
@@ -71,7 +71,7 @@ class MailDetail extends React.Component {
 
                 {mail.important ?
                   <i className="zmdi zmdi-label-alt"/>
-                  : <i className="zmdi zmdi-label-alt-outline"/>
+                  :<i className="zmdi zmdi-label-alt-outline"/>
                 }
               </IconButton>
             </div>

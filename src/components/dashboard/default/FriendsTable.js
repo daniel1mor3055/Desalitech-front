@@ -12,9 +12,9 @@ class FriendsTable extends Component {
   state = {
     data: [
       createData('John Smith', 'Co-Founder', 'https://via.placeholder.com/150x150', 'Followed'),
-      createData('Alex Dolgove', 'CEO', 'https://via.placeholder.com/128x128', 'Follow'),
-      createData('Domnic Brown', 'Co-Founder', 'https://via.placeholder.com/208x208', 'Followed'),
-      createData('Domnic Harris', 'CEO', 'https://via.placeholder.com/150x150', 'Follow'),
+      createData('Alex Dolgove', 'CEO',  'https://via.placeholder.com/150x150', 'Follow'),
+      createData('Domnic Brown', 'Co-Founder', 'https://via.placeholder.com/150x150', 'Followed'),
+      createData('Domnic Harris', 'CEO',  'https://via.placeholder.com/150x150', 'Follow'),
     ],
   };
 

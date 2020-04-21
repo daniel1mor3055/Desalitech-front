@@ -27,7 +27,7 @@ const MonthlyRevenue = ({chartData}) => (
       </defs>
 
       <Area type="monotone" dataKey="Expanse" strokeWidth={0} stroke="#39CBDD" fillOpacity={1} fill="url(#income)"/>
-      <Area type="monotone" dataKey="Income" strokeWidth={0} stroke="#3F50B4" fillOpacity={1} fill="url(#expanse)"/>
+      <Area type="monotone" dataKey="Income" strokeWidth={0}  stroke="#3F50B4" fillOpacity={1} fill="url(#expanse)"/>
     </AreaChart>
   </ResponsiveContainer>
 );

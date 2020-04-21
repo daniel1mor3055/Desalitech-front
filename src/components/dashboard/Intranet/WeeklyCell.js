@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
 const WeeklyCell = ({data}) => {
-  const {id, projectName, sales, income, growth} = data;
+  const {id, projectName, sales, income,growth} = data;
   const iconName = growth > 0 ? "up" : "down";
   const statusStyle = growth > 0 ? " text-success" : "text-danger";
   return (
@@ -17,7 +17,7 @@ const WeeklyCell = ({data}) => {
 
       <td className="text-nowrap">
         {sales} <span className={`d-inline-block ml-1 ${statusStyle}`}>
-          {iconName === 'up' ? "+" : "-"}{growth}<i className={`zmdi zmdi-trending-${iconName}`}/></span>
+          {iconName ==='up'? "+":"-"}{growth}<i className={`zmdi zmdi-trending-${iconName}`}/></span>
       </td>
       <td className="text-right">
         <p className="text-truncate mb-0">{income}</p>
