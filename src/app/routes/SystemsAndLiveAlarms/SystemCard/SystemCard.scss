@@ -1,0 +1,70 @@
+.SystemCard {
+  cursor: pointer;
+  margin: 16px;
+
+  h3 {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .SystemCard-CardBody{
+    padding: 24px 24px 4px 24px;
+  }
+  .SystemCard-ImgSize {
+    height: 180px;
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 6px;
+    width: 75%;
+  }
+
+  .SystemCard-CardSubtitleClass {
+    white-space: pre;
+    margin: 5px;
+    text-align: left;
+  }
+
+
+  .SystemCard-TextToTheRight {
+    float: right;
+  }
+
+  .Indicator {
+  }
+
+  .SystemCard-TitleClass {
+    text-align: center;
+    border-width: 2px;
+    border-style: solid;
+    margin-bottom: 16px;
+    border-radius: 25px;
+
+    &.GreenBorder {
+      border-color: green;
+    }
+
+    &.RedBorder {
+      border-color: red;
+    }
+
+    &.AmberBorder {
+      border-color: #FAA025;
+    }
+
+  }
+
+
+  .SystemCard-IconClass {
+    margin-right: 10px;
+  }
+
+  .SystemCard-CardBody{
+    width: 270px;
+  }
+
+  strong {
+    margin-right: 16px;
+  }
+}

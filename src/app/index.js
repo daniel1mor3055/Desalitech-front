@@ -1,126 +1,93 @@
-import React from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
-import Header from 'components/Header/index';
+import React, { Component } from 'react';
+import { Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { isIOS, isMobile } from 'react-device-detect';
+
+import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
-import Footer from 'components/Footer';
-import Dashboard from './routes/dashboard';
-import Widgets from './routes/widgets'
-import Metrics from './routes/metrics'
-import Components from './routes/components';
-import Icons from './routes/icons/index';
-import Form from './routes/form';
-import Editors from './routes/editors';
-import Pickers from './routes/pickers';
-import Extensions from './routes/extensions';
-import Table from './routes/table';
-import Chart from './routes/charts';
-import Map from './routes/map';
-import Calendar from './routes/calendar';
-import TimeLine from './routes/timeLine';
-import CustomViews from './routes/customViews';
-import ExtraElements from './routes/extraElements'
-import eCommerce from './routes/eCommerce'
-import AppModule from './routes/appModule'
-import ExtraPages from './routes/extraPages';
-import Tour from '../components/Tour/index';
-import {
-  ABOVE_THE_HEADER,
-  BELOW_THE_HEADER,
-  COLLAPSED_DRAWER,
-  FIXED_DRAWER,
-  HORIZONTAL_NAVIGATION,
-} from 'constants/ActionTypes';
-import ColorOption from 'containers/Customizer/ColorOption';
-import {isIOS, isMobile} from 'react-device-detect';
-import asyncComponent from '../util/asyncComponent';
-import TopNav from 'components/TopNav';
-import SocialApps from "./routes/socialApps";
+import Footer from 'app/components/Footer';
+import { COLLAPSED_DRAWER, FIXED_DRAWER, } from 'store/actionTypes';
+import asyncComponent from 'util/asyncComponent';
+import PrivateRoute from 'app/components/PrivateRoute';
+import { fetchPolling } from "../store/thunk/polling";
+import { APP_POLLING_INTERVAL } from "constants/globalConstats";
 
-class App extends React.Component {
+class App extends Component {
+    constructor(props) {
+        super(props);
 
-  render() {
-    const {match, drawerType, navigationStyle, horizontalNavPosition} = this.props;
-    const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
-
-    //set default height and overflow for iOS mobile Safari 10+ support.
-    if (isIOS && isMobile) {
-      document.body.classList.add('ios-mobile-view-height')
-    }
-    else if (document.body.classList.contains('ios-mobile-view-height')) {
-      document.body.classList.remove('ios-mobile-view-height')
+        this.state = {
+            dataPolling: ''
+        };
     }
 
-    return (
-      <div className={`app-container ${drawerStyle}`}>
-        <Tour/>
+    componentDidMount() {
+        this.props.onFetchPolling();
+        const dataPolling = setInterval(
+            () => {
+                this.props.onFetchPolling();
+            },
+            APP_POLLING_INTERVAL);
+        this.setState({ dataPolling });
+    }
 
-        <Sidebar/>
-        <div className="app-main-container">
-          <div
-            className={`app-header ${navigationStyle === HORIZONTAL_NAVIGATION ? 'app-header-horizontal' : ''}`}>
-            {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === ABOVE_THE_HEADER) &&
-            <TopNav styleName="app-top-header"/>}
-            <Header/>
-            {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) &&
-            <TopNav/>}
-          </div>
+    componentWillUnmount() {
+        clearInterval(this.state.dataPolling);
+    }
 
-          <main className="app-main-content-wrapper">
-            <div className="app-main-content">
-              <Switch>
-                <Route path={`${match.url}/dashboard`} component={Dashboard}/>
-                <Route path={`${match.url}/social-apps`} component={SocialApps}/>
-                <Route path={`${match.url}/components`} component={Components}/>
-                <Route path={`${match.url}/icons`} component={Icons}/>
-                <Route path={`${match.url}/form`} component={Form}/>
-                <Route path={`${match.url}/editor`} component={Editors}/>
-                <Route path={`${match.url}/pickers`} component={Pickers}/>
-                <Route path={`${match.url}/extensions`} component={Extensions}/>
-                <Route path={`${match.url}/table`} component={Table}/>
-                <Route path={`${match.url}/chart`} component={Chart}/>
-                <Route path={`${match.url}/map`} component={Map}/>
-                <Route path={`${match.url}/calendar`} component={Calendar}/>
-                <Route path={`${match.url}/time-line`} component={TimeLine}/>
-                <Route path={`${match.url}/custom-views`} component={CustomViews}/>
+    render() {
+        const { match, drawerType } = this.props;
+        const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
 
-                <Route path={`${match.url}/widgets`} component={Widgets}/>
-                <Route path={`${match.url}/metrics`} component={Metrics}/>
-                <Route path={`${match.url}/extra-elements`} component={ExtraElements}/>
-                <Route path={`${match.url}/ecommerce`} component={eCommerce}/>
-                <Route path={`${match.url}/app-module`} component={AppModule}/>
-                <Route path={`${match.url}/to-do`}
-                       component={asyncComponent(() => import('./routes/todo/basic/index'))}/>
-                <Route path={`${match.url}/to-do-redux`}
-                       component={asyncComponent(() => import('./routes/todo/redux/index'))}/>
-                <Route path={`${match.url}/mail`}
-                       component={asyncComponent(() => import('./routes/mail/basic/index'))}/>
-                <Route path={`${match.url}/mail-redux`}
-                       component={asyncComponent(() => import('./routes/mail/redux/index'))}/>
-                <Route path={`${match.url}/chat`}
-                       component={asyncComponent(() => import('./routes/chatPanel/basic/index'))}/>
-                <Route path={`${match.url}/chat-redux`}
-                       component={asyncComponent(() => import('./routes/chatPanel/redux/index'))}/>
-                <Route path={`${match.url}/contact`}
-                       component={asyncComponent(() => import('./routes/contact/basic/index'))}/>
-                <Route path={`${match.url}/contact-redux`}
-                       component={asyncComponent(() => import('./routes/contact/redux/index'))}/>
-                <Route path={`${match.url}/extra-pages`} component={ExtraPages}/>
-                <Route component={asyncComponent(() => import('app/routes/extraPages/routes/404'))}/>
-              </Switch>
+        if (isIOS && isMobile) {
+            document.body.classList.add('ios-mobile-view-height');
+        } else if (document.body.classList.contains('ios-mobile-view-height')) {
+            document.body.classList.remove('ios-mobile-view-height');
+        }
+
+        return (
+            <div className={`app-container ${drawerStyle}`}>
+
+                <Sidebar/>
+                <div className="app-main-container">
+                    <div
+                        className={`app-header`}>
+                        <Header/>
+                    </div>
+
+                    <main className="app-main-content-wrapper">
+                        <div className="app-main-content">
+                            <Switch>
+                                <PrivateRoute path={`${match.url}/dashboard`}
+                                              component={asyncComponent(() => import('app/routes/Dashboard'))}/>
+                                <PrivateRoute path={`${match.url}/alarm-list`}
+                                              component={asyncComponent(() => import('app/routes/AlarmList'))}/>
+                                <PrivateRoute path={`${match.url}/tag-list`}
+                                              component={asyncComponent(() => import('app/routes/TagList'))}/>
+                                <PrivateRoute path={`${match.url}/charts`}
+                                              component={asyncComponent(() => import('app/routes/Charts'))}/>
+                                <PrivateRoute component={asyncComponent(() => import('app/components/Error404'))}/>
+                            </Switch>
+                        </div>
+                        <Footer/>
+                    </main>
+                </div>
             </div>
-            <Footer/>
-          </main>
-        </div>
-        <ColorOption/>
-      </div>
-    );
-  }
+        );
+    }
 }
 
 
-const mapStateToProps = ({settings}) => {
-  const {drawerType, navigationStyle, horizontalNavPosition} = settings;
-  return {drawerType, navigationStyle, horizontalNavPosition}
+const mapStateToProps = ({ settings }) => {
+    return {
+        drawerType: settings.drawerType,
+    };
 };
-export default withRouter(connect(mapStateToProps)(App));
+
+const mapDispatchedToProps = dispatch => {
+    return {
+        onFetchPolling: () => dispatch(fetchPolling()),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchedToProps)(App);

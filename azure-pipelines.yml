@@ -4,16 +4,29 @@
 # https://aka.ms/yaml
 
 trigger:
-- develop
+  batch: true
+  branches:
+    include:
+      - develop
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
+- task: NodeTool@0
+  displayName: 'Install Node.js'
+  inputs:
+    versionSpec: 'v12.18.1'
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    npm install --production
+  displayName: 'Install dependencies'
+- script: |
+    npm run build
+  displayName: 'Build client code'
+- task: AzureCLI@2
+  displayName: 'Upload static website to Azure account storage'
+  inputs:
+    azureSubscription: 'Desalitech azure connection'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: "az storage blob upload-batch --account-name desalitech --account-key 7M5021cKg2hh4pxCHrvFmtQfav9pwRRfR3A3bVOYnUmR3IM7RGZJX8HBDl3ux7i6CLo8y3UCVQAL8Iu0O2m5NQ== --destination '$web' --source ./build"

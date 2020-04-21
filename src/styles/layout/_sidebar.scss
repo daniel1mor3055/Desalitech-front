@@ -226,9 +226,9 @@ ul.nav-menu li.menu .sub-menu li > a {
   margin-right: 20px;
 }
 
-ul.nav-menu li.menu.open .sub-menu li > a.active {
-  background-color: $sidebar-bg-darken-highlight;
-  color: $sidebar-hover-color;
+ul.nav-menu li > a.active {
+  background-color: $sidebar-hover-color;
+  color: #2196F3 !important;
 }
 
 ul.nav-menu li.menu .sub-menu li > a:hover,
