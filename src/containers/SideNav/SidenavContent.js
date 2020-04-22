@@ -3,6 +3,7 @@ import {NavLink, withRouter} from 'react-router-dom';
 
 import IntlMessages from 'util/IntlMessages';
 import CustomScrollbars from 'util/CustomScrollbars';
+import SidenavElement from "../../components/SidenavElement";
 
 
 class SidenavContent extends Component {
@@ -103,16 +104,16 @@ class SidenavContent extends Component {
 
   render() {
     return (
-      <CustomScrollbars className=" scrollbar">
-        <ul className="nav-menu">
-          <li className="menu no-arrow">
-            <NavLink to="/app/dashboard">
-              <i className="zmdi zmdi-time-countdown zmdi-hc-fw"/>
-              <span className="nav-text"><IntlMessages id="pages.dashboardPage"/> </span>
-            </NavLink>
-          </li>
-        </ul>
-      </CustomScrollbars>
+        <CustomScrollbars className=" scrollbar">
+          <ul className="nav-menu">
+            <SidenavElement relativePath={'dashboard'} id={"pages.dashboardPage"} icon={"zmdi-time-countdown"}/>
+            <SidenavElement relativePath={'charts'} id={"pages.chartsPage"} icon={"zmdi-chart"}/>
+            <SidenavElement relativePath={'alarm-list'} id={"pages.alarmListPage"} icon={"zmdi-notifications-active"}/>
+            <SidenavElement relativePath={'tag-list'} id={"pages.tagListPage"} icon={"zmdi-tag"}/>
+            <SidenavElement relativePath={'reports'} id={"pages.reportsPage"} icon={"zmdi-file-text"}/>
+            <SidenavElement relativePath={'documentation'} id={"pages.documentationPage"} icon={"zmdi-folder"}/>
+          </ul>
+        </CustomScrollbars>
     );
   }
 }
