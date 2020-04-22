@@ -48,8 +48,18 @@ class App extends React.Component {
           <main className="app-main-content-wrapper">
             <div className="app-main-content">
               <Switch>
-                  <Route path={`${match.url}/dashboard`}
+                <Route path={`${match.url}/dashboard`}
                          component={asyncComponent(() => import('./routes/Dashboard'))}/>
+                <Route path={`${match.url}/alarm-list`}
+                       component={asyncComponent(() => import('./routes/AlarmList'))}/>
+                <Route path={`${match.url}/tag-list`}
+                       component={asyncComponent(() => import('./routes/TagList'))}/>
+                <Route path={`${match.url}/documentation`}
+                       component={asyncComponent(() => import('./routes/Documentation'))}/>
+                <Route path={`${match.url}/charts`}
+                       component={asyncComponent(() => import('./routes/Charts'))}/>
+                <Route path={`${match.url}/reports`}
+                       component={asyncComponent(() => import('./routes/Reports'))}/>
                 <Route component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>
             </div>
