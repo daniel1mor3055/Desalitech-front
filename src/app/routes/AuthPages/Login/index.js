@@ -25,7 +25,7 @@ class Login extends React.Component {
             <div
                 className="login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
                 <div className="login-content">
-                    <div className="login-header mb-4">
+                    <div className="login-header mb-4" style={{textAlign: 'center'}}>
                         <Link className="app-logo" to="/" title="Desalitech">
                             <img src={require("assets/images/desalitech-logo-color.png")} alt="desalitech" title="desalitech"/>
                         </Link>
