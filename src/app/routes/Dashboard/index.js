@@ -5,6 +5,7 @@ import IntlMessages from 'util/IntlMessages';
 class Dashboard extends React.Component {
 
   render() {
+      console.log("GOT HERE")
     return (
       <div className="app-wrapper">
         <ContainerHeader match={this.props.match} title={<IntlMessages id="pages.dashboardPage"/>}/>
