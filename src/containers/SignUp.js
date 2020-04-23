@@ -50,8 +50,8 @@ class SignUp extends React.Component {
         className="app-login-container d-flex justify-content-center align-items-center animated slideInUpTiny animation-duration-3">
         <div className="app-login-main-content">
           <div className="app-logo-content d-flex align-items-center justify-content-center">
-            <Link className="logo-lg" to="/" title="Jambo">
-              <img src={require("assets/images/logo.png")} alt="jambo" title="jambo"/>
+            <Link className="logo-lg" to="/" title="Desalitech">
+              <img src={require("assets/images/desalitech-logo.png")} alt="desalitech" title="desalitech"/>
             </Link>
           </div>
 
