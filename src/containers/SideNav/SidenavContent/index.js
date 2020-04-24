@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {NavLink, withRouter} from 'react-router-dom';
+import { withRouter} from 'react-router-dom';
 
-import IntlMessages from 'util/IntlMessages';
 import CustomScrollbars from 'util/CustomScrollbars';
-import SidenavElement from "../../components/SidenavElement";
+import SidenavList from "../SidenavItems";
+import SidenavItem from "../SidenavItems/SidenavItem";
 
 
 class SidenavContent extends Component {
@@ -105,14 +105,14 @@ class SidenavContent extends Component {
   render() {
     return (
         <CustomScrollbars className=" scrollbar">
-          <ul className="nav-menu">
-            <SidenavElement relativePath={'dashboard'} id={"pages.dashboardPage"} icon={"zmdi-time-countdown"}/>
-            <SidenavElement relativePath={'charts'} id={"pages.chartsPage"} icon={"zmdi-chart"}/>
-            <SidenavElement relativePath={'alarm-list'} id={"pages.alarmListPage"} icon={"zmdi-notifications-active"}/>
-            <SidenavElement relativePath={'tag-list'} id={"pages.tagListPage"} icon={"zmdi-tag"}/>
-            <SidenavElement relativePath={'reports'} id={"pages.reportsPage"} icon={"zmdi-file-text"}/>
-            <SidenavElement relativePath={'documentation'} id={"pages.documentationPage"} icon={"zmdi-folder"}/>
-          </ul>
+          <SidenavList>
+            <SidenavItem relativePath={'dashboard'} id={"pages.dashboardPage"} icon={"zmdi-time-countdown"}/>
+            <SidenavItem relativePath={'charts'} id={"pages.chartsPage"} icon={"zmdi-chart"}/>
+            <SidenavItem relativePath={'alarm-list'} id={"pages.alarmListPage"} icon={"zmdi-notifications-active"}/>
+            <SidenavItem relativePath={'tag-list'} id={"pages.tagListPage"} icon={"zmdi-tag"}/>
+            <SidenavItem relativePath={'reports'} id={"pages.reportsPage"} icon={"zmdi-file-text"}/>
+            <SidenavItem relativePath={'documentation'} id={"pages.documentationPage"} icon={"zmdi-folder"}/>
+          </SidenavList>
         </CustomScrollbars>
     );
   }
