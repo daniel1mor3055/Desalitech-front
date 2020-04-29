@@ -27,7 +27,7 @@ class App extends Component {
     const {match, location, locale, isDirectionRTL} = this.props;
     const applyTheme = createMuiTheme(cyanTheme);
     if (location.pathname === '/') {
-      return ( <Redirect to={'/app/dashboard'}/> );
+      return ( <Redirect to={'/app/system-select'}/> );
     }
 
     if (isDirectionRTL) {
