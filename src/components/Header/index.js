@@ -12,12 +12,12 @@ import {
     FIXED_DRAWER,
     HORIZONTAL_NAVIGATION,
     INSIDE_THE_HEADER
-} from 'constants/ActionTypes';
+} from 'store/actionTypes';
 import SearchBox from 'components/SearchBox';
 import MailNotification from '../MailNotification/index';
 import AppNotification from '../AppNotification/index';
 import CardHeader from 'components/dashboard/Common/CardHeader/index';
-import {switchLanguage, toggleCollapsedNav} from 'actions/Setting';
+import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
 import IntlMessages from 'util/IntlMessages';
 import LanguageSwitcher from 'components/LanguageSwitcher/index';
 import Menu from 'components/TopNav/Menu';

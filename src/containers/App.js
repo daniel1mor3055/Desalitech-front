@@ -9,6 +9,7 @@ import "assets/vendors/style"
 import cyanTheme from './themes/cyanTheme';
 import AppLocale from '../lngProvider';
 
+import SystemSelect from 'app/routes/SystemSelect/index';
 import MainApp from 'app/index';
 import RTL from 'util/RTL';
 import asyncComponent from 'util/asyncComponent';
@@ -27,7 +28,7 @@ class App extends Component {
     const {match, location, locale, isDirectionRTL} = this.props;
     const applyTheme = createMuiTheme(cyanTheme);
     if (location.pathname === '/') {
-      return ( <Redirect to={'/app/dashboard'}/> );
+      return ( <Redirect to={'/app/system-select'}/> );
     }
 
     if (isDirectionRTL) {
@@ -48,6 +49,7 @@ class App extends Component {
             <RTL>
               <div className="app-main">
                 <Switch>
+                  <Route path={`${match.url}app/system-select`} component={SystemSelect}/>
                   <Route path={`${match.url}app`} component={MainApp}/>
                   <Route
                     component={asyncComponent(() => import('components/Error404'))}/>
