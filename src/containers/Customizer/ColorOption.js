@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 
 import SideNavOption from './SideNavOption';
-import {changeDirection, setDarkTheme, setThemeColor} from 'actions/index';
+import {changeDirection, setDarkTheme, setThemeColor} from 'store/actions';
 import {
   AMBER,
   BLUE,
