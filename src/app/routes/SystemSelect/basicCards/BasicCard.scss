@@ -1,0 +1,54 @@
+.BasicCard {
+  .BasicCard-ImgSize {
+    display: block;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 6px;
+    width: 75%;
+  }
+
+  .BasicCard-CardSubtitleClass {
+    white-space: pre;
+    margin: 5px;
+    text-align: left;
+  }
+
+
+  .BasicCard-TextToTheRight {
+    float: right
+  }
+
+  .Indicator {
+    margin-right: 3px;
+  }
+
+  .BasicCard-TitleClass {
+    text-align: center;
+    border-width: 2px;
+    border-style: solid;
+    margin-bottom: 16px;
+    border-radius: 25px;
+
+  }
+
+  .GreenBorder {
+    border-color: green;
+  }
+
+  .RedBorder {
+    border-color: red;
+  }
+
+  .AmberBorder {
+    border-color: #FAA025;
+  }
+
+  .BasicCard-IconClass {
+    margin-right: 10px;
+  }
+
+  strong {
+    margin-right: 16px;
+  }
+}

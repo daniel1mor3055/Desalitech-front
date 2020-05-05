@@ -14,9 +14,9 @@ import {
   INSIDE_THE_HEADER,
   MINI_DRAWER,
   VERTICAL_NAVIGATION
-} from 'constants/ActionTypes'
+} from 'store/actionTypes'
 
-import {changeNavigationStyle, setDrawerType, setHorizontalMenuPosition} from 'actions/index';
+import {changeNavigationStyle, setDrawerType, setHorizontalMenuPosition} from 'store/actions';
 
 import {Button, ButtonGroup} from 'reactstrap';
 

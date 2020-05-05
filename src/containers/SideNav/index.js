@@ -4,8 +4,8 @@ import {withRouter} from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import SidenavContent from './SidenavContent';
 import UserInfo from 'components/UserInfo';
-import {COLLAPSED_DRAWER, FIXED_DRAWER, HORIZONTAL_NAVIGATION} from 'constants/ActionTypes';
-import {toggleCollapsedNav, updateWindowWidth} from 'actions/Setting';
+import {COLLAPSED_DRAWER, FIXED_DRAWER, HORIZONTAL_NAVIGATION} from 'store/actionTypes';
+import {toggleCollapsedNav, updateWindowWidth} from 'store/actions/Setting';
 
 class SideNav extends React.PureComponent {
 
