@@ -5,7 +5,6 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
     window.history.replaceState({}, document.title, window.location.pathname);
 
 export const Auth0Context = React.createContext();
-export const useAuth0 = () => useContext(Auth0Context);
 export const Auth0Provider = ({
                                   children,
                                   onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
@@ -66,7 +65,6 @@ export const Auth0Provider = ({
         setUser(user);
     };
 
-    console.log(auth0Client);
     return (
         <Auth0Context.Provider
             value={{
