@@ -17,10 +17,14 @@ import TopNav from '../../../components/TopNav';
 import ContainerHeader from "../../../components/ContainerHeader";
 import IntlMessages from "../../../util/IntlMessages";
 import BasicCard from "./basicCards/BasicCard";
+import { Auth0Context } from '../../../Auth0Provider';
 
 class App extends React.Component {
+    static contextType = Auth0Context;
+
     componentDidMount() {
-        this.props.onFetchSystems()
+        const { getTokenSilently, getIdTokenClaims } = this.context;
+        this.props.onFetchSystems(getTokenSilently, getIdTokenClaims)
     }
 
     render() {
@@ -93,7 +97,7 @@ const mapStateToProps = state => {
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchSystems: () => dispatch(action.fetchSystems())}
+    return {onFetchSystems: (getTokenSilently, getIdTokenClaims) => dispatch(action.fetchSystems(getTokenSilently, getIdTokenClaims))}
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(App));
