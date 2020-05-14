@@ -27,15 +27,13 @@ export const fetchSystems = (getTokenSilently, getIdTokenClaims) => {
         try {
             const token = await getTokenSilently();
             const idtoken = await getIdTokenClaims();
-            const response = await axios.get('https://desalistage.eastus2.cloudapp.azure.com/api', {
+            const response = await axios.get('https://desalistage.eastus2.cloudapp.azure.com/api/', {
                 headers: {
-                    authority: 'desalistage.eastus2.cloudapp.azure.com',
-                    authorization: `Bearer ${token}`,
-                    useridtoken: `Id ${idtoken.__raw}`,
-                    'content-type': 'application/json'
+                    Authorization: `Bearer ${token}`,
+                    UserIdToken: `Id ${idtoken.__raw}`
                 }
             });
-            console.log('TTTTT',response);
+            console.log(response);
             const fetchedSystems = [];
             response.data.forEach((key) => {
                 fetchedSystems.push({
