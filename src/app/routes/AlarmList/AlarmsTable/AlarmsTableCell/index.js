@@ -1,20 +1,13 @@
 import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
-const AlarmsTableCell = ({data}) => {
-    const {id, alarmId, alarmDescription, alarmDate} = data;
+const TableCell = ({cellData,key}) => {
+    const cellElems = Object.keys(cellData).map(elem => (<td className="text-nowrap">{cellData[elem]}</td>))
     return (
-
         <tr
             tabIndex={-1}
-            key={'tags-'+id}>
-
-            <td className="max-width-100">
-                <p className="text-truncate mb-0">{alarmId}</p>
-            </td>
-
-            <td className="text-nowrap">{alarmDescription}</td>
-            <td className="text-nowrap">{alarmDate}</td>
+            key={key}>
+            {cellElems}
             <td className="text-right">
                 <IconButton className="icon-btn text-light p-1"><i className="zmdi zmdi-settings text-blue"/></IconButton>
             </td>
@@ -23,4 +16,4 @@ const AlarmsTableCell = ({data}) => {
     );
 };
 
-export default AlarmsTableCell;
+export default TableCell;

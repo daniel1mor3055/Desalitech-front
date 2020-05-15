@@ -1,25 +1,25 @@
-import * as actionTypes from '../actionTypes/systemSelect/systemSelect'
-import axios from '../../app/routes/SystemSelect/axios-system-select'
+import * as actionTypes from '../actionTypes/systemSelect/systemSelect';
+import axios from 'axios'
 
-export const fetchSystemsSuccess = (systems) =>{
+export const fetchSystemsSuccess = (systems) => {
     return {
         type: actionTypes.FETCH_SYSTEMS_SUCCESS,
         systems: systems
-    }
-}
+    };
+};
 
 export const fetchSystemsFail = (error) => {
     return {
         type: actionTypes.FETCH_SYSTEMS_FAIL,
         error: error
-    }
-}
+    };
+};
 
-export const fetchSystemsStart = () =>{
-    return{
+export const fetchSystemsStart = () => {
+    return {
         type: actionTypes.FETCH_SYSTEMS_START
-    }
-}
+    };
+};
 
 export const fetchSystems = (getTokenSilently, getIdTokenClaims) => {
     return async (dispatch) => {
@@ -35,15 +35,15 @@ export const fetchSystems = (getTokenSilently, getIdTokenClaims) => {
             });
             console.log(response);
             const fetchedSystems = [];
-            response.data.forEach((key) => {
+            response.data.systems.forEach((key) => {
                 fetchedSystems.push({
-                    ...response.data[key],
+                    ...response.data.systems[key],
                     id: key
-                })
+                });
             });
-            dispatch(fetchSystemsSuccess(fetchedSystems))
+            dispatch(fetchSystemsSuccess(fetchedSystems));
         } catch (err) {
-            dispatch(fetchSystemsFail(err))
+            dispatch(fetchSystemsFail(err));
         }
-    }
+    };
 };
