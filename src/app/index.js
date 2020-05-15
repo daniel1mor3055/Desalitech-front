@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import {Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Header from 'components/Header/index';
 import Sidebar from 'containers/SideNav/index';
@@ -15,6 +15,7 @@ import {
 import {isIOS, isMobile} from 'react-device-detect';
 import asyncComponent from '../util/asyncComponent';
 import TopNav from 'components/TopNav';
+import PrivateRoute from "../app/components/PrivateRoute";
 
 class App extends React.Component {
 
@@ -48,19 +49,19 @@ class App extends React.Component {
           <main className="app-main-content-wrapper">
             <div className="app-main-content">
               <Switch>
-                <Route path={`${match.url}/dashboard`}
+                <PrivateRoute path={`${match.url}/dashboard`}
                          component={asyncComponent(() => import('./routes/Dashboard'))}/>
-                <Route path={`${match.url}/alarm-list`}
+                <PrivateRoute path={`${match.url}/alarm-list`}
                        component={asyncComponent(() => import('./routes/AlarmList'))}/>
-                <Route path={`${match.url}/tag-list`}
+                <PrivateRoute path={`${match.url}/tag-list`}
                        component={asyncComponent(() => import('./routes/TagList'))}/>
-                <Route path={`${match.url}/documentation`}
+                <PrivateRoute path={`${match.url}/documentation`}
                        component={asyncComponent(() => import('./routes/Documentation'))}/>
-                <Route path={`${match.url}/charts`}
+                <PrivateRoute path={`${match.url}/charts`}
                        component={asyncComponent(() => import('./routes/Charts'))}/>
-                <Route path={`${match.url}/reports`}
+                <PrivateRoute path={`${match.url}/reports`}
                        component={asyncComponent(() => import('./routes/Reports'))}/>
-                <Route component={asyncComponent(() => import('components/Error404'))}/>
+                <PrivateRoute component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>
             </div>
             <Footer/>

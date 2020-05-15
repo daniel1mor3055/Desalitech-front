@@ -1,19 +1,17 @@
-import React, { Component } from 'react';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import React, {Component} from 'react';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { IntlProvider } from 'react-intl'
-import "assets/vendors/style"
+import {MuiPickersUtilsProvider} from 'material-ui-pickers';
+import {Redirect, Switch} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {IntlProvider} from 'react-intl';
+import "assets/vendors/style";
 import cyanTheme from './themes/cyanTheme';
 import AppLocale from '../lngProvider';
-
-import SystemSelect from 'app/routes/SystemSelect/index';
-import MainApp from 'app/index';
 import RTL from 'util/RTL';
-import asyncComponent from 'util/asyncComponent';
-import { Auth0Context } from '../Auth0Provider';
+import {Auth0Context} from '../Auth0Provider';
+import PrivateRoute from "../app/components/PrivateRoute";
+import asyncComponent from "../util/asyncComponent";
 
 class App extends Component {
     static contextType = Auth0Context;
@@ -27,22 +25,25 @@ class App extends Component {
     }
 
     render() {
-        const { match, location, locale, isDirectionRTL } = this.props;
-        const { loading, loginWithRedirect, isAuthenticated } = this.context;
+        const {match, location, locale, isDirectionRTL} = this.props;
+        const {loading, loginWithRedirect, isAuthenticated} = this.context;
 
-        if (!loading && !isAuthenticated) {
+        if (!isAuthenticated && !loading) {
             loginWithRedirect({});
             return null;
         }
 
+        let redirect = null;
+        if (isAuthenticated && !loading) {
+            redirect = <Redirect exact from={'/'} to={'/app/system-select'}/>;
+        }
+
+
         const applyTheme = createMuiTheme(cyanTheme);
-        // if (location.pathname === '/') {
-        //   return ( <Redirect to={'/app/system-select'}/> );
-        // }
 
         if (isDirectionRTL) {
             applyTheme.direction = 'rtl';
-            document.body.classList.add('rtl')
+            document.body.classList.add('rtl');
         } else {
             document.body.classList.remove('rtl');
             applyTheme.direction = 'ltr';
@@ -58,10 +59,12 @@ class App extends Component {
                         <RTL>
                             <div className="app-main">
                                 <Switch>
-                                    <Route path={`${match.url}app/system-select`} component={SystemSelect} />
-                                    <Route path={`${match.url}app`} component={MainApp} />
-                                    <Route
-                                        component={asyncComponent(() => import('components/Error404'))} />
+                                   />
+                                    <PrivateRoute path={`${match.url}app/system-select`}
+                                                  component={asyncComponent(() => import('../app/routes/SystemSelect'))}/>
+                                    <PrivateRoute path={`${match.url}app`}
+                                                  component={asyncComponent(() => import('../app/index'))}/>
+                                    {redirect}
                                 </Switch>
                             </div>
                         </RTL>
@@ -72,9 +75,9 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = ({ settings }) => {
-    const { sideNavColor, locale, isDirectionRTL } = settings;
-    return { sideNavColor, locale, isDirectionRTL }
+const mapStateToProps = ({settings}) => {
+    const {sideNavColor, locale, isDirectionRTL} = settings;
+    return {sideNavColor, locale, isDirectionRTL};
 };
 
 export default connect(mapStateToProps)(App);

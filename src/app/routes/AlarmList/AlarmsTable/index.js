@@ -1,23 +1,22 @@
 import React from 'react';
-import AlarmsTableCell from './AlarmsTableCell';
+import TableCell from './AlarmsTableCell';
 
 
-const AlarmsTable = ({data}) => {
+const Table = ({data}) => {
+    const columns = Object.keys(data[0]).map(elem => (<th scope="col">{elem}</th>));
+
     return (
         <div className="table-responsive-material">
             <table className="project-list-table table remove-table-border mb-0">
                 <thead>
                 <tr>
-                    <th scope="col">Alarm ID</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Date</th>
-                    {/*<th colSpan="2" scope="col">Status</th>*/}
+                    {columns}
                 </tr>
                 </thead>
                 <tbody>
-                {data.map(data => {
+                {data.map((cellData,index) => {
                     return (
-                        <AlarmsTableCell key={data.id} data={data}/>
+                        <TableCell key={index} cellData={cellData}/>
                     );
                 })}
                 </tbody>
@@ -27,4 +26,4 @@ const AlarmsTable = ({data}) => {
 
 };
 
-export default AlarmsTable;
+export default Table;
