@@ -13,8 +13,8 @@ class TagList extends React.Component {
 
     componentDidMount() {
         const {getTokenSilently, getIdTokenClaims} = this.context;
-        const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchTags(getTokenSilently, getIdTokenClaims, systemId);
+        const {selectedSystem} = this.props;
+        this.props.onFetchTags(getTokenSilently, getIdTokenClaims, selectedSystem);
     }
 
     render() {
@@ -60,6 +60,7 @@ const mapStateToProps = state => {
         tags: state.tagsList.tags,
         fetching: state.tagsList.fetching,
         error: state.tagsList.error,
+        selectedSystem: state.systemSelect.selectedSystem,
     };
 };
 

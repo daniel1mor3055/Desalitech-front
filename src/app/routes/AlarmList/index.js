@@ -30,15 +30,15 @@ class AlarmList extends React.Component {
 
     componentDidMount() {
         const {getTokenSilently, getIdTokenClaims} = this.context;
-        const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchAlarms(getTokenSilently, getIdTokenClaims,systemId);
+        const {selectedSystem} = this.props;
+        this.props.onFetchAlarms(getTokenSilently, getIdTokenClaims, selectedSystem);
     }
 
     render() {
         const {match, alarms, fetching, error} = this.props;
         let alarmsTable = <CircularIndeterminate/>;
 
-        if (!error && !fetching && alarms.length!==0) {
+        if (!error && !fetching && alarms.length !== 0) {
             alarmsTable = <Table data={alarms}/>
         }
 
@@ -75,6 +75,7 @@ const mapStateToProps = state => {
         alarms: state.alarmsList.alarms,
         fetching: state.alarmsList.fetching,
         error: state.alarmsList.error,
+        selectedSystem: state.systemSelect.selectedSystem,
     };
 };
 

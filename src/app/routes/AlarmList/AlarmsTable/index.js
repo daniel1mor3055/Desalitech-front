@@ -2,7 +2,7 @@ import React from 'react';
 import TableCell from './AlarmsTableCell';
 
 
-const Table = ({data}) => {
+const Table = ({data, clickFunction,clickable}) => {
     const columns = Object.keys(data[0]).map(elem => (<th scope="col">{elem}</th>));
 
     return (
@@ -16,7 +16,8 @@ const Table = ({data}) => {
                 <tbody>
                 {data.map((cellData,index) => {
                     return (
-                        <TableCell key={index} cellData={cellData}/>
+                        <TableCell key={index} cellData={cellData}
+                                   onClick={clickable ? ()=>clickFunction(cellData.SystemID): null}/>
                     );
                 })}
                 </tbody>

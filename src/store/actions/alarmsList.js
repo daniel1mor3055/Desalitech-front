@@ -1,5 +1,6 @@
 import * as actionTypes from '../actionTypes/AlarmsList/alarmsList';
 import axios from 'axios';
+import {setAdminStatus} from "./admin";
 
 export const fetchAlarmsStart = () => {
     return {
@@ -41,6 +42,7 @@ export const fetchAlarms = (getTokenSilently, getIdTokenClaims, systemId) => {
             if (alarms.length > 15) {
                 alarms = alarms.slice(0, 15);
             }
+            dispatch(setAdminStatus(response.data.admin))
             dispatch(fetchAlarmsSuccess(alarms));
         } catch (err) {
             dispatch(fetchAlarmsFail(err));

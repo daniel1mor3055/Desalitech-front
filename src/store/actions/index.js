@@ -1,2 +1,2 @@
 export * from './Setting';
-export {fetchSystems} from './systemSelect'
+export {fetchSystems, uponSystemSelection} from './systemsAndLiveAlarms'

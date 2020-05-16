@@ -1,13 +1,19 @@
-import * as actionTypes from '../actionTypes/systemSelect/systemSelect';
+import * as actionTypes from '../actionTypes/systemsAndLiveAlarms/systemsAndLiveAlarms';
 
 const initialState = {
     systems: [],
     fetching: false,
     error: null,
+    selectedSystem: localStorage.getItem('selectedSystem')
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.UPON_SYSTEM_SELECTION:
+            return {
+                ...state,
+                selectedSystem: action.payload.selectedSystem
+            };
         case actionTypes.FETCH_SYSTEMS_START:
             return {
                 ...state,
@@ -17,7 +23,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_SYSTEMS_SUCCESS:
             return {
                 ...state,
-                systems: action.systems,
+                systems: action.payload.systems,
                 fetching: false,
                 error: null,
             };
@@ -25,7 +31,7 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 fetching: false,
-                error: action.error,
+                error: action.payload.error,
             };
         default:
             return state;

@@ -1,5 +1,6 @@
 import * as actionTypes from '../actionTypes/TagsList/tagsList';
 import axios from 'axios';
+import {setAdminStatus} from "./admin";
 
 export const fetchTagsStart = () => {
     return {
@@ -32,7 +33,6 @@ export const fetchTags = (getTokenSilently, getIdTokenClaims, systemId) => {
             let param = {sysid: systemId};
 
             url.search = new URLSearchParams(param).toString();
-
             const response = await axios.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -43,6 +43,7 @@ export const fetchTags = (getTokenSilently, getIdTokenClaims, systemId) => {
             if (tags.length > 15) {
                 tags = tags.slice(0, 15);
             }
+            dispatch(setAdminStatus(response.data.admin))
             dispatch(fetchTagsSuccess(tags));
         } catch (err) {
             dispatch(fetchTagsFail(err));
