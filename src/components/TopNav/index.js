@@ -1,6 +1,6 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom';
-import Menu from 'components/TopNav/Menu';
+import Menu from '../../components/TopNav/Menu';
 
 class TopNav extends React.Component {
 

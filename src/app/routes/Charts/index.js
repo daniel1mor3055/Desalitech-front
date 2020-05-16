@@ -1,5 +1,5 @@
 import React from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
+import ContainerHeader from '../../../components/ContainerHeader/index';
 import IntlMessages from 'util/IntlMessages';
 
 class Charts extends React.Component {

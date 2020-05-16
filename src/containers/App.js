@@ -6,7 +6,7 @@ import {Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl';
 import "assets/vendors/style";
-import cyanTheme from './themes/cyanTheme';
+import blueTheme from './themes/blueTheme'
 import AppLocale from '../lngProvider';
 import RTL from 'util/RTL';
 import {Auth0Context} from '../Auth0Provider';
@@ -21,7 +21,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        document.body.classList.add('cyan');
+        document.body.classList.add('blue');
     }
 
     render() {
@@ -39,7 +39,7 @@ class App extends Component {
         }
 
 
-        const applyTheme = createMuiTheme(cyanTheme);
+        const applyTheme = createMuiTheme(blueTheme);
 
         if (isDirectionRTL) {
             applyTheme.direction = 'rtl';
@@ -63,7 +63,7 @@ class App extends Component {
                                     <PrivateRoute path={`${match.url}app/system-select`}
                                                   component={asyncComponent(() => import('../app/routes/SystemSelect'))}/>
                                     <PrivateRoute path={`${match.url}app`}
-                                                  component={asyncComponent(() => import('../app/index'))}/>
+                                                  component={asyncComponent(() => import('../app'))}/>
                                     {redirect}
                                 </Switch>
                             </div>

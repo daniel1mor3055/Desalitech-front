@@ -33,7 +33,6 @@ export const fetchSystems = (getTokenSilently, getIdTokenClaims) => {
                     UserIdToken: `Id ${idtoken.__raw}`
                 }
             });
-            console.log(response);
             const fetchedSystems = [];
             response.data.systems.forEach((key) => {
                 fetchedSystems.push({

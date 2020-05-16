@@ -1,9 +1,9 @@
 import React from 'react';
 import {Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Header from 'components/Header/index';
-import Sidebar from 'containers/SideNav/index';
-import Footer from 'components/Footer';
+import Header from '../components/Header/index';
+import Sidebar from '../containers/SideNav/index';
+import Footer from '../components/Footer';
 import Tour from '../components/Tour/index';
 import {
   ABOVE_THE_HEADER,
@@ -11,10 +11,10 @@ import {
   COLLAPSED_DRAWER,
   FIXED_DRAWER,
   HORIZONTAL_NAVIGATION,
-} from 'store/actionTypes';
+} from '../store/actionTypes';
 import {isIOS, isMobile} from 'react-device-detect';
 import asyncComponent from '../util/asyncComponent';
-import TopNav from 'components/TopNav';
+import TopNav from '../components/TopNav';
 import PrivateRoute from "../app/components/PrivateRoute";
 
 class App extends React.Component {
@@ -61,7 +61,7 @@ class App extends React.Component {
                        component={asyncComponent(() => import('./routes/Charts'))}/>
                 <PrivateRoute path={`${match.url}/reports`}
                        component={asyncComponent(() => import('./routes/Reports'))}/>
-                <PrivateRoute component={asyncComponent(() => import('components/Error404'))}/>
+                <PrivateRoute component={asyncComponent(() => import('../components/Error404'))}/>
               </Switch>
             </div>
             <Footer/>

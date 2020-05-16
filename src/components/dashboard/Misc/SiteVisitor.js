@@ -2,7 +2,7 @@ import React from 'react';
 import {countryList1} from "../../../app/routes/dashboard/routes/data";
 
 import {VectorMap} from "react-jvectormap";
-import CountryListItem from "components/dashboard/Common/CountryListItem";
+import CountryListItem from "../../../components/dashboard/Common/CountryListItem";
 
 const SiteVisitor = () => {
   return (
