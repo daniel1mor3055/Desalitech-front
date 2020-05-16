@@ -13,8 +13,8 @@ class TagList extends PureComponent {
     static contextType = Auth0Context;
 
     componentDidMount() {
-        const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchTags(systemId);
+        const {selectedSystem} = this.props;
+        this.props.onFetchTags(selectedSystem);
     }
 
     render() {
@@ -49,11 +49,12 @@ class TagList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({tags, systems}) => {
     return {
         tags: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
+        selectedSystem: systems.selectedSystem
     };
 };
 

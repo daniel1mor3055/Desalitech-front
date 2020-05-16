@@ -1,21 +1,16 @@
 import {fetchSystemsApi} from 'api/systemSelect';
-import {fetchSystemsFail, fetchSystemsStart, fetchSystemsSuccess} from '../actions/systemSelect';
-
+import {fetchSystemsFail, fetchSystemsStart, fetchSystemsSuccess} from '../actions/systemsAndLiveAlarms';
+import {setAdminStatus} from "../actions/admin";
 
 export const fetchSystems = () => (
     async (dispatch) => {
         dispatch(fetchSystemsStart());
         try {
             const response = await fetchSystemsApi();
-
-            const fetchedSystems = [];
-            response.data.systems.forEach((key) => {
-                fetchedSystems.push({
-                    ...response.data.systems[key],
-                    id: key
-                });
-            });
-            dispatch(fetchSystemsSuccess(fetchedSystems));
+            const { data } = response
+            const { admin, systems} = data
+            dispatch(setAdminStatus(admin))
+            dispatch(fetchSystemsSuccess(systems));
         } catch (err) {
             dispatch(fetchSystemsFail(err));
         }
