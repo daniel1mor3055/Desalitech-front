@@ -19,8 +19,6 @@ class MainApp extends Component {
                 ? appState.targetUrl
                 : window.location.pathname
         );
-
-        console.log(appState);
     };
 
     render() {
