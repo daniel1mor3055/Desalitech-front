@@ -4,6 +4,7 @@ export const fetchAlarmsStart = () => (
     {
         type: FETCH_ALARMS_START,
     });
+
 export const fetchAlarmsSuccess = (alarms) => (
     {
         type: FETCH_ALARMS_SUCCESS,
@@ -11,6 +12,7 @@ export const fetchAlarmsSuccess = (alarms) => (
             alarms
         }
     });
+
 export const fetchAlarmsFail = (error) => (
     {
         type: FETCH_ALARMS_FAIL,

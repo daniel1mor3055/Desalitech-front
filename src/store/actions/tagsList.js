@@ -4,6 +4,7 @@ export const fetchTagsStart = () => (
     {
         type: FETCH_TAGS_START,
     });
+
 export const fetchTagsSuccess = (tags) => (
     {
         type: FETCH_TAGS_SUCCESS,
@@ -11,6 +12,7 @@ export const fetchTagsSuccess = (tags) => (
             tags
         }
     });
+
 export const fetchTagsFail = (error) => (
     {
         type: FETCH_TAGS_FAIL,
@@ -18,8 +20,5 @@ export const fetchTagsFail = (error) => (
             error
         }
     });
-
-
-
 
 

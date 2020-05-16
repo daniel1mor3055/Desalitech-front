@@ -29,8 +29,8 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchAlarms(systemId);
+        const {selectedSystem} = this.props;
+        this.props.onFetchAlarms(selectedSystem);
     }
 
     render() {
@@ -50,8 +50,8 @@ class AlarmList extends PureComponent {
                         <Table data={alarms}/>
                     </div>
                 </div>;
-        }
 
+        }
         if (error) {
             alarmsList = <p>{"Coudn't fetch alarms"}</p>;
         }
@@ -69,11 +69,12 @@ class AlarmList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({alarms}) => {
+const mapStateToProps = ({alarms,systems}) => {
     return {
         alarms: alarms.alarms,
         fetching: alarms.fetching,
         error: alarms.error,
+        selectedSystem: systems.selectedSystem
     };
 };
 

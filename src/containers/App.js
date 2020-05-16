@@ -61,7 +61,7 @@ class App extends Component {
                             <div className="app-main">
                                 <Switch>
                                     <PrivateRoute path={`${match.url}app/system-select`}
-                                                  component={asyncComponent(() => import('../app/routes/SystemSelect'))}/>
+                                                  component={asyncComponent(() => import('../app/routes/SystemsAndLiveAlarms'))}/>
                                     <PrivateRoute path={`${match.url}app`}
                                                   component={asyncComponent(() => import('../app'))}/>
                                     {redirect}
