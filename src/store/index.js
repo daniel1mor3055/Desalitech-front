@@ -1,8 +1,10 @@
 import {applyMiddleware, compose, createStore} from 'redux';
-import reducers from './reducers/index';
-import {createBrowserHistory} from 'history'
+import {createBrowserHistory} from 'history';
 import {routerMiddleware} from 'connected-react-router';
-import thunkMiddleware from 'redux-thunk'
+import thunkMiddleware from 'redux-thunk';
+
+import reducers from './reducers';
+
 const history = createBrowserHistory();
 const routeMiddleware = routerMiddleware(history);
 
@@ -11,18 +13,19 @@ const middlewares = [thunkMiddleware, routeMiddleware];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
-export default function configureStore(initialState) {
-  const store = createStore(reducers(history), initialState,
-    composeEnhancers(applyMiddleware(...middlewares)));
+const configureStore = (initialState) => {
+    const store = createStore(reducers(history), initialState,
+        composeEnhancers(applyMiddleware(...middlewares)));
 
 
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducers/index', () => {
-      const nextRootReducer = require('./reducers');
-      store.replaceReducer(nextRootReducer);
-    });
-  }
-  return store;
-}
+    if (module.hot) {
+        // Enable Webpack hot module replacement for reducers
+        module.hot.accept('./reducers', () => {
+            const nextRootReducer = require('./reducers');
+            store.replaceReducer(nextRootReducer);
+        });
+    }
+    return store;
+};
 export {history};
+export default configureStore;

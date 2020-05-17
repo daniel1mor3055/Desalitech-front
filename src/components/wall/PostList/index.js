@@ -1,7 +1,7 @@
-import React, {Component} from "react";
-import PostItem from "./PostItem";
-import WriteBox from "../../../components/wall/WriteBox/index";
-import Auxiliary from "../../../util/Auxiliary";
+import React, {Component} from 'react';
+import PostItem from './PostItem';
+import WriteBox from 'components/wall/WriteBox/index';
+import Auxiliary from 'util/Auxiliary';
 
 class PostList extends Component {
 

@@ -1,17 +1,17 @@
-import React from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
+import React, {PureComponent} from 'react';
+import IconButton from '@material-ui/core/IconButton';
+import {connect} from 'react-redux';
+
 import IntlMessages from 'util/IntlMessages';
-import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
-import Table from './AlarmsTable';
-import IconButton from "@material-ui/core/IconButton";
-import CardMenu from "./CardMenu/CardMenu";
-import * as action from '../../../store/actions/alarmsList';
-import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
-import {Auth0Context} from '../../../Auth0Provider';
+import {Auth0Context} from 'Auth0Provider';
+import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
+import Table from 'app/components/Table';
+import {fetchAlarms} from 'store/thunk/alarmsList';
+import ContainerHeader from 'components/ContainerHeader';
+import CardMenu from 'app/components/CardMenu/CardMenu';
 
 
-class AlarmList extends React.Component {
+class AlarmList extends PureComponent {
     static contextType = Auth0Context;
 
     state = {
@@ -29,58 +29,57 @@ class AlarmList extends React.Component {
     };
 
     componentDidMount() {
-        const {getTokenSilently, getIdTokenClaims} = this.context;
         const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchAlarms(getTokenSilently, getIdTokenClaims,systemId);
+        this.props.onFetchAlarms(systemId);
     }
 
     render() {
         const {match, alarms, fetching, error} = this.props;
-        let alarmsTable = <CircularIndeterminate/>;
+        let alarmsList = <CircularIndeterminate/>;
 
-        if (!error && !fetching && alarms.length!==0) {
-            alarmsTable = <Table data={alarms}/>
+        if (!error && !fetching && alarms.length !== 0) {
+            alarmsList =
+                <div className="col-12">
+                    <div className="jr-card">
+                        <div className="jr-card-header mb-3 d-flex">
+                            <h3 className="mb-0 mr-auto">Alarms List</h3>
+                            <IconButton className="icon-btn" onClick={this.onOptionMenuSelect}>
+                                <i className="zmdi zmdi-chevron-down"/>
+                            </IconButton>
+                        </div>
+                        <Table data={alarms}/>
+                    </div>
+                </div>;
         }
 
         if (error) {
-            alarmsTable = <p>{"Coudn't fetch alarms"}</p>
+            alarmsList = <p>{"Coudn't fetch alarms"}</p>;
         }
 
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.alarmListPage"/>}/>
                 <div className="d-flex justify-content-center">
-                    <div className="col-12">
-                        <div className="jr-card">
-                            <div className="jr-card-header mb-3 d-flex">
-                                <h3 className="mb-0 mr-auto">Alarms List</h3>
-                                <IconButton className="icon-btn" onClick={this.onOptionMenuSelect}>
-                                    <i className="zmdi zmdi-chevron-down"/>
-                                </IconButton>
-                            </div>
-                            {alarmsTable}
-                        </div>
-                    </div>
+                    {alarmsList}
                     <CardMenu menuState={this.state.subMenuState} anchorEl={this.state.anchorEl}
                               handleRequestClose={this.handleRequestClose.bind(this)}/>
-
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({alarms}) => {
     return {
-        alarms: state.alarmsList.alarms,
-        fetching: state.alarmsList.fetching,
-        error: state.alarmsList.error,
+        alarms: alarms.alarms,
+        fetching: alarms.fetching,
+        error: alarms.error,
     };
 };
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchAlarms: (getTokenSilently, getIdTokenClaims, systemId) => dispatch(action.fetchAlarms(getTokenSilently, getIdTokenClaims, systemId))};
+    return {onFetchAlarms: (systemId) => dispatch(fetchAlarms(systemId))};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(AlarmList));
+export default connect(mapStateToProps, mapDispatchedToProps)(AlarmList);

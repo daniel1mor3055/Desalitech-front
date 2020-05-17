@@ -1,37 +1,27 @@
-import React from 'react';
-import {Route, Switch, withRouter} from 'react-router-dom';
+import React, {PureComponent} from 'react';
+import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Header from 'components/Header/index';
-import * as action from '../../../store/actions/index';
-import Footer from 'components/Footer';
-import Tour from '../../../components/Tour/index';
-import {
-    ABOVE_THE_HEADER,
-    BELOW_THE_HEADER,
-    COLLAPSED_DRAWER,
-    FIXED_DRAWER,
-    HORIZONTAL_NAVIGATION,
-} from '../../../store/actionTypes';
 import {isIOS, isMobile} from 'react-device-detect';
-import TopNav from '../../../components/TopNav';
-import ContainerHeader from "../../../components/ContainerHeader";
-import IntlMessages from "../../../util/IntlMessages";
-import BasicCard from "./basicCards/BasicCard";
-import {Auth0Context} from '../../../Auth0Provider';
-import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
-import Table from "../AlarmList/AlarmsTable";
 
-class App extends React.Component {
-    static contextType = Auth0Context;
+import Footer from 'components/Footer';
+import Tour from 'components/Tour';
+import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/actionTypes';
+import TopNav from 'components/TopNav';
+import ContainerHeader from 'components/ContainerHeader';
+import IntlMessages from 'util/IntlMessages';
+import BasicCard from './basicCards/BasicCard';
+import Header from 'components/Header';
+import {fetchSystems} from 'store/thunk/systemSelect';
+import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
+
+class App extends PureComponent {
 
     componentDidMount() {
-        const {getTokenSilently, getIdTokenClaims} = this.context;
-        this.props.onFetchSystems(getTokenSilently, getIdTokenClaims);
+        this.props.onFetchSystems();
     }
 
     render() {
-        const {match, drawerType, navigationStyle, horizontalNavPosition, systems, fetching, error} = this.props;
-        //set default height and overflow for iOS mobile Safari 10+ support.
+        const {match, navigationStyle, horizontalNavPosition, systems, fetching, error} = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
         } else if (document.body.classList.contains('ios-mobile-view-height')) {
@@ -56,10 +46,6 @@ class App extends React.Component {
                     ))}
                 </div>;
         }
-
-        // if (error) {
-        //     systemsCards = <p>{"Coudn't fetch systems"}</p>;
-        // }
 
         return (
             <div className={`app-container collapsible-drawer`}>
@@ -92,19 +78,19 @@ class App extends React.Component {
 }
 
 
-const mapStateToProps = state => {
+const mapStateToProps = ({settings,systems}) => {
     return {
-        navigationStyle: state.settings.navigationStyle,
-        horizontalNavPosition: state.settings.horizontalNavPosition,
-        systems: state.systemSelect.systems,
-        fetching: state.systemSelect.fetching,
-        error: state.systemSelect.error,
+        navigationStyle: settings.navigationStyle,
+        horizontalNavPosition: settings.horizontalNavPosition,
+        systems: systems.systems,
+        fetching: systems.fetching,
+        error: systems.error,
     };
 };
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchSystems: (getTokenSilently, getIdTokenClaims) => dispatch(action.fetchSystems(getTokenSilently, getIdTokenClaims))};
+    return {onFetchSystems: () => dispatch(fetchSystems())};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(App));
+export default connect(mapStateToProps, mapDispatchedToProps)(App);

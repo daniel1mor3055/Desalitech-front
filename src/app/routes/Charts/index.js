@@ -1,8 +1,9 @@
-import React from 'react';
-import ContainerHeader from '../../../components/ContainerHeader/index';
-import IntlMessages from 'util/IntlMessages';
+import React, {Component} from 'react';
 
-class Charts extends React.Component {
+import IntlMessages from 'util/IntlMessages';
+import ContainerHeader from 'components/ContainerHeader';
+
+class Charts extends Component {
 
     render() {
         const {match} = this.props;

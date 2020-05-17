@@ -1,15 +1,18 @@
 import {combineReducers} from 'redux';
 import {connectRouter} from 'connected-react-router'
-import Settings from './Settings';
-import systemSelectReducer from './systemSelect'
-import alarmsListReducer from './alarmsList'
-import tagsListReducer from './tagsList'
+
+import settings from './Settings';
+import systems from './systemSelect'
+import alarms from './alarmsList'
+import tags from './tagsList'
+import auth from './auth'
 
 
 export default (history) => combineReducers({
   router: connectRouter(history),
-  settings: Settings,
-  systemSelect: systemSelectReducer,
-  alarmsList: alarmsListReducer,
-  tagsList: tagsListReducer,
+  settings: settings,
+  systems: systems,
+  alarms: alarms,
+  tags: tags,
+  auth: auth,
 });

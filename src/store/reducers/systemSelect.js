@@ -1,4 +1,4 @@
-import * as actionTypes from '../actionTypes/systemSelect/systemSelect';
+import {FETCH_SYSTEMS_START, FETCH_SYSTEMS_SUCCESS, FETCH_SYSTEMS_FAIL} from '../actionTypes/systemSelect';
 
 const initialState = {
     systems: [],
@@ -8,28 +8,41 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case actionTypes.FETCH_SYSTEMS_START:
-            return {
-                ...state,
-                fetching: true,
-                error: null,
-            };
-        case actionTypes.FETCH_SYSTEMS_SUCCESS:
-            return {
-                ...state,
-                systems: action.systems,
-                fetching: false,
-                error: null,
-            };
-        case actionTypes.FETCH_SYSTEMS_FAIL:
-            return {
-                ...state,
-                fetching: false,
-                error: action.error,
-            };
+        case FETCH_SYSTEMS_START:
+            return fetchSystemsStart(state, action);
+        case FETCH_SYSTEMS_SUCCESS:
+            return fetchSystemsSuccess(state, action);
+        case FETCH_SYSTEMS_FAIL:
+            return fetchSystemsFail(state, action);
         default:
             return state;
     }
 };
+
+function fetchSystemsStart(state, action) {
+    return {
+        ...state,
+        fetching: true,
+        error: null,
+    };
+}
+
+function fetchSystemsSuccess(state, action) {
+    return {
+        ...state,
+        systems: action.payload.systems,
+        fetching: false,
+        error: null,
+    };
+}
+
+function fetchSystemsFail(state, action) {
+    return {
+        ...state,
+        fetching: false,
+        error: action.payload.error,
+    };
+
+}
 
 export default reducer;

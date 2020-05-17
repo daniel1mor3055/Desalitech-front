@@ -1,6 +1,6 @@
-import ReactSpeedometer from "react-d3-speedometer";
-import {ResponsiveContainer} from "recharts";
-import React from "react";
+import ReactSpeedometer from 'react-d3-speedometer';
+import {ResponsiveContainer} from 'recharts';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const Speedometer = ({value}) => {

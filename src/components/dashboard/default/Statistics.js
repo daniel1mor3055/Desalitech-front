@@ -1,11 +1,11 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 
 import {lableList} from '../../../app/routes/dashboard/routes/Misc/data'
 import ChartCard from 'components/dashboard/Common/ChartCard';
 import Chart from "components/dashboard/default/Chart";
 
-class Statistics extends React.Component {
+class Statistics extends Component {
   state = {
     value: 0,
   };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {Modal, ModalHeader} from 'reactstrap';
 import Moment from 'moment';
 import TextField from '@material-ui/core/TextField';
@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
-class ComposeMail extends React.Component {
+class ComposeMail extends Component {
   constructor() {
     super();
     this.state = {

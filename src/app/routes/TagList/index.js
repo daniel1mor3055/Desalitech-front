@@ -1,32 +1,40 @@
-import React from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
-import IntlMessages from 'util/IntlMessages';
-import CircularIndeterminate from '../../components/Progress/CircularIndeterminate';
-import * as action from "../../../store/actions/tagsList";
-import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
-import {Auth0Context} from '../../../Auth0Provider';
-import Table from "../AlarmList/AlarmsTable";
+import React, {PureComponent} from 'react';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
 
-class TagList extends React.Component {
+import ContainerHeader from 'components/ContainerHeader';
+import IntlMessages from 'util/IntlMessages';
+import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
+import {fetchTags} from 'store/thunk/tagsList';
+import {Auth0Context} from 'Auth0Provider';
+import Table from 'app/components/Table';
+
+class TagList extends PureComponent {
     static contextType = Auth0Context;
 
     componentDidMount() {
-        const {getTokenSilently, getIdTokenClaims} = this.context;
         const systemId = "IL_OFFICE_TEST";
-        this.props.onFetchTags(getTokenSilently, getIdTokenClaims, systemId);
+        this.props.onFetchTags(systemId);
     }
 
     render() {
         const {match, tags, fetching, error} = this.props;
-        let tagsTable = <CircularIndeterminate/>;
+        let tagsList = <CircularIndeterminate/>;
 
         if (!error && !fetching && tags.length !== 0) {
-            tagsTable = <Table data={tags}/>;
+            tagsList =
+                <div className="col-12">
+                    <div className="jr-card">
+                        <div className="jr-card-header mb-3 d-flex">
+                            <h3 className="mb-0 mr-auto">Tags List</h3>
+                        </div>
+                        <Table data={tags}/>
+                    </div>
+                </div>;
         }
 
         if (error) {
-            tagsTable = <p>{"Coudn't fetch tags"}</p>;
+            tagsList = <p>{"Coudn't fetch tags"}</p>;
         }
 
 
@@ -34,38 +42,24 @@ class TagList extends React.Component {
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.tagListPage"/>}/>
                 <div className="d-flex justify-content-center">
-                    <div className="col-12">
-                        <div className="jr-card">
-                            <div className="jr-card-header mb-3 d-flex">
-                                <h3 className="mb-0 mr-auto">Tags List</h3>
-                            </div>
-                            <div className="col-12">
-                                <div className="jr-card">
-                                    <div className="jr-card-header mb-3 d-flex">
-                                        <h3 className="mb-0 mr-auto">Tags List</h3>
-                                    </div>
-                                    {tagsTable}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {tagsList}
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({tags}) => {
     return {
-        tags: state.tagsList.tags,
-        fetching: state.tagsList.fetching,
-        error: state.tagsList.error,
+        tags: tags.tags,
+        fetching: tags.fetching,
+        error: tags.error,
     };
 };
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchTags: (getTokenSilently, getIdTokenClaims, systemId) => dispatch(action.fetchTags(getTokenSilently, getIdTokenClaims, systemId))};
+    return {onFetchTags: (systemId) => dispatch(fetchTags(systemId))};
 };
 
-export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(TagList));
+export default connect(mapStateToProps, mapDispatchedToProps)(TagList);

@@ -1,29 +1,29 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {Switch, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Header from '../components/Header/index';
-import Sidebar from '../containers/SideNav/index';
-import Footer from '../components/Footer';
-import Tour from '../components/Tour/index';
+import {isIOS, isMobile} from 'react-device-detect';
+
+import Header from 'components/Header';
+import Sidebar from 'containers/SideNav/index';
+import Footer from 'components/Footer';
+import Tour from 'components/Tour';
 import {
   ABOVE_THE_HEADER,
   BELOW_THE_HEADER,
   COLLAPSED_DRAWER,
   FIXED_DRAWER,
   HORIZONTAL_NAVIGATION,
-} from '../store/actionTypes';
-import {isIOS, isMobile} from 'react-device-detect';
-import asyncComponent from '../util/asyncComponent';
-import TopNav from '../components/TopNav';
-import PrivateRoute from "../app/components/PrivateRoute";
+} from 'store/actionTypes';
+import asyncComponent from 'util/asyncComponent';
+import TopNav from 'components/TopNav';
+import PrivateRoute from 'app/components/PrivateRoute';
 
-class App extends React.Component {
+class App extends Component {
 
   render() {
     const {match, drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
 
-    //set default height and overflow for iOS mobile Safari 10+ support.
     if (isIOS && isMobile) {
       document.body.classList.add('ios-mobile-view-height')
     }
@@ -50,18 +50,18 @@ class App extends React.Component {
             <div className="app-main-content">
               <Switch>
                 <PrivateRoute path={`${match.url}/dashboard`}
-                         component={asyncComponent(() => import('./routes/Dashboard'))}/>
+                         component={asyncComponent(() => import('app/routes/Dashboard'))}/>
                 <PrivateRoute path={`${match.url}/alarm-list`}
-                       component={asyncComponent(() => import('./routes/AlarmList'))}/>
+                       component={asyncComponent(() => import('app/routes/AlarmList'))}/>
                 <PrivateRoute path={`${match.url}/tag-list`}
-                       component={asyncComponent(() => import('./routes/TagList'))}/>
+                       component={asyncComponent(() => import('app/routes/TagList'))}/>
                 <PrivateRoute path={`${match.url}/documentation`}
-                       component={asyncComponent(() => import('./routes/Documentation'))}/>
+                       component={asyncComponent(() => import('app/routes/Documentation'))}/>
                 <PrivateRoute path={`${match.url}/charts`}
-                       component={asyncComponent(() => import('./routes/Charts'))}/>
+                       component={asyncComponent(() => import('app/routes/Charts'))}/>
                 <PrivateRoute path={`${match.url}/reports`}
-                       component={asyncComponent(() => import('./routes/Reports'))}/>
-                <PrivateRoute component={asyncComponent(() => import('../components/Error404'))}/>
+                       component={asyncComponent(() => import('app/routes/Reports'))}/>
+                <PrivateRoute component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>
             </div>
             <Footer/>
@@ -77,4 +77,4 @@ const mapStateToProps = ({settings}) => {
   const {drawerType, navigationStyle, horizontalNavPosition} = settings;
   return {drawerType, navigationStyle, horizontalNavPosition}
 };
-export default withRouter(connect(mapStateToProps)(App));
+export default connect(mapStateToProps)(App);

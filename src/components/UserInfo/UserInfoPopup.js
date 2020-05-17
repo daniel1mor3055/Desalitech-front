@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IntlMessages from 'util/IntlMessages';
 
-class UserInfoPopup extends React.Component {
+class UserInfoPopup extends Component {
   render() {
     return (
       <div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import Menu from '@material-ui/core/Menu';
@@ -12,7 +12,7 @@ import ConversationCell from './ConversationCell';
 import CustomScrollbars from 'util/CustomScrollbars';
 
 
-class ToDoDetail extends React.Component {
+class ToDoDetail extends Component {
   handleLabelClick = event => {
     this.setState({labelMenu: true, anchorEl: event.currentTarget});
   };

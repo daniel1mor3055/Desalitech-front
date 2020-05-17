@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{Component} from 'react';
 
 import ToDoItem from "./ToDoItem/index";
 
-class SimpleToDo extends React.Component {
+class SimpleToDo extends Component {
 
   constructor(props) {
     super(props);

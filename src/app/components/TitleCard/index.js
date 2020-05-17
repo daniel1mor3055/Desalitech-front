@@ -1,9 +1,9 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle, CardText} from 'reactstrap';
 import Button from '@material-ui/core/Button';
+import {Card, CardBody, CardSubtitle, CardText} from 'reactstrap';
 
-const TitleCard = (props) => {
-    return (
+const TitleCard = (props) =>
+    (
         <Card className="shadow border-0" style={{textAlign: 'center'}}>
             <CardBody>
                 <h3 className="card-title">{props.tagName}</h3>
@@ -18,5 +18,5 @@ const TitleCard = (props) => {
             </div>
         </Card>
     );
-};
+
 export default TitleCard;

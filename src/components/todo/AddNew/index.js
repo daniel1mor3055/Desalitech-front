@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Moment from 'moment';
@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import AttachFile from '@material-ui/icons/AttachFile';
 import Delete from '@material-ui/icons/Delete';
 
-class AddNew extends React.Component {
+class AddNew extends Component {
   constructor() {
     super();
     this.state = {

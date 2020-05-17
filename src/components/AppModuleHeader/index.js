@@ -1,10 +1,10 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IconButton from '@material-ui/core/IconButton'
 import {Dropdown, DropdownMenu, DropdownToggle, Popover} from 'reactstrap';
 import SearchBox from 'components/SearchBox';
 
 
-class AppModuleHeader extends React.Component {
+class AppModuleHeader extends Component {
 
   onSearchBoxSelect = () => {
     this.setState({
