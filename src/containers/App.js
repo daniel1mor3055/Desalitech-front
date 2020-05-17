@@ -5,13 +5,14 @@ import {MuiPickersUtilsProvider} from 'material-ui-pickers';
 import {Redirect, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {IntlProvider} from 'react-intl';
-import "assets/vendors/style";
-import blueTheme from './themes/blueTheme'
-import AppLocale from '../lngProvider';
+
+import 'assets/vendors/style';
+import AppLocale from 'lngProvider';
 import RTL from 'util/RTL';
-import {Auth0Context} from '../Auth0Provider';
-import PrivateRoute from "../app/components/PrivateRoute";
-import asyncComponent from "../util/asyncComponent";
+import {Auth0Context} from 'Auth0Provider';
+import PrivateRoute from 'app/components/PrivateRoute';
+import asyncComponent from 'util/asyncComponent';
+import blueTheme from './themes/blueTheme';
 
 class App extends Component {
     static contextType = Auth0Context;
@@ -59,7 +60,6 @@ class App extends Component {
                         <RTL>
                             <div className="app-main">
                                 <Switch>
-                                   />
                                     <PrivateRoute path={`${match.url}app/system-select`}
                                                   component={asyncComponent(() => import('../app/routes/SystemSelect'))}/>
                                     <PrivateRoute path={`${match.url}app`}

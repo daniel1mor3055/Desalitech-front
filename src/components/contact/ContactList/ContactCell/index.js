@@ -1,11 +1,11 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import AddContact from '../../AddContact/index';
 
-class ContactCell extends React.Component {
+class ContactCell extends Component {
 
   onContactOptionSelect = event => {
     this.setState({menuState: true, anchorEl: event.currentTarget});

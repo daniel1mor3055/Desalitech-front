@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
+import {connect} from "react-redux";
+
+import {setToken} from './store/actions/auth';
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
     window.history.replaceState({}, document.title, window.location.pathname);
 
 export const Auth0Context = React.createContext();
 export const useAuth0 = () => useContext(Auth0Context);
-export const Auth0Provider = ({
-                                  children,
-                                  onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
-                                  ...initOptions
-                              }) => {
+const Auth0Provider = ({
+                           children,
+                           onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
+                           onSetToken,
+                           ...initOptions
+                       }) => {
     const [isAuthenticated, setIsAuthenticated] = useState();
     const [user, setUser] = useState();
     const [auth0Client, setAuth0] = useState();
@@ -24,7 +28,7 @@ export const Auth0Provider = ({
 
             if (window.location.search.includes("code=") &&
                 window.location.search.includes("state=")) {
-                const { appState } = await auth0FromHook.handleRedirectCallback();
+                const {appState} = await auth0FromHook.handleRedirectCallback();
                 onRedirectCallback(appState);
             }
 
@@ -35,6 +39,9 @@ export const Auth0Provider = ({
             if (isAuthenticated) {
                 const user = await auth0FromHook.getUser();
                 setUser(user);
+                const accessToken = await auth0FromHook.getTokenSilently();
+                const idToken = await auth0FromHook.getIdTokenClaims();
+                onSetToken(accessToken, idToken);
             }
 
             setLoading(false);
@@ -86,3 +93,10 @@ export const Auth0Provider = ({
         </Auth0Context.Provider>
     );
 };
+
+const mapDispatchedToProps = dispatch => {
+    return {onSetToken: (accessToken, idToken) => dispatch(setToken(accessToken, idToken))};
+};
+
+export default connect(null, mapDispatchedToProps)(Auth0Provider);
+

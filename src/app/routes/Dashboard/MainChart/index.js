@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from 'react';
 import {Line} from 'react-chartjs-2';
 
 class MainChart extends Component {
@@ -93,10 +93,6 @@ class MainChart extends Component {
                 }],
                 xAxes: [{
                     display: true,
-                    // ticks: {
-                    //     suggestedMax: 8000,
-                    //     beginAtZero: true
-                    // }
                 }]
 
             },

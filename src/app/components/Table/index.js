@@ -1,23 +1,24 @@
 import React from 'react';
-import TagsTableCell from './TagsTableCell';
+import PropTypes from 'prop-types';
+
+import TableRow from './TableRow';
 
 
-const TagsTable = ({data}) => {
+const Table = ({data}) => {
+    const columns = Object.keys(data[0]).map(elem => (<th scope="col">{elem}</th>));
+
     return (
         <div className="table-responsive-material">
             <table className="project-list-table table remove-table-border mb-0">
                 <thead>
                 <tr>
-                    <th scope="col">tagId</th>
-                    <th scope="col">tagName</th>
-                    <th scope="col">tagValue</th>
-                    {/*<th colSpan="2" scope="col">Status</th>*/}
+                    {columns}
                 </tr>
                 </thead>
                 <tbody>
-                {data.map(data => {
+                {data.map((cellData,index) => {
                     return (
-                        <TagsTableCell key={data.id} data={data}/>
+                        <TableRow key={index} cellData={cellData}/>
                     );
                 })}
                 </tbody>
@@ -27,4 +28,9 @@ const TagsTable = ({data}) => {
 
 };
 
-export default TagsTable;
+Table.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
+
+
+export default Table;

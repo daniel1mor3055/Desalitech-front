@@ -1,12 +1,14 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import PropTypes from 'prop-types';
+
 import IntlMessages from 'util/IntlMessages';
 
-class CardMenu extends React.Component {
+
+class CardMenu extends Component {
 
     render() {
-
         const options = [
             <IntlMessages id="popup.updateData"/>,
             <IntlMessages id="popup.detailedLog"/>,
@@ -37,5 +39,11 @@ class CardMenu extends React.Component {
     }
 
 }
+
+CardMenu.propTypes = {
+    menuState: PropTypes.bool.isRequired,
+    anchorEl: PropTypes.object,
+    handleRequestClose: PropTypes.func.isRequired,
+};
 
 export default CardMenu;

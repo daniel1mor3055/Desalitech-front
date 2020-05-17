@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
@@ -20,7 +20,7 @@ import {changeNavigationStyle, setDrawerType, setHorizontalMenuPosition} from 's
 
 import {Button, ButtonGroup} from 'reactstrap';
 
-class Customizer extends React.Component {
+class Customizer extends Component {
   setFixedDrawer = () => {
     this.props.setDrawerType(FIXED_DRAWER);
   };

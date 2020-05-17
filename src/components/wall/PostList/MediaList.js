@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {Modal, ModalBody, ModalHeader} from "reactstrap";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import React, {Component} from 'react';
+import {Modal, ModalBody, ModalHeader} from 'reactstrap';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
-import GreedImage from "./GridImage";
-import Auxiliary from "util/Auxiliary";
+import GreedImage from './GridImage';
+import Auxiliary from 'util/Auxiliary';
 
 class MediaList extends Component {
 

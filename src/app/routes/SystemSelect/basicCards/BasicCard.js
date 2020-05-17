@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardImg, CardSubtitle } from 'reactstrap';
 import classnames from 'classnames';
+
 import './BasicCard.scss';
 
 const BasicCard = ({ image, title, rec, prod, cond, status }) => {

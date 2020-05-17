@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -6,7 +6,7 @@ import IntlMessages from 'util/IntlMessages';
 import {Auth0Context} from "../../Auth0Provider";
 import config from '../../auth_config';
 
-class UserInfo extends React.Component {
+class UserInfo extends Component {
     static contextType = Auth0Context;
 
     state = {
@@ -14,11 +14,11 @@ class UserInfo extends React.Component {
         open: false,
     };
 
-    handleClick = event => {
+    openMenuHandler = event => {
         this.setState({open: true, anchorEl: event.currentTarget});
     };
 
-    handleRequestClose = () => {
+    closeMenuHandler = () => {
         this.setState({open: false});
     };
 
@@ -40,7 +40,7 @@ class UserInfo extends React.Component {
                     className="user-avatar "
                 />
                 <div className="user-detail">
-                    <h4 className="user-name" onClick={this.handleClick}>{nickname} <i
+                    <h4 className="user-name" onClick={this.openMenuHandler}>{nickname} <i
                         className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
                     </h4>
                 </div>
@@ -48,7 +48,7 @@ class UserInfo extends React.Component {
                       id="simple-menu"
                       anchorEl={this.state.anchorEl}
                       open={this.state.open}
-                      onClose={this.handleRequestClose}
+                      onClose={this.closeMenuHandler}
                       PaperProps={{
                           style: {
                               minWidth: 120,
@@ -56,11 +56,11 @@ class UserInfo extends React.Component {
                               paddingBottom: 0
                           }
                       }}>
-                    <MenuItem onClick={this.handleRequestClose}>
+                    <MenuItem onClick={this.closeMenuHandler}>
                         <i className="zmdi zmdi-account zmdi-hc-fw mr-2"/>
                         <IntlMessages id="popup.profile"/>
                     </MenuItem>
-                    <MenuItem onClick={this.handleRequestClose}>
+                    <MenuItem onClick={this.closeMenuHandler}>
                         <i className="zmdi zmdi-settings zmdi-hc-fw mr-2"/>
                         <IntlMessages id="popup.setting"/>
                     </MenuItem>

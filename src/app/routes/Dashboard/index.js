@@ -1,11 +1,13 @@
-import React from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
-import IntlMessages from 'util/IntlMessages';
-import TitleCard from "./TitleCard";
-import MainChart from "./MainChart";
-import Speedometer from "./Speedometer";
+import React,{Component} from 'react';
+import {withRouter} from 'react-router-dom';
 
-class Dashboard extends React.Component {
+import ContainerHeader from 'components/ContainerHeader';
+import IntlMessages from 'util/IntlMessages';
+import TitleCard from 'app/components/TitleCard';
+import MainChart from './MainChart';
+import Speedometer from './Speedometer';
+
+class Dashboard extends Component {
     render() {
         const {match} = this.props;
         return (

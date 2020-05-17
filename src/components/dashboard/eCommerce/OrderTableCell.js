@@ -1,10 +1,10 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 
 import CardMenu from '../Common/CardMenu'
 
-class OrderTableCell extends React.Component {
+class OrderTableCell extends Component {
 
   onOptionMenuSelect = event => {
     this.setState({menuState: true, anchorEl: event.currentTarget});

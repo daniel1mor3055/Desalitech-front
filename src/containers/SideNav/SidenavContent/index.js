@@ -2,15 +2,15 @@ import React, {Component} from 'react';
 import { withRouter} from 'react-router-dom';
 
 import CustomScrollbars from 'util/CustomScrollbars';
-import SidenavList from "../SidenavItems";
-import SidenavItem from "../SidenavItems/SidenavItem";
+import SidenavList from '../SidenavItems';
+import SidenavItem from '../SidenavItems/SidenavItem';
 
 
 class SidenavContent extends Component {
   componentDidMount() {
     const {history} = this.props;
     const that = this;
-    const pathname = `${history.location.pathname}`;// get current path
+    const pathname = `${history.location.pathname}`;
 
     const menuLi = document.getElementsByClassName('menu');
     for (let i = 0; i < menuLi.length; i++) {
@@ -42,9 +42,9 @@ class SidenavContent extends Component {
       }
     }
 
-    const activeLi = document.querySelector('a[href="' + pathname + '"]');// select current a element
+    const activeLi = document.querySelector('a[href="' + pathname + '"]');
     try {
-      const activeNav = this.closest(activeLi, 'ul'); // select closest ul
+      const activeNav = this.closest(activeLi, 'ul');
       if (activeNav.classList.contains('sub-menu')) {
         this.closest(activeNav, 'li').classList.add('open');
       } else {
@@ -58,11 +58,11 @@ class SidenavContent extends Component {
   componentWillReceiveProps(nextProps) {
 
     const {history} = nextProps;
-    const pathname = `${history.location.pathname}`;// get current path
+    const pathname = `${history.location.pathname}`;
 
-    const activeLi = document.querySelector('a[href="' + pathname + '"]');// select current a element
+    const activeLi = document.querySelector('a[href="' + pathname + '"]');
     try {
-      const activeNav = this.closest(activeLi, 'ul'); // select closest ul
+      const activeNav = this.closest(activeLi, 'ul');
       if (activeNav.classList.contains('sub-menu')) {
         this.closest(activeNav, 'li').classList.add('open');
       } else {
@@ -76,7 +76,6 @@ class SidenavContent extends Component {
   closest(el, selector) {
     try {
       let matchesFn;
-      // find vendor prefix
       ['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector'].some(function (fn) {
         if (typeof document.body[fn] === 'function') {
           matchesFn = fn;
@@ -87,7 +86,6 @@ class SidenavContent extends Component {
 
       let parent;
 
-      // traverse parents
       while (el) {
         parent = el.parentElement;
         if (parent && parent[matchesFn](selector)) {

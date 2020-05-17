@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const growthData = [
     {name: 'Page A', tag2: 1200},

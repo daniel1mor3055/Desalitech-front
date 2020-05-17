@@ -1,9 +1,9 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import CardMenu from 'components/dashboard/Common/CardMenu';
 
-class TimerView extends React.Component {
+class TimerView extends Component {
 
   onOptionMenuSelect = event => {
     this.setState({menuState: true, anchorEl: event.currentTarget});

@@ -1,8 +1,10 @@
-import React from 'react';
-import ContainerHeader from 'components/ContainerHeader/index';
-import IntlMessages from 'util/IntlMessages';
+import React,{Component} from 'react';
+import {withRouter} from 'react-router-dom';
 
-class Reports extends React.Component {
+import IntlMessages from 'util/IntlMessages';
+import ContainerHeader from 'components/ContainerHeader';
+
+class Reports extends Component {
 
     render() {
         const {match} = this.props;

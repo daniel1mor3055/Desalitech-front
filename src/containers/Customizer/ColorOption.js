@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Drawer from '@material-ui/core/Drawer';
 import Switch from '@material-ui/core/Switch';
 import IconButton from '@material-ui/core/IconButton';
@@ -26,7 +26,7 @@ import {
   PINK
 } from 'constants/ThemeColors';
 
-class ColorOption extends React.Component {
+class ColorOption extends Component {
 
   toggleCustomizer = () => {
     this.setState({drawerStatus: !this.state.drawerStatus});

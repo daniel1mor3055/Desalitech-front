@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Component} from "react";
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Widget from "components/Widget/index";
@@ -6,7 +6,7 @@ import {aboutList} from '../../../app/routes/socialApps/routes/Profile/data'
 import AboutItem from "./AboutItem";
 
 
-class About extends React.Component {
+class About extends Component {
 
   state = {
     aboutList,

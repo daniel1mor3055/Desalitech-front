@@ -1,8 +1,8 @@
-import React from 'react';
+import React,{Component} from 'react';
 import IconButton from '@material-ui/core/IconButton'
 import CardMenu from '../CardMenu';
 
-class CardHeader extends React.Component {
+class CardHeader extends Component {
 
 
   onOptionMenuSelect = event => {

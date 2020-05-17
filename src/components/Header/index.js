@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {Link,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
@@ -23,7 +23,7 @@ import LanguageSwitcher from 'components/LanguageSwitcher/index';
 import Menu from 'components/TopNav/Menu';
 import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
 
-class Header extends React.Component {
+class Header extends Component {
 
   onAppNotificationSelect = () => {
     this.setState({
