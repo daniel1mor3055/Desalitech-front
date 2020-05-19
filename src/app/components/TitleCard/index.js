@@ -9,7 +9,7 @@ const TitleCard = (props) =>
                 <h3 className="card-title">{props.tagName}</h3>
                 <CardSubtitle>{props.tagValue}</CardSubtitle>
                 <CardText>
-                    {props.tagDescription}
+                    {props.description}
                 </CardText>
             </CardBody>
 

@@ -14,13 +14,13 @@ import Table from "app/components/Table";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
 import SearchBox from "components/SearchBox";
-import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms'
+import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms';
 import {fetchSystems} from "store/thunk/systemSelect";
 
 class SystemsAndLiveAlarms extends React.Component {
     state = {
         searchText: ''
-    }
+    };
 
     componentDidMount() {
         this.props.onFetchSystems();
@@ -33,22 +33,26 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilterData(systems) {
-        let filteredSystems = systems.filter(system => system.SystemID.includes(this.state.searchText))
-        const badSearch = !filteredSystems.length
-        filteredSystems = badSearch ? systems : filteredSystems
-        return [filteredSystems, badSearch]
+        let filteredSystems = systems.filter(system => {
+            const {sysId} = system;
+            return sysId.includes(this.state.searchText);
+        });
+        const badSearch = !filteredSystems.length;
+        filteredSystems = badSearch ? systems : filteredSystems;
+        return [filteredSystems, badSearch];
     }
 
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, onSystemSelection} = this.props;
+            history, onSystemSelection
+        } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
         } else if (document.body.classList.contains('ios-mobile-view-height')) {
             document.body.classList.remove('ios-mobile-view-height');
         }
-        let badSearch = false
+        let badSearch = false;
         let systemsCards = <CircularIndeterminate/>;
         let systemsTable = <CircularIndeterminate/>;
 
@@ -56,25 +60,28 @@ class SystemsAndLiveAlarms extends React.Component {
             systemsCards =
                 <div className="d-sm-inline-block">
                     <div className='d-flex'>
-                        {systems.map(system => (
-                            <BasicCard
-                                key={system}
-                                image={require('./assets/large_no_background_top.svg')}
-                                title={system.SystemID}
-                                recovery={system.Recovery + '%'}
-                                production={system.Production + ' gpm'}
-                                conductivity={system.Conductivity + ' us/cm'}
-                                systemStatus={system.status}
-                                onClick={() => {
-                                    onSystemSelection(system.SystemID)
-                                    history.push("/app/dashboard")
-                                }}
-                            />
-                        ))}
+                        {systems.map(system => {
+                            const {sysId, recovery, production, conductivity, status} = system;
+                            return (
+                                <BasicCard
+                                    key={system}
+                                    image={require('./assets/large_no_background_top.svg')}
+                                    title={sysId}
+                                    recovery={recovery + '%'}
+                                    production={production + ' gpm'}
+                                    conductivity={conductivity + ' us/cm'}
+                                    systemStatus={status}
+                                    onClick={() => {
+                                        onSystemSelection(sysId);
+                                        history.push("/app/dashboard");
+                                    }}
+                                />
+                            );
+                        })}
                     </div>
-                </div>
-            const filteredData = this.getFilterData(systems)
-            badSearch = filteredData[1]
+                </div>;
+            const filteredData = this.getFilterData(systems);
+            badSearch = filteredData[1];
             systemsTable =
                 <div className="d-sm-inline-block">
                     <SearchBox styleName="d-none d-lg-block"
@@ -86,14 +93,14 @@ class SystemsAndLiveAlarms extends React.Component {
                             <div className="jr-card">
                                 <Table data={filteredData[0]}
                                        clickable={true}
-                                       clickFunction={(SystemID) => {
-                                           onSystemSelection(SystemID)
-                                           history.push("/app/dashboard")
+                                       clickFunction={(sysId) => {
+                                           onSystemSelection(sysId);
+                                           history.push("/app/dashboard");
                                        }}/>
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>;
         }
 
         if (error) {
@@ -101,9 +108,9 @@ class SystemsAndLiveAlarms extends React.Component {
             systemsTable = <p>{"Couldn't fetch systems"}</p>;
         }
 
-        const alarmsJSX = 'Live Alarms'
+        const alarmsJSX = 'Live Alarms';
         const systemsJSX = admin ?
-            <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards
+            <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
         return (
             <div className={`app-container collapsible-drawer`}>
@@ -131,7 +138,7 @@ class SystemsAndLiveAlarms extends React.Component {
 }
 
 
-const mapStateToProps = ({settings,systems,admin}) => {
+const mapStateToProps = ({settings, systems, admin}) => {
     return {
         navigationStyle: settings.navigationStyle,
         horizontalNavPosition: settings.horizontalNavPosition,

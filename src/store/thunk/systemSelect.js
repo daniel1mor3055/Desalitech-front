@@ -6,10 +6,8 @@ export const fetchSystems = () => (
     async (dispatch) => {
         dispatch(fetchSystemsStart());
         try {
-            const response = await fetchSystemsApi();
-            const { data } = response
-            const { admin, systems} = data
-            dispatch(setAdminStatus(admin))
+            const {admin, systems} = await fetchSystemsApi();
+            dispatch(setAdminStatus(admin));
             dispatch(fetchSystemsSuccess(systems));
         } catch (err) {
             dispatch(fetchSystemsFail(err));
