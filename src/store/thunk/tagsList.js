@@ -1,19 +1,33 @@
-import {fetchTagsApi} from 'api/tagsList';
-import {fetchTagsFail, fetchTagsStart, fetchTagsSuccess} from '../actions/tagsList';
+import {fetchTagsApi, postTagApi} from 'api/tagsList';
+import {
+    fetchTagsFail,
+    fetchTagsStart,
+    fetchTagsSuccess,
+    postTagFail,
+    postTagStart,
+    postTagSuccess
+} from '../actions/tagsList';
 
 
 export const fetchTags = (systemId) => (
     async (dispatch) => {
         dispatch(fetchTagsStart());
         try {
-            const response = await fetchTagsApi(systemId);
-
-            let tags = response.data.tags;
-            if (tags.length > 15) {
-                tags = tags.slice(0, 15);
-            }
+            const {tags} = await fetchTagsApi(systemId);
             dispatch(fetchTagsSuccess(tags));
         } catch (err) {
             dispatch(fetchTagsFail(err));
         }
     });
+
+export const postTag = (systemId, tagData) => (
+    async (dispatch) => {
+        dispatch(postTagStart());
+        try {
+            const response = await postTagApi(systemId,tagData);
+            dispatch(postTagSuccess(response,tagData));
+        } catch (err) {
+            dispatch(postTagFail(err));
+        }
+    });
+

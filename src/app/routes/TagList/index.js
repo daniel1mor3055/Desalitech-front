@@ -1,49 +1,103 @@
-import React, {PureComponent} from 'react';
-import {withRouter} from 'react-router-dom';
+import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
-import {fetchTags} from 'store/thunk/tagsList';
-import {Auth0Context} from 'Auth0Provider';
-import Table from 'app/components/Table';
+import {fetchTags, postTag} from 'store/thunk/tagsList';
+import CardBox from 'components/CardBox';
+import SearchBox from 'components/SearchBox';
+import DataTable from 'app/components/DataTable';
+import EditTagForm from "./EditTagForm";
 
-class TagList extends PureComponent {
-    static contextType = Auth0Context;
+class TagList extends Component {
+    state = {
+        tagId: null,
+        tagName: null,
+        description: null,
+        units: null,
+        openEditModal: false,
+        searchText: '',
+    };
 
     componentDidMount() {
         const {selectedSystem} = this.props;
         this.props.onFetchTags(selectedSystem);
     }
 
+    handleEditClick = (event, tagObject) => {
+        event.preventDefault();
+        this.setState({
+            openEditModal: true,
+            ...tagObject,
+        });
+    };
+
+    handleClose = () => {
+        this.setState({openEditModal: false});
+    };
+
+    handleSubmit = (values) => {
+        const {selectedSystem} = this.props;
+        this.props.onPostTag(selectedSystem, values);
+    };
+
+    updateSearchText(event) {
+        this.setState({
+            searchText: event.target.value,
+        });
+    }
+
+    getFilterData(tags) {
+        let filteredTags = tags.filter(tag => {
+            const {tagId} = tag;
+            return tagId.includes(this.state.searchText);
+        });
+        const badSearch = !filteredTags.length;
+        filteredTags = badSearch ? tags : filteredTags;
+        return {filteredTags, badSearch};
+    }
+
     render() {
+        const {openEditModal, tagId, tagName, description, units, searchText} = this.state;
         const {match, tags, fetching, error} = this.props;
-        let tagsList = <CircularIndeterminate/>;
+        const columnsIds = ['tagId', 'tagName', 'description', 'units'];
+        const columnsLabels = ['Tag ID', 'Tag Name', 'Description', 'Units'];
+        const {filteredTags, badSearch} = this.getFilterData(tags);
 
-        if (!error && !fetching && tags.length !== 0) {
-            tagsList =
-                <div className="col-12">
-                    <div className="jr-card">
-                        <div className="jr-card-header mb-3 d-flex">
-                            <h3 className="mb-0 mr-auto">Tags List</h3>
-                        </div>
-                        <Table data={tags}/>
-                    </div>
-                </div>;
-        }
-
-        if (error) {
-            tagsList = <p>{"Coudn't fetch tags"}</p>;
-        }
-
+        const tagsList =
+            <div className="row animated slideInUpTiny animation-duration-3">
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by Tag ID"
+                           onChange={(event) => this.updateSearchText(event)}
+                           value={searchText} badSearch={badSearch}/>
+                <CardBox styleName="col-12" cardStyle=" p-0">
+                    <DataTable data={filteredTags}
+                               columnsIds={columnsIds}
+                               columnsLabels={columnsLabels}
+                               initialOrderBy={'tagId'}
+                               cellIdentifier={'tagId'}
+                               actions={['Edit']}
+                               handleEditClick={this.handleEditClick}/>
+                </CardBox>
+                {openEditModal ?
+                    <EditTagForm
+                        open={openEditModal}
+                        handleClose={this.handleClose}
+                        handleSubmit={this.handleSubmit}
+                        tagId={tagId}
+                        tagName={tagName}
+                        description={description}
+                        units={units}/>
+                    : null}
+            </div>;
 
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.tagListPage"/>}/>
-                <div className="d-flex justify-content-center">
-                    {tagsList}
-                </div>
+                {fetching ?
+                    error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
+                    : tagsList}
             </div>
         );
     }
@@ -60,7 +114,10 @@ const mapStateToProps = ({tags, systems}) => {
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchTags: (systemId) => dispatch(fetchTags(systemId))};
+    return {
+        onFetchTags: (systemId) => dispatch(fetchTags(systemId)),
+        onPostTag: (systemId, tagData) => dispatch(postTag(systemId, tagData))
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchedToProps)(TagList);
