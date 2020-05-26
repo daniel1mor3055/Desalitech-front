@@ -7,13 +7,15 @@ import {
     postTagStart,
     postTagSuccess
 } from '../actions/tagsList';
+import {setAdminStatus} from "../actions/admin";
 
 
 export const fetchTags = (systemId) => (
     async (dispatch) => {
         dispatch(fetchTagsStart());
         try {
-            const {tags} = await fetchTagsApi(systemId);
+            const {tags,admin} = await fetchTagsApi(systemId);
+            dispatch(setAdminStatus(admin));
             dispatch(fetchTagsSuccess(tags));
         } catch (err) {
             dispatch(fetchTagsFail(err));

@@ -16,7 +16,7 @@ import {
 import SearchBox from 'components/SearchBox';
 import MailNotification from '../MailNotification/index';
 import AppNotification from '../AppNotification/index';
-import CardHeader from 'components/dashboard/Common/CardHeader/index';
+import CardHeader from 'app/components/CardHeader';
 import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
 import IntlMessages from 'util/IntlMessages';
 import LanguageSwitcher from 'components/LanguageSwitcher/index';
