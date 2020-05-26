@@ -8,13 +8,15 @@ import {
     postTagSuccess
 } from '../actions/tagsList';
 import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from 'app/components/Notifications';
+import {setAdminStatus} from "../actions/admin";
 
 
 export const fetchTags = (systemId) => (
     async (dispatch) => {
         dispatch(fetchTagsStart());
         try {
-            const {tags} = await fetchTagsApi(systemId);
+            const {tags,admin} = await fetchTagsApi(systemId);
+            dispatch(setAdminStatus(admin));
             dispatch(fetchTagsSuccess(tags));
         } catch (err) {
             dispatch(fetchTagsFail(err));
