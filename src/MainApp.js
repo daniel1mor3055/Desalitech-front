@@ -8,6 +8,7 @@ import App from './containers/App';
 import config from './auth_config';
 import Auth0Provider from './Auth0Provider';
 import asyncComponent from 'util/asyncComponent';
+import {NotificationContainer} from "react-notifications";
 
 export const store = configureStore();
 
@@ -36,6 +37,7 @@ class MainApp extends Component {
                             component={asyncComponent(() => import('components/Error404'))}/>
                     </Switch>
                 </Auth0Provider>
+                <NotificationContainer/>
             </ConnectedRouter>
         </Provider>);
     }
