@@ -9,6 +9,7 @@ import CardBox from 'components/CardBox';
 import SearchBox from 'components/SearchBox';
 import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
+import {NotificationContainer} from "react-notifications";
 
 class TagList extends Component {
     state = {
