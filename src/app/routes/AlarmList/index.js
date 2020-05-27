@@ -19,8 +19,8 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchAlarms(selectedSystem);
+        const {selectedSystemId} = this.props;
+        this.props.onFetchAlarms(selectedSystemId);
     }
 
     updateSearchText(event) {
@@ -41,8 +41,8 @@ class AlarmList extends PureComponent {
 
     handleNotificationChange = (event, checked) => {
         event.preventDefault();
-        const {selectedSystem} = this.props;
-        this.props.onSetEmailNotification(selectedSystem, checked);
+        const {selectedSystemId} = this.props;
+        this.props.onSetEmailNotification(selectedSystemId, checked);
     };
 
 
@@ -78,7 +78,7 @@ class AlarmList extends PureComponent {
                                    columnsIds={columnsIds}
                                    columnsLabels={columnsLabels}
                                    initialOrderBy={'alarmId'}
-                                   cellIdentifier={'alarmId'}/>
+                                   cellIdentifier={'id'}/>
                     </div>
                 </div>
             </div>;
@@ -100,7 +100,7 @@ const mapStateToProps = ({alarms, systems}) => {
         emailNotification: alarms.emailNotification,
         fetching: alarms.fetching,
         error: alarms.error,
-        selectedSystem: systems.selectedSystem,
+        selectedSystemId: systems.selectedSystemId,
     };
 };
 

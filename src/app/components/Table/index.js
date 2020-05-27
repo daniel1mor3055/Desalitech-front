@@ -19,7 +19,7 @@ const Table = ({data, clickFunction,clickable}) => {
                 {data.map((cellData,index) => {
                     return (
                         <TableRow key={index} cellData={cellData}
-                                   onClick={clickable ? ()=>clickFunction(cellData.SystemID): null}/>
+                                   onClick={clickable ? ()=>clickFunction(cellData): null}/>
                     );
                 })}
                 </tbody>
