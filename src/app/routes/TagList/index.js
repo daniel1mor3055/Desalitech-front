@@ -21,8 +21,8 @@ class TagList extends Component {
     };
 
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchTags(selectedSystem);
+        const {selectedSystemId} = this.props;
+        this.props.onFetchTags(selectedSystemId);
     }
 
     handleEditClick = (event, tagObject) => {
@@ -38,8 +38,8 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {selectedSystem} = this.props;
-        this.props.onPostTag(selectedSystem, values);
+        const {selectedSystemId} = this.props;
+        this.props.onPostTag(selectedSystemId, values);
     };
 
     updateSearchText(event) {
@@ -108,7 +108,7 @@ const mapStateToProps = ({tags, systems}) => {
         tags: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
-        selectedSystem: systems.selectedSystem
+        selectedSystemId: systems.selectedSystemId
     };
 };
 

@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {isIOS, isMobile} from 'react-device-detect';
 
-import Header from 'components/Header';
+import Header from 'app/components/Header';
 import Footer from 'components/Footer';
 import Tour from 'components/Tour/index';
 import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/actionTypes';
@@ -72,7 +72,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                     conductivity={conductivity + ' us/cm'}
                                     systemStatus={status}
                                     onClick={() => {
-                                        onSystemSelection(sysId);
+                                        onSystemSelection(system);
                                         history.push("/app/dashboard");
                                     }}
                                 />
@@ -93,8 +93,8 @@ class SystemsAndLiveAlarms extends React.Component {
                             <div className="jr-card">
                                 <Table data={filteredData[0]}
                                        clickable={true}
-                                       clickFunction={(sysId) => {
-                                           onSystemSelection(sysId);
+                                       clickFunction={(system) => {
+                                           onSystemSelection(system);
                                            history.push("/app/dashboard");
                                        }}/>
                             </div>
@@ -153,7 +153,7 @@ const mapStateToProps = ({settings, systems, admin}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onFetchSystems: () => dispatch(fetchSystems()),
-        onSystemSelection: (selectedSystem) => dispatch(uponSystemSelection(selectedSystem))
+        onSystemSelection: (selectedSystemId) => dispatch(uponSystemSelection(selectedSystemId))
     };
 };
 

@@ -16,8 +16,8 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchAlarms(selectedSystem);
+        const {selectedSystemId} = this.props;
+        this.props.onFetchAlarms(selectedSystemId);
     }
 
     updateSearchText(event) {
@@ -54,7 +54,7 @@ class AlarmList extends PureComponent {
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
                                initialOrderBy={'alarmId'}
-                               cellIdentifier={'alarmId'}/>
+                               cellIdentifier={'id'}/>
                 </CardBox>
             </div>;
 
@@ -74,7 +74,7 @@ const mapStateToProps = ({alarms, systems}) => {
         alarms: alarms.alarms,
         fetching: alarms.fetching,
         error: alarms.error,
-        selectedSystem: systems.selectedSystem
+        selectedSystemId: systems.selectedSystemId
     };
 };
 

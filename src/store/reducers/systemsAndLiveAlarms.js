@@ -10,7 +10,8 @@ const initialState = {
     systems: [],
     fetching: false,
     error: null,
-    selectedSystem: localStorage.getItem('selectedSystem')
+    selectedSystemId: localStorage.getItem('selectedSystemId'),
+    selectedSystemName: localStorage.getItem('selectedSystemName'),
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,14 +23,19 @@ const reducer = (state = initialState, action) => {
         case FETCH_SYSTEMS_FAIL:
             return fetchSystemsFail(state, action);
         case UPON_SYSTEM_SELECTION:
-            return {
-                ...state,
-                selectedSystem: action.payload.selectedSystem
-            };
+            return uponSystemSelection(state, action);
         default:
             return state;
     }
 };
+
+function uponSystemSelection(state, action) {
+    return {
+        ...state,
+        selectedSystemId: action.payload.selectedSystem.sysId,
+        selectedSystemName: action.payload.selectedSystem.systemName,
+    };
+}
 
 function fetchSystemsStart(state, action) {
     return {
