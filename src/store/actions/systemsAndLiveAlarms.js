@@ -7,11 +7,16 @@ import {
 
 
 export const uponSystemSelection = (selectedSystem) => {
-    localStorage.setItem('selectedSystem', selectedSystem);
+    const {sysId, systemName} = selectedSystem;
+    localStorage.setItem('selectedSystemId', sysId);
+    localStorage.setItem('selectedSystemName', systemName);
     return {
         type: UPON_SYSTEM_SELECTION,
         payload: {
-            selectedSystem: selectedSystem
+            selectedSystem: {
+                sysId,
+                systemName,
+            }
         }
     };
 };

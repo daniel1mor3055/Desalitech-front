@@ -1,9 +1,9 @@
-import React,{Component} from 'react';
-import {Switch, withRouter} from 'react-router-dom';
+import React, {Component} from 'react';
+import {Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {isIOS, isMobile} from 'react-device-detect';
 
-import Header from 'components/Header';
+import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
 import Footer from 'components/Footer';
 import Tour from 'components/Tour';
