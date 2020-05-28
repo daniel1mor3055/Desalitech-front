@@ -60,7 +60,7 @@ class SystemsAndLiveAlarms extends React.Component {
                 systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
                 onClickFunction: () => {
                     onSystemSelection(filteredSystems[i].sysId);
-                    history.push("/app/dashboard");
+                    history.push(`/app/dashboard?sysId=${filteredSystems[i].sysId}`);
                 }
             };
         }
@@ -105,7 +105,7 @@ class SystemsAndLiveAlarms extends React.Component {
                 ...activeAlarms[i],
                 onClickFunction: () => {
                     onSystemSelection(activeAlarms[i].sysId);
-                    history.push("/app/alarm-list");
+                    history.push(`/app/alarm-list?sysId=${activeAlarms[i].sysId}`);
                 }
             };
         }
@@ -144,7 +144,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                     systemStatusBorder={systemsStatusBorders[sysId]}
                                     onClick={() => {
                                         onSystemSelection(sysId);
-                                        history.push("/app/dashboard");
+                                        history.push(`/app/dashboard?sysId=${sysId}`);
                                     }}
                                 />
                             );
