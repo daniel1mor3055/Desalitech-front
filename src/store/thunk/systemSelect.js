@@ -1,6 +1,7 @@
 import {fetchSystemsApi} from 'api/systemSelect';
 import {fetchSystemsFail, fetchSystemsStart, fetchSystemsSuccess} from '../actions/systemsAndLiveAlarms';
 import {setAdminStatus} from "../actions/admin";
+import {fetchPollingApi} from "../../api/polling";
 
 export const fetchSystems = () => (
     async (dispatch) => {

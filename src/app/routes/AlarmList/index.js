@@ -16,8 +16,8 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchAlarms(selectedSystem);
+        const {selectedSystem, onFetchAlarms} = this.props;
+        onFetchAlarms(selectedSystem);
     }
 
     updateSearchText(event) {
@@ -28,8 +28,9 @@ class AlarmList extends PureComponent {
 
     getFilterData(alarms) {
         let filteredAlarms = alarms.filter(alarm => {
-            const {alarmId} = alarm;
-            return alarmId.includes(this.state.searchText);
+            const {alarmId, description} = alarm;
+            return alarmId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+                description.toLowerCase().includes(this.state.searchText.toLowerCase());
         });
         const badSearch = !filteredAlarms.length;
         filteredAlarms = badSearch ? alarms : filteredAlarms;
@@ -46,7 +47,7 @@ class AlarmList extends PureComponent {
         const alarmsList =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Alarm ID"
+                           placeholder="Filter by Alarm ID or by Alarm Description"
                            onChange={(event) => this.updateSearchText(event)}
                            value={searchText} badSearch={badSearch}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">
@@ -54,7 +55,7 @@ class AlarmList extends PureComponent {
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
                                initialOrderBy={'alarmId'}
-                               cellIdentifier={'alarmId'}/>
+                               cellIdentifier={'id'}/>
                 </CardBox>
             </div>;
 

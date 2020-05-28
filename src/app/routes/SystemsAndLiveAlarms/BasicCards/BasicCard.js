@@ -10,12 +10,12 @@ const BasicCard = ({image, title, recovery, production, conductivity, systemStat
     let statusString = null;
     let statusClass = null;
     let indicatorColor = null;
-    if (systemStatus === 'online') {
+    if (systemStatus === 1) {
         statusString = 'Online';
         statusClass = 'GreenBorder';
         indicatorColor = 'green';
     }
-    if (systemStatus === 'offline') {
+    if (systemStatus === 2) {
         statusString = 'Offline';
         statusClass = 'RedBorder';
         indicatorColor = 'red';

@@ -50,8 +50,9 @@ class TagList extends Component {
 
     getFilterData(tags) {
         let filteredTags = tags.filter(tag => {
-            const {tagId} = tag;
-            return tagId.includes(this.state.searchText);
+            const {tagId, tagName} = tag;
+            return tagId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+                tagName.toLowerCase().includes(this.state.searchText.toLowerCase());
         });
         const badSearch = !filteredTags.length;
         filteredTags = badSearch ? tags : filteredTags;
@@ -68,7 +69,7 @@ class TagList extends Component {
         const tagsList =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Tag ID"
+                           placeholder="Filter by Tag ID or by Tag Name"
                            onChange={(event) => this.updateSearchText(event)}
                            value={searchText} badSearch={badSearch}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">

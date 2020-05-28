@@ -16,6 +16,7 @@ import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemView
 import SearchBox from "components/SearchBox";
 import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms';
 import {fetchSystems} from "store/thunk/systemSelect";
+import {fetchPolling} from "store/thunk/polling";
 
 class SystemsAndLiveAlarms extends React.Component {
     state = {
@@ -24,6 +25,7 @@ class SystemsAndLiveAlarms extends React.Component {
 
     componentDidMount() {
         this.props.onFetchSystems();
+        this.props.onFetchPolling();
     }
 
     updateSearchText(evt) {
@@ -34,8 +36,9 @@ class SystemsAndLiveAlarms extends React.Component {
 
     getFilterData(systems) {
         let filteredSystems = systems.filter(system => {
-            const {sysId} = system;
-            return sysId.includes(this.state.searchText);
+            const {sysId, systemName} = system;
+            const lowerCaseSearchText = this.state.searchText.toLowerCase()
+            return sysId.toLowerCase().includes(lowerCaseSearchText) || systemName.toLowerCase().includes(lowerCaseSearchText);
         });
         const badSearch = !filteredSystems.length;
         filteredSystems = badSearch ? systems : filteredSystems;
@@ -45,7 +48,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, onSystemSelection
+            history, onSystemSelection, systemsStatus,
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -61,16 +64,22 @@ class SystemsAndLiveAlarms extends React.Component {
                 <div className="d-sm-inline-block">
                     <div className='d-flex'>
                         {systems.map(system => {
-                            const {sysId, recovery, production, conductivity, status} = system;
+                            const {sysId, recovery, production, conductivity, systemName} = system;
+                            let systemStatus = null;
+                            systemsStatus.filter((sysStatus) => {
+                                if (sysStatus.sysId === sysId){
+                                    systemStatus = sysStatus.status
+                                }
+                            })
                             return (
                                 <BasicCard
-                                    key={system}
+                                    key={sysId}
                                     image={require('./assets/large_no_background_top.svg')}
-                                    title={sysId}
+                                    title={systemName}
                                     recovery={recovery + '%'}
                                     production={production + ' gpm'}
                                     conductivity={conductivity + ' us/cm'}
-                                    systemStatus={status}
+                                    systemStatus={systemStatus}
                                     onClick={() => {
                                         onSystemSelection(sysId);
                                         history.push("/app/dashboard");
@@ -138,14 +147,18 @@ class SystemsAndLiveAlarms extends React.Component {
 }
 
 
-const mapStateToProps = ({settings, systems, admin}) => {
+const mapStateToProps = ({settings, systems, admin, poll}) => {
     return {
         navigationStyle: settings.navigationStyle,
         horizontalNavPosition: settings.horizontalNavPosition,
         systems: systems.systems,
         fetching: systems.fetching,
         error: systems.error,
-        admin: admin.admin
+        admin: admin.admin,
+        activeAlarms: poll.activeAlarms,
+        systemsStatus: poll.systemsStatus,
+
+
     };
 };
 
@@ -153,6 +166,7 @@ const mapStateToProps = ({settings, systems, admin}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onFetchSystems: () => dispatch(fetchSystems()),
+        onFetchPolling: () => dispatch(fetchPolling()),
         onSystemSelection: (selectedSystem) => dispatch(uponSystemSelection(selectedSystem))
     };
 };
