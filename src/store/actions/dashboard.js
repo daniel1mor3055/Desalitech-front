@@ -7,6 +7,7 @@ import {
     TIME_SERIES_CHANGE_SUCCESS,
 } from '../actionTypes/dashboard';
 
+
 export const fetchDashboardStart = () => (
     {
         type: FETCH_DASHBOARD_START,
@@ -56,3 +57,4 @@ export const timeSeriesChangeFail = (error) => (
             error
         }
     });
+

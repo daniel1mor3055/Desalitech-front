@@ -10,6 +10,7 @@ const MIDDLE_GAUGE = 'MiddleGauge';
 const RIGHT_GAUGE = 'RightGauge';
 const LEFT_GAUGE = 'LeftGauge';
 const SEEQ = 'Seeq';
+
 const DATE_FORMAT = 'DD-MM HH:mm';
 
 export const fetchDashboardApi = async () => {
@@ -26,6 +27,7 @@ export const fetchDashboardApi = async () => {
         throw err;
     }
 };
+
 
 export const timeSeriesChangeApi = async (timeSeries) => {
     const sysId = extractSystemId();
@@ -69,6 +71,7 @@ function manipulateTimeSeries(timeSeries, sysId) {
         endDate: endDate.utc().format('X'),
     };
 }
+
 
 function getWidgetsByType(widgets) {
     let triggers = [];
@@ -205,6 +208,7 @@ function extractTimeSeries(widget) {
             tagTimeValues: [],
         };
     }).filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
+
 
     const times = [];
     for (let i = 0; i < influxData.length; i++) {

@@ -7,6 +7,7 @@ import {
     TIME_SERIES_CHANGE_FAIL,
 } from '../actionTypes/dashboard';
 
+
 const initialState = {
     triggers: [],
     tags: [],
@@ -39,7 +40,6 @@ const reducer = (state = initialState, action) => {
             return state;
     }
 };
-
 
 function timeSeriesChangeSuccess(state, action) {
     const newTimeSeries = state.timeSeries.map((timeSeries) => {

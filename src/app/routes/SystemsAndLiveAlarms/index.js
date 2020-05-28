@@ -23,7 +23,11 @@ class SystemsAndLiveAlarms extends React.Component {
         super(props);
 
         this.state = {
-            searchText: ''
+            systemIdSearchText: '',
+            systemNameSearchText: '',
+            activeAlarmSystemIdSearchText: '',
+            activeAlarmIdSearchText: '',
+            activeAlarmDescriptionSearchText: '',
         };
     }
 
@@ -36,17 +40,46 @@ class SystemsAndLiveAlarms extends React.Component {
                 this.props.onFetchPolling();
             },
             30000);
-        this.setState({dataPolling})
+        this.setState({dataPolling});
     }
 
     componentWillUnmount() {
         clearInterval(this.state.dataPolling);
     }
 
-    updateSearchText(evt) {
-        this.setState({
-            searchText: evt.target.value,
-        });
+    updateSearchText(event, fieldToSearch) {
+        switch (fieldToSearch) {
+            case 'SYSTEM_ID': {
+                this.setState({
+                    systemIdSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'SYSTEM_NAME': {
+                this.setState({
+                    systemNameSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'ACTIVE_ALARM_SYSTEM_ID': {
+                this.setState({
+                    activeAlarmSystemIdSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'ACTIVE_ALARM_ID': {
+                this.setState({
+                    activeAlarmIdSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'ACTIVE_ALARM_DESCRIPTION': {
+                this.setState({
+                    activeAlarmDescriptionSearchText: event.target.value,
+                });
+                return;
+            }
+        }
     }
 
     handleClickOnSystemRow = (dataObject) => {
@@ -63,13 +96,17 @@ class SystemsAndLiveAlarms extends React.Component {
 
     getFilterData(systems, systemsStatusIcons) {
         let filteredSystems = systems.filter(system => {
-            const {sysId, systemName} = system;
-            const lowerCaseSearchText = this.state.searchText.toLowerCase();
-            return sysId.toLowerCase().includes(lowerCaseSearchText) ||
-                systemName.toLowerCase().includes(lowerCaseSearchText);
+            let {sysId, systemName} = system;
+            if (sysId == null) {
+                sysId = '';
+            }
+            if (systemName == null) {
+                systemName = '';
+            }
+            return sysId.toLowerCase().includes(this.state.systemIdSearchText.toLowerCase()) &&
+                systemName.toLowerCase().includes(this.state.systemNameSearchText.toLowerCase());
         });
         const badSearch = !filteredSystems.length;
-        filteredSystems = badSearch ? [...systems] : filteredSystems;
         for (let i = 0; i < filteredSystems.length; i++) {
             filteredSystems[i] = {
                 ...filteredSystems[i],
@@ -102,16 +139,24 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilteredActiveAlarms() {
-        let {activeAlarms} = this.props;
+        const {activeAlarms} = this.props;
         let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
-            const {sysId, alarmId} = activeAlarm;
-            const lowerCaseSearchText = this.state.searchText.toLowerCase();
-            return sysId.toLowerCase().includes(lowerCaseSearchText) ||
-                alarmId.toLowerCase().includes(lowerCaseSearchText);
+            let {sysId, alarmId, description} = activeAlarm;
+            if (sysId == null) {
+                sysId = '';
+            }
+            if (alarmId == null) {
+                alarmId = '';
+            }
+            if (description == null) {
+                description = '';
+            }
+            return sysId.toLowerCase().includes(this.state.activeAlarmSystemIdSearchText.toLowerCase()) &&
+                alarmId.toLowerCase().includes(this.state.activeAlarmIdSearchText.toLowerCase()) &&
+                description.toLowerCase().includes(this.state.activeAlarmDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredActiveAlarms.length;
-        activeAlarms = badSearch ? activeAlarms : filteredActiveAlarms;
-        return {activeAlarms, badSearch};
+        return {filteredActiveAlarms, badSearch};
     }
 
     render() {
@@ -158,9 +203,13 @@ class SystemsAndLiveAlarms extends React.Component {
             systemsTable =
                 <div className="d-sm-inline-block">
                     <SearchBox styleName="d-none d-lg-block"
-                               placeholder="Filter by System ID or by System Name"
-                               onChange={this.updateSearchText.bind(this)}
-                               value={this.state.searchText} badSearch={badSearch}/>
+                               placeholder="Filter by System ID"
+                               onChange={(event) => this.updateSearchText(event, 'SYSTEM_ID')}
+                               value={this.state.systemIdSearchText} badSearch={badSearch}/>
+                    <SearchBox styleName="d-none d-lg-block"
+                               placeholder="Filter by System Name"
+                               onChange={(event) => this.updateSearchText(event, 'SYSTEM_NAME')}
+                               value={this.state.systemNameSearchText} badSearch={badSearch}/>
                     <div className="d-flex justify-content-center">
                         <div className="col-12">
                             <div className="jr-card">
@@ -183,15 +232,23 @@ class SystemsAndLiveAlarms extends React.Component {
         }
         const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
-        const {badSearch, activeAlarms} = this.getFilteredActiveAlarms();
+        const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
         const alarmsJSX =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by System ID or by Alarm ID"
-                           onChange={(event) => this.updateSearchText(event)}
-                           value={this.state.searchText} badSearch={badSearch}/>
+                           placeholder="Filter by System ID"
+                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
+                           value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}/>
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by Alarm ID"
+                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
+                           value={this.state.activeAlarmIdSearchText} badSearch={badSearch}/>
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by Description"
+                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
+                           value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">
-                    <DataTable data={activeAlarms}
+                    <DataTable data={filteredActiveAlarms}
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
                                initialOrderBy={'sysId'}
