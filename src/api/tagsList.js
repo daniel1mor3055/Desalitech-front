@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {camelizeJson, capitalizeJson, extractSystemId} from "./utils";
 
+
 export const fetchTagsApi = async () => {
     const sysId = extractSystemId();
     try {

@@ -5,9 +5,13 @@ import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 
+
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
-import {fetchDashboard, fetchBackgroundTags} from "store/thunk/dashboard";
+import TitleCard from 'app/components/TitleCard';
+import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
+import Gauge from "app/components/Gauges";
+import SolidCard from "app/components/SolidCards/SolidCards";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import TimeSeries from './TimeSeries';
 
@@ -19,7 +23,44 @@ class Dashboard extends Component {
     }
 
     render() {
-        const {match, timeSeries, fetching, error} = this.props;
+        const {
+            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error
+        } = this.props;
+
+        const middleGaugesJSX = middleGauges.map((middleGauge) => (
+                <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
+            )
+        );
+        const leftGaugesJSX = leftGauges.map((leftGauge) => (
+                <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
+            )
+        );
+        const rightGaugesJSX = rightGauges.map((rightGauge) => (
+                <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
+            )
+        );
+        const tagsJSX = tags.map((tag) => {
+            const {tagId, tagName, tagValue, tagUnits} = tag;
+            return <div className="col-lg-3 col-sm-6 col-12">
+                <TitleCard
+                    tagName={(tagName !== '' && tagName != null) ? tagName : tagId}
+                    tagValue={tagValue}
+                    tagUnits={tagUnits}
+                />
+            </div>;
+        });
+        const triggersJSX = triggers.map((trigger) => {
+            const {controllerTag, tag} = trigger;
+            return <div className="col-lg-3 col-sm-6 col-12">
+                <SolidCard
+                    tagName={(controllerTag.tagName !== '' && controllerTag.tagName != null) ?
+                        controllerTag.tagName : controllerTag.tagId}
+                    tagValue={controllerTag.tagValue}
+                    tagUnits={controllerTag.tagUnits}
+                    colorIndicator={tag.tagValue}
+                />
+            </div>;
+        });
 
         const timeSeriesJSX =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
@@ -42,14 +83,19 @@ class Dashboard extends Component {
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
-                    : timeSeriesJSX}
+                    : [timeSeriesJSX,
+                        middleGaugesJSX,
+                        leftGaugesJSX,
+                        rightGaugesJSX,
+                        tagsJSX,
+                        triggersJSX]}
             </div>
         );
     }
 }
 
 
-const mapStateToProps = ({dashboard, tags}) => {
+const mapStateToProps = ({dashboard}) => {
     return {
         triggers: dashboard.triggers,
         tags: dashboard.tags,

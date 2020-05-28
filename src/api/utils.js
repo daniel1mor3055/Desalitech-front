@@ -34,6 +34,7 @@ export const capitalizeObjectKeys = (object) => {
     }
 };
 
+
 export const capitalizeJson = (someObject) => {
     if (someObject && Array.isArray(someObject)) {
         someObject.forEach((elem) => capitalizeJson(elem));
@@ -46,6 +47,7 @@ export const capitalizeJson = (someObject) => {
         }
     }
 };
+
 
 export const camelizeJson = (someObject) => {
     if (someObject && Array.isArray(someObject)) {
@@ -63,6 +65,6 @@ export const camelizeJson = (someObject) => {
 export const extractSystemId = () => {
     const queryParams = new URLSearchParams(window.location.search);
     const sysId = decodeURIComponent(queryParams.get('sysId'));
-    return sysId
+    return sysId;
 };
 

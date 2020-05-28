@@ -17,7 +17,8 @@ class AlarmList extends PureComponent {
         super(props);
 
         this.state = {
-            searchText: '',
+            alarmIdSearchText: '',
+            alarmDescriptionSearchText: '',
         };
     }
 
@@ -25,20 +26,36 @@ class AlarmList extends PureComponent {
         this.props.onFetchAlarms();
     }
 
-    updateSearchText(event) {
-        this.setState({
-            searchText: event.target.value,
-        });
+    updateSearchText(event, fieldToSearch) {
+        switch (fieldToSearch) {
+            case 'ID': {
+                this.setState({
+                    alarmIdSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'DESCRIPTION': {
+                this.setState({
+                    alarmDescriptionSearchText: event.target.value,
+                });
+                return;
+            }
+        }
     }
 
     getFilterData(alarms) {
         let filteredAlarms = alarms.filter(alarm => {
-            const {alarmId, description} = alarm;
-            return alarmId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
-                description.toLowerCase().includes(this.state.searchText.toLowerCase());
+            let {alarmId, description} = alarm;
+            if (alarmId == null) {
+                alarmId = '';
+            }
+            if (description == null) {
+                description = '';
+            }
+            return alarmId.toLowerCase().includes(this.state.alarmIdSearchText.toLowerCase()) &&
+                description.toLowerCase().includes(this.state.alarmDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredAlarms.length;
-        filteredAlarms = badSearch ? alarms : filteredAlarms;
         return {filteredAlarms, badSearch};
     }
 
@@ -49,7 +66,7 @@ class AlarmList extends PureComponent {
 
 
     render() {
-        const {searchText} = this.state;
+        const {alarmIdSearchText, alarmDescriptionSearchText} = this.state;
         const {match, alarms, fetching, error, emailNotification} = this.props;
         const columnsIds = ['alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
@@ -73,9 +90,13 @@ class AlarmList extends PureComponent {
                             />
                         </CardHeader>
                         <SearchBox styleName="d-none d-lg-block"
-                                   placeholder="Filter by Alarm ID or by Alarm Description"
-                                   onChange={(event) => this.updateSearchText(event)}
-                                   value={searchText} badSearch={badSearch}/>
+                                   placeholder="Filter by Alarm ID"
+                                   onChange={(event) => this.updateSearchText(event,'ID')}
+                                   value={alarmIdSearchText} badSearch={badSearch}/>
+                        <SearchBox styleName="d-none d-lg-block"
+                                   placeholder="Filter by Alarm Description"
+                                   onChange={(event) => this.updateSearchText(event,'DESCRIPTION')}
+                                   value={alarmDescriptionSearchText} badSearch={badSearch}/>
                         <DataTable data={filteredAlarms}
                                    columnsIds={columnsIds}
                                    columnsLabels={columnsLabels}

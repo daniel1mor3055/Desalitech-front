@@ -1,22 +1,23 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import {Card, CardBody, CardSubtitle, CardText} from 'reactstrap';
+import {Card, CardBody, CardSubtitle} from 'reactstrap';
+import PropTypes from "prop-types";
+import Gauge from "../Gauges";
 
-const TitleCard = (props) =>
+const TitleCard = ({tagName, tagValue, tagUnits}) =>
     (
-        <Card className="shadow border-0" style={{textAlign: 'center'}}>
+        <Card className="shadow border-0">
             <CardBody>
-                <h3 className="card-title">{props.tagName}</h3>
-                <CardSubtitle>{props.tagValue}</CardSubtitle>
-                <CardText>
-                    {props.description}
-                </CardText>
+                <h3 className="card-title">{tagName}</h3>
+                <CardSubtitle>{`${tagValue} ${tagUnits}`}</CardSubtitle>
             </CardBody>
-
-            <div className="card-mt-footer" style={{textAlign: 'center'}}>
-                <Button className="btn btn-sm" color="primary">Settings</Button>
-            </div>
         </Card>
     );
+
+
+TitleCard.propTypes = {
+    tagName: PropTypes.string.isRequired,
+    tagUnits: PropTypes.number.isRequired,
+    tagValue: PropTypes.string.isRequired,
+};
 
 export default TitleCard;
