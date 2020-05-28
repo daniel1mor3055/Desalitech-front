@@ -46,7 +46,6 @@ function postTagStart(state, action) {
 function postTagSuccess(state, action) {
     const tagToChange = state.tags.find(tag => tag.tagId === action.payload.tagData.tagId);
     const index = state.tags.indexOf(tagToChange);
-    console.log(index);
     const newTags = state.tags.map(tag => {
         if (tag.tagId !== action.payload.tagData.tagId) {
             return tag;
