@@ -127,7 +127,7 @@ class DataTable extends React.Component {
 
     render() {
         const {data, order, orderBy, rowsPerPage, page} = this.state;
-        const {cellIdentifier, columnsIds, columnsLabels, actions, handleEditClick} = this.props;
+        const {cellIdentifier, columnsIds, columnsLabels, actions, handleEditClick, onRowClick} = this.props;
 
         return (
             <Paper>
@@ -147,6 +147,7 @@ class DataTable extends React.Component {
                                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(dataObject => {
                                     return (
                                         <TableRow
+                                            onClick={onRowClick != null ? () => onRowClick(dataObject) : null}
                                             hover
                                             role="checkbox"
                                             tabIndex={-1}
@@ -192,6 +193,7 @@ DataTable.propTypes = {
     cellIdentifier: PropTypes.any.isRequired,
     actions: PropTypes.arrayOf(PropTypes.object),
     handleEditClick: PropTypes.func,
+    onRowClick: PropTypes.func,
 };
 
 export default DataTable;

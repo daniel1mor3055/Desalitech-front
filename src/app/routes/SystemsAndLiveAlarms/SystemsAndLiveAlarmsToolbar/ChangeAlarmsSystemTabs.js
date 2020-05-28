@@ -47,7 +47,7 @@ class ChangeAlarmsSystemTabs extends Component {
                         scrollButtons="on"
                     >
                         <Tab className="tab" label="System Select"/>
-                        <Tab className="tab" label="Alarms"/>
+                        <Tab className="tab" label="Active Alarms"/>
                     </Tabs>
                 </AppBar>
                 <SwipeableViews

@@ -66,14 +66,13 @@ class Header extends Component {
     };
 
     render() {
-        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, selectedSystemName, admin} = this.props;
+        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin} = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const sidebarIcon = showSidebarIcon ?
             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
                         onClick={this.onToggleCollapsedNav}>
                 <span className="menu-icon"/>
             </IconButton> : null;
-        console.log(window.location.pathname);
         return (
             <AppBar
                 className={`app-main-header ${(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) ? 'app-main-header-top' : ''}`}>
@@ -92,7 +91,7 @@ class Header extends Component {
                         <img src={require("assets/images/desalitech-logo.png")} alt="desalitech" title="desalitech"/>
                     </Link>
                     <Typography variant={'h4'} color={'inherit'} align={'center'}>
-                        {window.location.pathname.includes('/app/system-select') ? null : selectedSystemName}
+                        {/*{window.location.pathname.includes('/app/system-select') ? null : selectedSystemName}*/}
                     </Typography>
 
                     {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
@@ -172,7 +171,7 @@ const mapStateToProps = ({admin, settings, systems}) => {
         locale: settings.locale,
         navigationStyle: settings.navigationStyle,
         horizontalNavPosition: settings.horizontalNavPosition,
-        selectedSystemName: systems.selectedSystemName,
+        // selectedSystemName: systems.selectedSystemName,
         admin: admin.admin,
     };
 };

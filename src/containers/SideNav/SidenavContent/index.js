@@ -101,15 +101,18 @@ class SidenavContent extends Component {
   }
 
   render() {
+    const {location} = this.props
+    const queryParams = new URLSearchParams(location.search);
+    const encodedSysId = queryParams.get('sysId')
     return (
         <CustomScrollbars className=" scrollbar">
           <SidenavList>
-            <SidenavItem relativePath={'dashboard'} id={"pages.dashboardPage"} icon={"zmdi-time-countdown"}/>
-            <SidenavItem relativePath={'charts'} id={"pages.chartsPage"} icon={"zmdi-chart"}/>
-            <SidenavItem relativePath={'alarm-list'} id={"pages.alarmListPage"} icon={"zmdi-notifications-active"}/>
-            <SidenavItem relativePath={'tag-list'} id={"pages.tagListPage"} icon={"zmdi-tag"}/>
-            <SidenavItem relativePath={'reports'} id={"pages.reportsPage"} icon={"zmdi-file-text"}/>
-            <SidenavItem relativePath={'documentation'} id={"pages.documentationPage"} icon={"zmdi-folder"}/>
+            <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"} icon={"zmdi-time-countdown"}/>
+            <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"} icon={"zmdi-chart"}/>
+            <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"} icon={"zmdi-notifications-active"}/>
+            <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"} icon={"zmdi-tag"}/>
+            <SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"} icon={"zmdi-file-text"}/>
+            <SidenavItem relativePath={`documentation?sysId=${encodedSysId}`} id={"pages.documentationPage"} icon={"zmdi-folder"}/>
           </SidenavList>
         </CustomScrollbars>
     );

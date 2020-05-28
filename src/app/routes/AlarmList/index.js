@@ -8,7 +8,6 @@ import ContainerHeader from 'components/ContainerHeader';
 import SearchBox from "components/SearchBox";
 import CardHeader from 'app/components/CardHeader';
 import DataTable from "app/components/DataTable";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 
@@ -19,8 +18,10 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {selectedSystemId} = this.props;
-        this.props.onFetchAlarms(selectedSystemId);
+        const {location} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        this.props.onFetchAlarms(sysId);
     }
 
     updateSearchText(event) {
@@ -31,8 +32,9 @@ class AlarmList extends PureComponent {
 
     getFilterData(alarms) {
         let filteredAlarms = alarms.filter(alarm => {
-            const {alarmId} = alarm;
-            return alarmId.includes(this.state.searchText);
+            const {alarmId, description} = alarm;
+            return alarmId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+                description.toLowerCase().includes(this.state.searchText.toLowerCase());
         });
         const badSearch = !filteredAlarms.length;
         filteredAlarms = badSearch ? alarms : filteredAlarms;
@@ -41,8 +43,10 @@ class AlarmList extends PureComponent {
 
     handleNotificationChange = (event, checked) => {
         event.preventDefault();
-        const {selectedSystemId} = this.props;
-        this.props.onSetEmailNotification(selectedSystemId, checked);
+        const {location} = this.props;
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        this.props.onSetEmailNotification(sysId, checked);
     };
 
 
@@ -50,7 +54,7 @@ class AlarmList extends PureComponent {
         const {searchText} = this.state;
         const {match, alarms, fetching, error, emailNotification} = this.props;
         const columnsIds = ['alarmId', 'description', 'timeStamp'];
-        const columnsLabels = ['Alarm ID', 'Description', 'Time Stamp'];
+        const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
         const {filteredAlarms, badSearch} = this.getFilterData(alarms);
 
         const alarmsList =
@@ -71,7 +75,7 @@ class AlarmList extends PureComponent {
                             />
                         </CardHeader>
                         <SearchBox styleName="d-none d-lg-block"
-                                   placeholder="Filter by Alarm ID"
+                                   placeholder="Filter by Alarm ID or by Alarm Description"
                                    onChange={(event) => this.updateSearchText(event)}
                                    value={searchText} badSearch={badSearch}/>
                         <DataTable data={filteredAlarms}
@@ -94,13 +98,12 @@ class AlarmList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({alarms, systems}) => {
+const mapStateToProps = ({alarms}) => {
     return {
         alarms: alarms.alarms,
         emailNotification: alarms.emailNotification,
         fetching: alarms.fetching,
         error: alarms.error,
-        selectedSystemId: systems.selectedSystemId,
     };
 };
 
