@@ -17,13 +17,6 @@ export const camelizeObjectKeys = (object) => {
     }
 };
 
-export const camelizeArrayOfObjects = (arrayOfObjects) => {
-    arrayOfObjects.forEach((object) => {
-        camelizeObjectKeys(object);
-    });
-};
-
-
 export const capitalizeFirstLetter = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
@@ -41,8 +34,35 @@ export const capitalizeObjectKeys = (object) => {
     }
 };
 
-export const capitalizeArrayOfObjectKeys = (arrayOfObjects) => {
-    arrayOfObjects.forEach((object) => {
-        capitalizeObjectKeys(object);
-    });
+export const capitalizeJson = (someObject) => {
+    if (someObject && Array.isArray(someObject)) {
+        someObject.forEach((elem) => capitalizeJson(elem));
+    } else if (someObject && typeof someObject === 'object' && someObject !== null) {
+        capitalizeObjectKeys(someObject);
+        for (let property in someObject) {
+            if (someObject.hasOwnProperty(property)) {
+                capitalizeJson(someObject[property]);
+            }
+        }
+    }
 };
+
+export const camelizeJson = (someObject) => {
+    if (someObject && Array.isArray(someObject)) {
+        someObject.forEach((elem) => camelizeJson(elem));
+    } else if (someObject && typeof someObject === 'object' && someObject !== null) {
+        camelizeObjectKeys(someObject);
+        for (let property in someObject) {
+            if (someObject.hasOwnProperty(property)) {
+                camelizeJson(someObject[property]);
+            }
+        }
+    }
+};
+
+export const extractSystemId = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const sysId = decodeURIComponent(queryParams.get('sysId'));
+    return sysId
+};
+

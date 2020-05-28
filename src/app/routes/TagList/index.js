@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
 import ContainerHeader from 'components/ContainerHeader';
@@ -11,21 +11,23 @@ import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
 import IconButton from "@material-ui/core/IconButton";
 
-class TagList extends Component {
-    state = {
-        tagId: null,
-        tagName: null,
-        description: null,
-        units: null,
-        openEditModal: false,
-        searchText: '',
-    };
+class TagList extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            tagId: null,
+            tagName: null,
+            description: null,
+            units: null,
+            openEditModal: false,
+            searchText: '',
+        };
+    }
+
 
     componentDidMount() {
-        const {location} = this.props
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
-        this.props.onFetchTags(sysId);
+        this.props.onFetchTags();
     }
 
     handleEditClick = (event, tagObject) => {
@@ -41,10 +43,7 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {location} = this.props
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
-        this.props.onPostTag(sysId, values);
+        this.props.onPostTag(values);
     };
 
     updateSearchText(event) {
@@ -128,8 +127,8 @@ const mapStateToProps = ({tags}) => {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onFetchTags: (systemId) => dispatch(fetchTags(systemId)),
-        onPostTag: (systemId, tagData) => dispatch(postTag(systemId, tagData))
+        onFetchTags: () => dispatch(fetchTags()),
+        onPostTag: (tagData) => dispatch(postTag(tagData))
     };
 };
 

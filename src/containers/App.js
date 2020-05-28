@@ -17,7 +17,9 @@ import blueTheme from './themes/blueTheme';
 class App extends Component {
     static contextType = Auth0Context;
 
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
     }
 
@@ -26,7 +28,7 @@ class App extends Component {
     }
 
     render() {
-        const {match, location, locale, isDirectionRTL} = this.props;
+        const {match, locale, isDirectionRTL} = this.props;
         const {loading, loginWithRedirect, isAuthenticated} = this.context;
 
         if (!isAuthenticated && !loading) {

@@ -9,14 +9,17 @@ export default function asyncComponent(importComponent) {
   class AsyncFunc extends Component {
     constructor(props) {
       super(props);
+
+      Nprogress.start();
+
       this.state = {
         component: null
       };
     }
 
-    componentWillMount() {
-      Nprogress.start();
-    }
+    // componentWillMount() {
+    //   Nprogress.start();
+    // }
 
     componentWillUnmount() {
       this.mounted = false;

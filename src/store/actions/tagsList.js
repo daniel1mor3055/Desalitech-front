@@ -33,11 +33,10 @@ export const postTagStart = () => (
         type: POST_TAG_START,
     });
 
-export const postTagSuccess = (response,tagData) => (
+export const postTagSuccess = (tagData) => (
     {
         type: POST_TAG_SUCCESS,
         payload: {
-            response,
             tagData,
         }
     });

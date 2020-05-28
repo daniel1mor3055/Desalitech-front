@@ -1,74 +1,75 @@
-import React,{Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React, {Component} from 'react';
+import {connect} from "react-redux";
+
+import 'react-dates/initialize';
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
+import 'react-dates/lib/css/_datepicker.css';
 
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
-import TitleCard from 'app/components/TitleCard';
-import MainChart from './MainChart';
-import Speedometer from './Speedometer';
+import {fetchDashboard, fetchBackgroundTags} from "store/thunk/dashboard";
+import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
+import TimeSeries from './TimeSeries';
 
 class Dashboard extends Component {
+
+    componentDidMount() {
+        this.props.onFetchDashboard();
+        this.props.onFetchBackgroundTags();
+    }
+
     render() {
-        const {match} = this.props;
+        const {match, timeSeries, fetching, error} = this.props;
+
+        const timeSeriesJSX =
+            <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
+                {timeSeries.map((timeSeries) => {
+                    const {startDate, endDate, times, tags, placement} = timeSeries;
+                    return (
+                        <TimeSeries
+                            startDate={startDate}
+                            endDate={endDate}
+                            tags={tags}
+                            times={times}
+                            placement={placement}
+                            key={placement}/>);
+                })}
+            </div>;
+
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
-                <div className="d-flex justify-content-center">
-                    <h1><IntlMessages id="pages.dashboardPage.description"/></h1>
-                </div>
 
-                <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
-                    <div className="jr-card">
-                        <MainChart height={100}/>
-                    </div>
-                </div>
-
-                <div className="row mb-md-3">
-                    <div className="col-lg-3 col-sm-6 col-12">
-                        <TitleCard
-                            tagName={"Tag Name"}
-                            tagValue={"Tag Value"}
-                            tagDescription={"Tag Description"}
-                        />
-                    </div>
-                    <div className="col-lg-3 col-sm-6 col-12">
-                        <TitleCard
-                            tagName={"Tag Name"}
-                            tagValue={"Tag Value"}
-                            tagDescription={"Tag Description"}
-                        />
-                    </div>
-                    <div className="col-lg-3 col-sm-6 col-12">
-                        <TitleCard
-                            tagName={"Tag Name"}
-                            tagValue={"Tag Value"}
-                            tagDescription={"Tag Description"}
-                        />
-                    </div>
-                    <div className="col-lg-3 col-sm-6 col-12">
-                        <TitleCard
-                            tagName={"Tag Name"}
-                            tagValue={"Tag Value"}
-                            tagDescription={"Tag Description"}
-                        />
-                    </div>
-                </div>
-                <div className="col-xl-3 col-md-4 col-sm-6 col-12 order-xl-4">
-                    <div className="jr-card">
-                        <div className="jr-card-header">
-                            <h3 className="card-heading"><IntlMessages id="dashboard.systemStatus"/></h3>
-                        </div>
-                        <Speedometer value={90}/>
-                        <div className="text-center mt-4">
-                            <h4 className="mb-1">Can be defined</h4>
-                            <p className="card-text">Can be defined</p>
-                        </div>
-                    </div>
-                </div>
+                {fetching ?
+                    error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
+                    : timeSeriesJSX}
             </div>
-        )
-            ;
+        );
     }
 }
 
-export default Dashboard;
+
+const mapStateToProps = ({dashboard, tags}) => {
+    return {
+        triggers: dashboard.triggers,
+        tags: dashboard.tags,
+        gauges: dashboard.gauges,
+        timeSeries: dashboard.timeSeries,
+        middleGauges: dashboard.middleGauges,
+        rightGauges: dashboard.rightGauges,
+        leftGauges: dashboard.leftGauges,
+        seeqs: dashboard.seeqs,
+        fetching: dashboard.fetching,
+        error: dashboard.error,
+    };
+};
+
+
+const mapDispatchedToProps = dispatch => {
+    return {
+        onFetchDashboard: () => dispatch(fetchDashboard()),
+        onFetchBackgroundTags: () => dispatch(fetchBackgroundTags())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchedToProps)(Dashboard);

@@ -11,7 +11,7 @@ const initialState = {
     alarms: [],
     emailNotification: false,
     posting: false,
-    fetching: false,
+    fetching: true,
     error: null,
 };
 
@@ -55,9 +55,7 @@ function fetchAlarmsSuccess(state, action) {
 function fetchAlarmsFail(state, action) {
     return {
         ...state,
-        alarms: [],
         fetching: false,
-        emailNotification: false,
         error: action.payload.error,
     };
 }

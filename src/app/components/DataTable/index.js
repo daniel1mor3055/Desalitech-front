@@ -9,7 +9,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 class DataTableHead extends React.Component {
@@ -127,7 +126,7 @@ class DataTable extends React.Component {
 
     render() {
         const {data, order, orderBy, rowsPerPage, page} = this.state;
-        const {cellIdentifier, columnsIds, columnsLabels, actions, handleEditClick, onRowClick} = this.props;
+        const {cellIdentifier, columnsIds, columnsLabels, actions, onRowClick} = this.props;
 
         return (
             <Paper>

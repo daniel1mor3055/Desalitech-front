@@ -8,6 +8,7 @@ import tags from './tagsList';
 import auth from './auth';
 import admin from './admin';
 import poll from './polling';
+import dashboard from './dashboard';
 
 
 export default (history) => combineReducers({
@@ -19,4 +20,5 @@ export default (history) => combineReducers({
     auth: auth,
     admin: admin,
     poll: poll,
+    dashboard: dashboard,
 });

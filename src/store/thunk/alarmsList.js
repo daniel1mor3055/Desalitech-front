@@ -11,11 +11,11 @@ import {setAdminStatus} from '../actions/admin';
 import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from "app/components/Notifications";
 
 
-export const fetchAlarms = (systemId) => (
+export const fetchAlarms = () => (
     async (dispatch) => {
         dispatch(fetchAlarmsStart());
         try {
-            const {alarms, admin, emailNotification} = await fetchAlarmsApi(systemId);
+            const {alarms, admin, emailNotification} = await fetchAlarmsApi();
             dispatch(setAdminStatus(admin));
             dispatch(fetchAlarmsSuccess(alarms, emailNotification));
         } catch (err) {
@@ -23,11 +23,11 @@ export const fetchAlarms = (systemId) => (
         }
     });
 
-export const setEmailNotification = (systemId, emailNotification) => (
+export const setEmailNotification = (emailNotification) => (
     async (dispatch) => {
         dispatch(setEmailNotificationStart());
         try {
-            const response = await setEmailNotificationApi(systemId, emailNotification);
+            await setEmailNotificationApi(emailNotification);
             dispatch(setEmailNotificationSuccess(emailNotification));
             createNotification(SUCCESS_NOTIFICATION, `Email Notifications ${emailNotification ? 'Activated' : 'Deactivated'}`, "Edit Notifications Request");
         } catch (err) {

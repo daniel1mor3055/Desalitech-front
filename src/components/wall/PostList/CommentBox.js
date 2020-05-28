@@ -25,9 +25,9 @@ class CommentBox extends Component {
     }
   }
 
-  componentWillMount() {
-    this.setState({commentData: this.props.commentData})
-  }
+  // componentWillMount() {
+  //   this.setState({commentData: this.props.commentData})
+  // }
 
   handleLikeToggle() {
     this.setState((previousState) => ({
