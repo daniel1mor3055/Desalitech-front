@@ -17,6 +17,7 @@ import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms';
 import {fetchSystems} from "store/thunk/systemSelect";
 import {fetchPolling} from "store/thunk/polling";
 import DataTable from 'app/components/DataTable';
+import CardBox from "../../../components/CardBox";
 
 class SystemsAndLiveAlarms extends React.Component {
     state = {
@@ -44,26 +45,25 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilterData(systems, systemsStatusIcons) {
-        const systemsToAlter = [...systems];
         const {onSystemSelection, history} = this.props;
-        for (let i = 0; i < systemsToAlter.length; i++) {
-            systemsToAlter[i] = {
-                ...systemsToAlter[i],
-                systemStatus: systemsStatusIcons[systemsToAlter[i].sysId],
-                onClickFunction: () => {
-                    onSystemSelection(systemsToAlter[i].sysId);
-                    history.push("/app/dashboard");
-                }
-            };
-        }
-        let filteredSystems = systemsToAlter.filter(system => {
+        let filteredSystems = systems.filter(system => {
             const {sysId, systemName} = system;
             const lowerCaseSearchText = this.state.searchText.toLowerCase();
             return sysId.toLowerCase().includes(lowerCaseSearchText) ||
                 systemName.toLowerCase().includes(lowerCaseSearchText);
         });
         const badSearch = !filteredSystems.length;
-        filteredSystems = badSearch ? systemsToAlter : filteredSystems;
+        filteredSystems = badSearch ? [...systems] : filteredSystems;
+        for (let i = 0; i < filteredSystems.length; i++) {
+            filteredSystems[i] = {
+                ...filteredSystems[i],
+                systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
+                onClickFunction: () => {
+                    onSystemSelection(filteredSystems[i].sysId);
+                    history.push("/app/dashboard");
+                }
+            };
+        }
         return {filteredSystems, badSearch};
     }
 
@@ -89,8 +89,17 @@ class SystemsAndLiveAlarms extends React.Component {
         };
     }
 
-    prepareActiveAlarms() {
-        const {activeAlarms, history, onSystemSelection} = this.props;
+    getFilteredActiveAlarms() {
+        const {history, onSystemSelection} = this.props;
+        let {activeAlarms} = this.props;
+        let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
+            const {sysId, alarmId} = activeAlarm;
+            const lowerCaseSearchText = this.state.searchText.toLowerCase();
+            return sysId.toLowerCase().includes(lowerCaseSearchText) ||
+                alarmId.toLowerCase().includes(lowerCaseSearchText);
+        });
+        const badSearch = !filteredActiveAlarms.length;
+        activeAlarms = badSearch ? activeAlarms : filteredActiveAlarms;
         for (let i = 0; i < activeAlarms.length; i++) {
             activeAlarms[i] = {
                 ...activeAlarms[i],
@@ -100,13 +109,13 @@ class SystemsAndLiveAlarms extends React.Component {
                 }
             };
         }
-        return activeAlarms
+        return {activeAlarms, badSearch};
     }
 
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, onSystemSelection, activeAlarms
+            history, onSystemSelection
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -172,12 +181,22 @@ class SystemsAndLiveAlarms extends React.Component {
         }
         const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
-        const alarmsJSX = <DataTable data={this.prepareActiveAlarms()}
-                                     columnsIds={columnsIds}
-                                     columnsLabels={columnsLabels}
-                                     initialOrderBy={'sysId'}
-                                     cellIdentifier={'sysId'}
-        />;
+        const {badSearch, activeAlarms} = this.getFilteredActiveAlarms();
+        const alarmsJSX =
+            <div className="row animated slideInUpTiny animation-duration-3">
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by System ID or by Alarm ID"
+                           onChange={(event) => this.updateSearchText(event)}
+                           value={this.state.searchText} badSearch={badSearch}/>
+                <CardBox styleName="col-12" cardStyle=" p-0">
+                    <DataTable data={activeAlarms}
+                               columnsIds={columnsIds}
+                               columnsLabels={columnsLabels}
+                               initialOrderBy={'sysId'}
+                               cellIdentifier={'sysId'}
+                    />
+                </CardBox>
+            </div>;
         const systemsJSX = admin ?
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
