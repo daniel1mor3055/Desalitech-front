@@ -57,8 +57,8 @@ class DataTableHead extends React.Component {
                     }, this)}
                     {actions ?
                         actions.map(action => (
-                            <TableCell key={action}>
-                                {action}
+                            <TableCell key={action.id}>
+                                {action.label}
                             </TableCell>))
                         : null}
                 </TableRow>
@@ -74,7 +74,7 @@ DataTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
     columnsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     columnsLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
-    actions: PropTypes.arrayOf(PropTypes.string)
+    actions: PropTypes.arrayOf(PropTypes.object)
 };
 
 
@@ -156,13 +156,10 @@ class DataTable extends React.Component {
                                                 <TableCell align={"center"} key={colId}>{dataObject[colId]}</TableCell>
                                             ))}
                                             {actions ?
-                                                actions.includes('Edit') ?
-                                                    <TableCell>
-                                                        <IconButton className="icon-btn text-light p-1"
-                                                                    onClick={(event) => handleEditClick(event, dataObject)}>
-                                                            <i className="zmdi zmdi-settings text-blue"/></IconButton>
-                                                    </TableCell>
-                                                    : null
+                                                actions.map(action => (
+                                                    <TableCell key={action.id}>
+                                                        {action.cell(dataObject)}
+                                                    </TableCell>))
                                                 : null}
                                         </TableRow>
                                     );
@@ -193,7 +190,7 @@ DataTable.propTypes = {
     columnsIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     columnsLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
     cellIdentifier: PropTypes.any.isRequired,
-    actions: PropTypes.arrayOf(PropTypes.string),
+    actions: PropTypes.arrayOf(PropTypes.object),
     handleEditClick: PropTypes.func,
 };
 

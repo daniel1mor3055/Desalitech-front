@@ -9,7 +9,7 @@ import CardBox from 'components/CardBox';
 import SearchBox from 'components/SearchBox';
 import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
-import {NotificationContainer} from "react-notifications";
+import IconButton from "@material-ui/core/IconButton";
 
 class TagList extends Component {
     state = {
@@ -78,7 +78,15 @@ class TagList extends Component {
                                columnsLabels={columnsLabels}
                                initialOrderBy={'tagId'}
                                cellIdentifier={'tagId'}
-                               actions={['Edit']}
+                               actions={[{
+                                   id: 'edit',
+                                   label: 'Edit',
+                                   cell: (dataObject) => (
+                                       <IconButton className="icon-btn text-light p-1"
+                                                   onClick={(event) => this.handleEditClick(event, dataObject)}>
+                                           <i className="zmdi zmdi-settings text-blue"/>
+                                       </IconButton>),
+                               }]}
                                handleEditClick={this.handleEditClick}/>
                 </CardBox>
                 {openEditModal ?
