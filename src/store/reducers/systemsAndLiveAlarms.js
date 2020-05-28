@@ -1,8 +1,7 @@
 import {
+    FETCH_SYSTEMS_FAIL,
     FETCH_SYSTEMS_START,
     FETCH_SYSTEMS_SUCCESS,
-    FETCH_SYSTEMS_FAIL,
-    UPON_SYSTEM_SELECTION
 } from '../actionTypes/systemsAndLiveAlarms';
 
 
@@ -10,8 +9,6 @@ const initialState = {
     systems: [],
     fetching: false,
     error: null,
-    selectedSystemId: localStorage.getItem('selectedSystemId'),
-    selectedSystemName: localStorage.getItem('selectedSystemName'),
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,20 +19,10 @@ const reducer = (state = initialState, action) => {
             return fetchSystemsSuccess(state, action);
         case FETCH_SYSTEMS_FAIL:
             return fetchSystemsFail(state, action);
-        case UPON_SYSTEM_SELECTION:
-            return uponSystemSelection(state, action);
         default:
             return state;
     }
 };
-
-function uponSystemSelection(state, action) {
-    return {
-        ...state,
-        selectedSystemId: action.payload.selectedSystem.sysId,
-        selectedSystemName: action.payload.selectedSystem.systemName,
-    };
-}
 
 function fetchSystemsStart(state, action) {
     return {

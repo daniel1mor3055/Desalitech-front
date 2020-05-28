@@ -1,12 +1,13 @@
 import {combineReducers} from 'redux';
-import {connectRouter} from 'connected-react-router'
+import {connectRouter} from 'connected-react-router';
 
 import settings from './Settings';
-import systems from './systemsAndLiveAlarms'
-import alarms from './alarmsList'
-import tags from './tagsList'
+import systems from './systemsAndLiveAlarms';
+import alarms from './alarmsList';
+import tags from './tagsList';
 import auth from './auth';
 import admin from './admin';
+import poll from './polling';
 
 
 export default (history) => combineReducers({
@@ -17,4 +18,5 @@ export default (history) => combineReducers({
     tags: tags,
     auth: auth,
     admin: admin,
+    poll: poll,
 });

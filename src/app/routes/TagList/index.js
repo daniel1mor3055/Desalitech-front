@@ -22,8 +22,10 @@ class TagList extends Component {
     };
 
     componentDidMount() {
-        const {selectedSystemId} = this.props;
-        this.props.onFetchTags(selectedSystemId);
+        const {location} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        this.props.onFetchTags(sysId);
     }
 
     handleEditClick = (event, tagObject) => {
@@ -39,8 +41,10 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {selectedSystemId} = this.props;
-        this.props.onPostTag(selectedSystemId, values);
+        const {location} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        this.props.onPostTag(sysId, values);
     };
 
     updateSearchText(event) {
@@ -51,8 +55,9 @@ class TagList extends Component {
 
     getFilterData(tags) {
         let filteredTags = tags.filter(tag => {
-            const {tagId} = tag;
-            return tagId.includes(this.state.searchText);
+            const {tagId, tagName} = tag;
+            return tagId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
+                tagName.toLowerCase().includes(this.state.searchText.toLowerCase());
         });
         const badSearch = !filteredTags.length;
         filteredTags = badSearch ? tags : filteredTags;
@@ -69,7 +74,7 @@ class TagList extends Component {
         const tagsList =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Tag ID"
+                           placeholder="Filter by Tag ID or by Tag Name"
                            onChange={(event) => this.updateSearchText(event)}
                            value={searchText} badSearch={badSearch}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">
@@ -112,12 +117,11 @@ class TagList extends Component {
     }
 }
 
-const mapStateToProps = ({tags, systems}) => {
+const mapStateToProps = ({tags}) => {
     return {
         tags: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
-        selectedSystemId: systems.selectedSystemId
     };
 };
 
