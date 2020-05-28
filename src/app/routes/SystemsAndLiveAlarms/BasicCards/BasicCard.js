@@ -6,30 +6,13 @@ import './BasicCard.scss';
 import PropTypes from 'prop-types';
 
 
-const BasicCard = ({image, title, recovery, production, conductivity, systemStatus, onClick}) => {
-    let statusString = null;
-    let statusClass = null;
-    let indicatorColor = null;
-    if (systemStatus === 1) {
-        statusString = 'Online';
-        statusClass = 'GreenBorder';
-        indicatorColor = 'green';
-    }
-    if (systemStatus === 2) {
-        statusString = 'Offline';
-        statusClass = 'RedBorder';
-        indicatorColor = 'red';
-    }
-    if (systemStatus === 'error') {
-        statusString = 'Communication Error';
-        statusClass = 'AmberBorder';
-        indicatorColor = 'amber';
-    }
+const BasicCard = ({image, title, recovery, production, conductivity,
+                       onClick, systemStatusIcon, systemStatusBorder}) => {
     return (
         <div className='BasicCard' onClick={onClick}>
             <Card className="shadow border-0" style={{margin: '20px'}}>
                 <CardBody>
-                    <div className={classnames('BasicCard-TitleClass', statusClass)}>
+                    <div className={classnames('BasicCard-TitleClass', systemStatusBorder)}>
                         <CardImg className='BasicCard-ImgSize' src={image} alt="Card image cap"/>
                         <h3><strong>
                             System<br/>{title}</strong></h3></div>
@@ -49,9 +32,7 @@ const BasicCard = ({image, title, recovery, production, conductivity, systemStat
                         <strong>Conductivity:</strong>
                         <span className='BasicCard-TextToTheRight'>{conductivity}</span></CardSubtitle>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
-                    <span className='BasicCard-TextToTheRight'><i
-                        className={`zmdi zmdi-circle text-${indicatorColor} Indicator`}/>
-                        {statusString}
+                    <span className='BasicCard-TextToTheRight'>{systemStatusIcon}
                     </span></CardSubtitle>
                 </CardBody>
             </Card>
@@ -68,5 +49,5 @@ BasicCard.propTypes = {
     conductivity: PropTypes.string.isRequired,
     systemStatus: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired
-}
+};
 export default BasicCard;

@@ -13,7 +13,7 @@ export const fetchPollingSuccess = (activeAlarms, systemsStatus) => (
         }
     });
 
-export const fetchSPollingFail = (error) => (
+export const fetchPollingFail = (error) => (
     {
         type: FETCH_POLLING_FAIL,
         payload: {

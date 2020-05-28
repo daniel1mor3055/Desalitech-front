@@ -10,13 +10,13 @@ import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/
 import TopNav from 'components/TopNav';
 import BasicCard from "./BasicCards/BasicCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
-import Table from "app/components/Table";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
 import SearchBox from "components/SearchBox";
 import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms';
 import {fetchSystems} from "store/thunk/systemSelect";
 import {fetchPolling} from "store/thunk/polling";
+import DataTable from 'app/components/DataTable';
 
 class SystemsAndLiveAlarms extends React.Component {
     state = {
@@ -26,6 +26,15 @@ class SystemsAndLiveAlarms extends React.Component {
     componentDidMount() {
         this.props.onFetchSystems();
         this.props.onFetchPolling();
+        this.dataPolling = setInterval(
+            () => {
+                this.props.onFetchPolling();
+            },
+            30000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.dataPolling);
     }
 
     updateSearchText(evt) {
@@ -34,43 +43,86 @@ class SystemsAndLiveAlarms extends React.Component {
         });
     }
 
-    getFilterData(systems) {
-        let filteredSystems = systems.filter(system => {
+    getFilterData(systems, systemsStatusIcons) {
+        const systemsToAlter = [...systems];
+        const {onSystemSelection, history} = this.props;
+        for (let i = 0; i < systemsToAlter.length; i++) {
+            systemsToAlter[i] = {
+                ...systemsToAlter[i],
+                systemStatus: systemsStatusIcons[systemsToAlter[i].sysId],
+                onClickFunction: () => {
+                    onSystemSelection(systemsToAlter[i].sysId);
+                    history.push("/app/dashboard");
+                }
+            };
+        }
+        let filteredSystems = systemsToAlter.filter(system => {
             const {sysId, systemName} = system;
-            const lowerCaseSearchText = this.state.searchText.toLowerCase()
-            return sysId.toLowerCase().includes(lowerCaseSearchText) || systemName.toLowerCase().includes(lowerCaseSearchText);
+            const lowerCaseSearchText = this.state.searchText.toLowerCase();
+            return sysId.toLowerCase().includes(lowerCaseSearchText) ||
+                systemName.toLowerCase().includes(lowerCaseSearchText);
         });
         const badSearch = !filteredSystems.length;
-        filteredSystems = badSearch ? systems : filteredSystems;
-        return [filteredSystems, badSearch];
+        filteredSystems = badSearch ? systemsToAlter : filteredSystems;
+        return {filteredSystems, badSearch};
+    }
+
+    prepareSystemsStatus() {
+        const {systemsStatus} = this.props;
+        let systemsStatusIcons = {};
+        let systemsStatusBorders = {};
+        for (let i = 0; i < systemsStatus.length; i++) {
+            if (systemsStatus[i].status === 1) {
+                systemsStatusIcons[systemsStatus[i].sysId] =
+                    <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i>;
+                systemsStatusBorders[systemsStatus[i].sysId] = 'GreenBorder';
+            }
+            if (systemsStatus[i].status === 2) {
+                systemsStatusIcons[systemsStatus[i].sysId] =
+                    <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
+                systemsStatusBorders[systemsStatus[i].sysId] = 'RedBorder';
+            }
+        }
+        return {
+            systemsStatusIcons: systemsStatusIcons,
+            systemsStatusBorders: systemsStatusBorders
+        };
+    }
+
+    prepareActiveAlarms() {
+        const {activeAlarms, history, onSystemSelection} = this.props;
+        for (let i = 0; i < activeAlarms.length; i++) {
+            activeAlarms[i] = {
+                ...activeAlarms[i],
+                onClickFunction: () => {
+                    onSystemSelection(activeAlarms[i].sysId);
+                    history.push("/app/alarm-list");
+                }
+            };
+        }
+        return activeAlarms
     }
 
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, onSystemSelection, systemsStatus,
+            history, onSystemSelection, activeAlarms
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
         } else if (document.body.classList.contains('ios-mobile-view-height')) {
             document.body.classList.remove('ios-mobile-view-height');
         }
-        let badSearch = false;
         let systemsCards = <CircularIndeterminate/>;
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
+            const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
             systemsCards =
                 <div className="d-sm-inline-block">
                     <div className='d-flex'>
                         {systems.map(system => {
                             const {sysId, recovery, production, conductivity, systemName} = system;
-                            let systemStatus = null;
-                            systemsStatus.filter((sysStatus) => {
-                                if (sysStatus.sysId === sysId){
-                                    systemStatus = sysStatus.status
-                                }
-                            })
                             return (
                                 <BasicCard
                                     key={sysId}
@@ -79,7 +131,8 @@ class SystemsAndLiveAlarms extends React.Component {
                                     recovery={recovery + '%'}
                                     production={production + ' gpm'}
                                     conductivity={conductivity + ' us/cm'}
-                                    systemStatus={systemStatus}
+                                    systemStatusIcon={systemsStatusIcons[sysId]}
+                                    systemStatusBorder={systemsStatusBorders[sysId]}
                                     onClick={() => {
                                         onSystemSelection(sysId);
                                         history.push("/app/dashboard");
@@ -89,8 +142,9 @@ class SystemsAndLiveAlarms extends React.Component {
                         })}
                     </div>
                 </div>;
-            const filteredData = this.getFilterData(systems);
-            badSearch = filteredData[1];
+            const {filteredSystems, badSearch} = this.getFilterData(systems, systemsStatusIcons);
+            const columnsIds = ['sysId', 'systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
+            const columnsLabels = ['System ID', 'System Name', 'Recovery', 'Production', 'Conductivity', 'Status'];
             systemsTable =
                 <div className="d-sm-inline-block">
                     <SearchBox styleName="d-none d-lg-block"
@@ -100,12 +154,12 @@ class SystemsAndLiveAlarms extends React.Component {
                     <div className="d-flex justify-content-center">
                         <div className="col-12">
                             <div className="jr-card">
-                                <Table data={filteredData[0]}
-                                       clickable={true}
-                                       clickFunction={(sysId) => {
-                                           onSystemSelection(sysId);
-                                           history.push("/app/dashboard");
-                                       }}/>
+                                <DataTable data={filteredSystems}
+                                           columnsIds={columnsIds}
+                                           columnsLabels={columnsLabels}
+                                           initialOrderBy={'sysId'}
+                                           cellIdentifier={'sysId'}
+                                />
                             </div>
                         </div>
                     </div>
@@ -116,8 +170,14 @@ class SystemsAndLiveAlarms extends React.Component {
             systemsCards = <p>{"Couldn't fetch systems"}</p>;
             systemsTable = <p>{"Couldn't fetch systems"}</p>;
         }
-
-        const alarmsJSX = 'Live Alarms';
+        const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
+        const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
+        const alarmsJSX = <DataTable data={this.prepareActiveAlarms()}
+                                     columnsIds={columnsIds}
+                                     columnsLabels={columnsLabels}
+                                     initialOrderBy={'sysId'}
+                                     cellIdentifier={'sysId'}
+        />;
         const systemsJSX = admin ?
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
@@ -157,8 +217,6 @@ const mapStateToProps = ({settings, systems, admin, poll}) => {
         admin: admin.admin,
         activeAlarms: poll.activeAlarms,
         systemsStatus: poll.systemsStatus,
-
-
     };
 };
 

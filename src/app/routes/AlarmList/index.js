@@ -41,7 +41,7 @@ class AlarmList extends PureComponent {
         const {searchText} = this.state;
         const {match, alarms, fetching, error} = this.props;
         const columnsIds = ['alarmId', 'description', 'timeStamp'];
-        const columnsLabels = ['Alarm ID', 'Description', 'Time Stamp'];
+        const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
         const {filteredAlarms, badSearch} = this.getFilterData(alarms);
 
         const alarmsList =

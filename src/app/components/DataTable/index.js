@@ -147,6 +147,7 @@ class DataTable extends React.Component {
                                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(dataObject => {
                                     return (
                                         <TableRow
+                                            onClick={dataObject.onClickFunction}
                                             hover
                                             role="checkbox"
                                             tabIndex={-1}
