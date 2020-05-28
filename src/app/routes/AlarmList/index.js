@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
-import {fetchAlarms,setEmailNotification} from 'store/thunk/alarmsList';
+import {fetchAlarms, setEmailNotification} from 'store/thunk/alarmsList';
 import ContainerHeader from 'components/ContainerHeader';
 import SearchBox from "components/SearchBox";
 import CardHeader from 'app/components/CardHeader';
@@ -13,15 +13,16 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 
 class AlarmList extends PureComponent {
-    state = {
-        searchText: '',
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: '',
+        };
+    }
 
     componentDidMount() {
-        const {location} = this.props
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
-        this.props.onFetchAlarms(sysId);
+        this.props.onFetchAlarms();
     }
 
     updateSearchText(event) {
@@ -43,10 +44,7 @@ class AlarmList extends PureComponent {
 
     handleNotificationChange = (event, checked) => {
         event.preventDefault();
-        const {location} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
-        this.props.onSetEmailNotification(sysId, checked);
+        this.props.onSetEmailNotification(checked);
     };
 
 
@@ -110,8 +108,8 @@ const mapStateToProps = ({alarms}) => {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onFetchAlarms: (systemId) => dispatch(fetchAlarms(systemId)),
-        onSetEmailNotification: (systemId, emailNotification) => dispatch(setEmailNotification(systemId, emailNotification))
+        onFetchAlarms: () => dispatch(fetchAlarms()),
+        onSetEmailNotification: (emailNotification) => dispatch(setEmailNotification(emailNotification))
     };
 };
 

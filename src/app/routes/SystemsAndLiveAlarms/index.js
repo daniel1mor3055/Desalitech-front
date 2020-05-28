@@ -19,22 +19,28 @@ import DataTable from 'app/components/DataTable';
 import CardBox from "../../../components/CardBox";
 
 class SystemsAndLiveAlarms extends React.Component {
-    state = {
-        searchText: ''
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: ''
+        };
+    }
+
 
     componentDidMount() {
         this.props.onFetchSystems();
         this.props.onFetchPolling();
-        this.dataPolling = setInterval(
+        const dataPolling = setInterval(
             () => {
                 this.props.onFetchPolling();
             },
             30000);
+        this.setState({dataPolling})
     }
 
     componentWillUnmount() {
-        clearInterval(this.dataPolling);
+        clearInterval(this.state.dataPolling);
     }
 
     updateSearchText(evt) {
@@ -47,13 +53,13 @@ class SystemsAndLiveAlarms extends React.Component {
         const {sysId} = dataObject;
         const {history} = this.props;
         history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
-    }
+    };
 
     handleClickOnAlarmRow = (dataObject) => {
         const {sysId} = dataObject;
         const {history} = this.props;
         history.push(`/app/alarm-list?sysId=${encodeURIComponent(sysId)}`);
-    }
+    };
 
     getFilterData(systems, systemsStatusIcons) {
         let filteredSystems = systems.filter(system => {

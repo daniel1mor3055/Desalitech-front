@@ -7,7 +7,7 @@ import {
 
 const initialState = {
     systems: [],
-    fetching: false,
+    fetching: true,
     error: null,
 };
 
