@@ -99,28 +99,6 @@ class Header extends Component {
                     <Menu/>}
 
                     <ul className="header-notifications list-inline ml-auto">
-                        {/*Maybe we will want to use it later on*/}
-                        {/*<li className="list-inline-item">*/}
-                        {/*    <Dropdown*/}
-                        {/*        className="quick-menu"*/}
-                        {/*        isOpen={this.state.langSwitcher}*/}
-                        {/*        toggle={this.onLangSwitcherSelect.bind(this)}>*/}
-
-                        {/*        <DropdownToggle*/}
-                        {/*            className="d-inline-block"*/}
-                        {/*            tag="span"*/}
-                        {/*            data-toggle="dropdown">*/}
-                        {/*            <IconButton className="icon-btn">*/}
-                        {/*                <i className={`flag flag-24 flag-${locale.icon}`}/>*/}
-                        {/*            </IconButton>*/}
-                        {/*        </DropdownToggle>*/}
-
-                        {/*        <DropdownMenu right className="w-50">*/}
-                        {/*            <LanguageSwitcher switchLanguage={this.props.switchLanguage}*/}
-                        {/*                              handleRequestClose={this.handleRequestClose}/>*/}
-                        {/*        </DropdownMenu>*/}
-                        {/*    </Dropdown>*/}
-                        {/*</li>*/}
 
                         <li className="list-inline-item app-tour">
                             <Typography variant={'h4'} color={'inherit'}>
