@@ -84,7 +84,7 @@ class TagList extends Component {
                                    cell: (dataObject) => (
                                        <IconButton className="icon-btn text-light p-1"
                                                    onClick={(event) => this.handleEditClick(event, dataObject)}>
-                                           <i className="zmdi zmdi-settings text-blue"/>
+                                           <i className="zmdi zmdi-edit text-blue"/>
                                        </IconButton>),
                                }]}
                                handleEditClick={this.handleEditClick}/>
