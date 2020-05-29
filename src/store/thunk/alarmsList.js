@@ -1,4 +1,4 @@
-import {fetchAlarmsApi,setEmailNotificationApi} from 'api/alarmsList';
+import {fetchAlarmsApi, setEmailNotificationApi} from 'api/alarmsList';
 import {
     fetchAlarmsFail,
     fetchAlarmsStart,
@@ -8,6 +8,7 @@ import {
     setEmailNotificationSuccess
 } from '../actions/alarmsList';
 import {setAdminStatus} from '../actions/admin';
+import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from "app/components/Notifications";
 
 
 export const fetchAlarms = (systemId) => (
@@ -28,9 +29,10 @@ export const setEmailNotification = (systemId, emailNotification) => (
         try {
             const response = await setEmailNotificationApi(systemId, emailNotification);
             dispatch(setEmailNotificationSuccess(emailNotification));
-            // should notify success to the user
+            createNotification(SUCCESS_NOTIFICATION, `Email Notifications ${emailNotification ? 'Activated' : 'Deactivated'}`, "Edit Notifications Request");
         } catch (err) {
             dispatch(setEmailNotificationFail);
+            createNotification(ERROR_NOTIFICATION, "Edit Notifications Failure", "Edit Notifications Request");
         }
     }
 );
