@@ -18,7 +18,7 @@ class AlarmList extends PureComponent {
     componentDidMount() {
         const {location, onFetchAlarms} = this.props
         const queryParams = new URLSearchParams(location.search);
-        const sysId = queryParams.get('sysId')
+        const sysId = decodeURIComponent(queryParams.get('sysId'))
         onFetchAlarms(sysId);
     }
 

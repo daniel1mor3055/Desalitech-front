@@ -45,7 +45,7 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilterData(systems, systemsStatusIcons) {
-        const {onSystemSelection, history} = this.props;
+        const {history} = this.props;
         let filteredSystems = systems.filter(system => {
             const {sysId, systemName} = system;
             const lowerCaseSearchText = this.state.searchText.toLowerCase();
@@ -59,7 +59,7 @@ class SystemsAndLiveAlarms extends React.Component {
                 ...filteredSystems[i],
                 systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
                 onClickFunction: () => {
-                    history.push(`/app/dashboard?sysId=${filteredSystems[i].sysId}`);
+                    history.push(`/app/dashboard?sysId=${encodeURIComponent(filteredSystems[i].sysId)}`);
                 }
             };
         }
@@ -103,7 +103,7 @@ class SystemsAndLiveAlarms extends React.Component {
             activeAlarms[i] = {
                 ...activeAlarms[i],
                 onClickFunction: () => {
-                    history.push(`/app/alarm-list?sysId=${activeAlarms[i].sysId}`);
+                    history.push(`/app/alarm-list?sysId=${encodeURIComponent(activeAlarms[i].sysId)}`);
                 }
             };
         }
@@ -141,7 +141,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                     systemStatusIcon={systemsStatusIcons[sysId]}
                                     systemStatusBorder={systemsStatusBorders[sysId]}
                                     onClick={() => {
-                                        history.push(`/app/dashboard?sysId=${sysId}`);
+                                        history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
                                     }}
                                 />
                             );
