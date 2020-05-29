@@ -13,7 +13,6 @@ import CircularIndeterminate from "app/components/Progress/CircularIndeterminate
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
 import SearchBox from "components/SearchBox";
-import {uponSystemSelection} from 'store/actions/systemsAndLiveAlarms';
 import {fetchSystems} from "store/thunk/systemSelect";
 import {fetchPolling} from "store/thunk/polling";
 import DataTable from 'app/components/DataTable';
@@ -44,8 +43,19 @@ class SystemsAndLiveAlarms extends React.Component {
         });
     }
 
-    getFilterData(systems, systemsStatusIcons) {
+    handleClickOnSystemRow = (dataObject) => {
+        const {sysId} = dataObject;
         const {history} = this.props;
+        history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
+    }
+
+    handleClickOnAlarmRow = (dataObject) => {
+        const {sysId} = dataObject;
+        const {history} = this.props;
+        history.push(`/app/alarm-list?sysId=${encodeURIComponent(sysId)}`);
+    }
+
+    getFilterData(systems, systemsStatusIcons) {
         let filteredSystems = systems.filter(system => {
             const {sysId, systemName} = system;
             const lowerCaseSearchText = this.state.searchText.toLowerCase();
@@ -58,9 +68,6 @@ class SystemsAndLiveAlarms extends React.Component {
             filteredSystems[i] = {
                 ...filteredSystems[i],
                 systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
-                onClickFunction: () => {
-                    history.push(`/app/dashboard?sysId=${encodeURIComponent(filteredSystems[i].sysId)}`);
-                }
             };
         }
         return {filteredSystems, badSearch};
@@ -89,7 +96,6 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilteredActiveAlarms() {
-        const {history} = this.props;
         let {activeAlarms} = this.props;
         let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
             const {sysId, alarmId} = activeAlarm;
@@ -99,14 +105,6 @@ class SystemsAndLiveAlarms extends React.Component {
         });
         const badSearch = !filteredActiveAlarms.length;
         activeAlarms = badSearch ? activeAlarms : filteredActiveAlarms;
-        for (let i = 0; i < activeAlarms.length; i++) {
-            activeAlarms[i] = {
-                ...activeAlarms[i],
-                onClickFunction: () => {
-                    history.push(`/app/alarm-list?sysId=${encodeURIComponent(activeAlarms[i].sysId)}`);
-                }
-            };
-        }
         return {activeAlarms, badSearch};
     }
 
@@ -165,6 +163,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                            columnsLabels={columnsLabels}
                                            initialOrderBy={'sysId'}
                                            cellIdentifier={'sysId'}
+                                           onRowClick={this.handleClickOnSystemRow}
                                 />
                             </div>
                         </div>
@@ -191,6 +190,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                columnsLabels={columnsLabels}
                                initialOrderBy={'sysId'}
                                cellIdentifier={'sysId'}
+                               onRowClick={this.handleClickOnAlarmRow}
                     />
                 </CardBox>
             </div>;
