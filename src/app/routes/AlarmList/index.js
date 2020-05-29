@@ -16,8 +16,10 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {selectedSystem, onFetchAlarms} = this.props;
-        onFetchAlarms(selectedSystem);
+        const {location, onFetchAlarms} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = queryParams.get('sysId')
+        onFetchAlarms(sysId);
     }
 
     updateSearchText(event) {
@@ -70,12 +72,11 @@ class AlarmList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({alarms, systems}) => {
+const mapStateToProps = ({alarms}) => {
     return {
         alarms: alarms.alarms,
         fetching: alarms.fetching,
         error: alarms.error,
-        selectedSystem: systems.selectedSystem
     };
 };
 

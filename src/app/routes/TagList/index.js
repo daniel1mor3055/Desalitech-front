@@ -21,8 +21,10 @@ class TagList extends Component {
     };
 
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchTags(selectedSystem);
+        const {location} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = queryParams.get('sysId')
+        this.props.onFetchTags(sysId);
     }
 
     handleEditClick = (event, tagObject) => {
@@ -38,8 +40,10 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {selectedSystem} = this.props;
-        this.props.onPostTag(selectedSystem, values);
+        const {location} = this.props
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = queryParams.get('sysId')
+        this.props.onPostTag(sysId, values);
     };
 
     updateSearchText(event) {
@@ -104,12 +108,11 @@ class TagList extends Component {
     }
 }
 
-const mapStateToProps = ({tags, systems}) => {
+const mapStateToProps = ({tags}) => {
     return {
         tags: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
-        selectedSystem: systems.selectedSystem
     };
 };
 

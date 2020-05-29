@@ -59,7 +59,6 @@ class SystemsAndLiveAlarms extends React.Component {
                 ...filteredSystems[i],
                 systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
                 onClickFunction: () => {
-                    onSystemSelection(filteredSystems[i].sysId);
                     history.push(`/app/dashboard?sysId=${filteredSystems[i].sysId}`);
                 }
             };
@@ -90,7 +89,7 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilteredActiveAlarms() {
-        const {history, onSystemSelection} = this.props;
+        const {history} = this.props;
         let {activeAlarms} = this.props;
         let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
             const {sysId, alarmId} = activeAlarm;
@@ -104,7 +103,6 @@ class SystemsAndLiveAlarms extends React.Component {
             activeAlarms[i] = {
                 ...activeAlarms[i],
                 onClickFunction: () => {
-                    onSystemSelection(activeAlarms[i].sysId);
                     history.push(`/app/alarm-list?sysId=${activeAlarms[i].sysId}`);
                 }
             };
@@ -115,7 +113,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, onSystemSelection
+            history,
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -143,7 +141,6 @@ class SystemsAndLiveAlarms extends React.Component {
                                     systemStatusIcon={systemsStatusIcons[sysId]}
                                     systemStatusBorder={systemsStatusBorders[sysId]}
                                     onClick={() => {
-                                        onSystemSelection(sysId);
                                         history.push(`/app/dashboard?sysId=${sysId}`);
                                     }}
                                 />
@@ -244,7 +241,6 @@ const mapDispatchedToProps = dispatch => {
     return {
         onFetchSystems: () => dispatch(fetchSystems()),
         onFetchPolling: () => dispatch(fetchPolling()),
-        onSystemSelection: (selectedSystem) => dispatch(uponSystemSelection(selectedSystem))
     };
 };
 
