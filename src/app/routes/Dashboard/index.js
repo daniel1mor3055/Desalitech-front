@@ -13,6 +13,7 @@ import CircularIndeterminate from "../../components/Progress/CircularIndetermina
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DateAndTimePickers from "../../components/Pickers/DateAndTimePickers";
+import Button from "@material-ui/core/Button";
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -35,6 +36,11 @@ class Dashboard extends Component {
                         const {placement, startDate, endDate, times} = timeSeries;
                         return (
                             <>
+                                <Button className="jr-btn" color="primary">1 Year</Button>
+                                <Button className="jr-btn" color="primary">6 Months</Button>
+                                <Button className="jr-btn" color="primary">1 Month</Button>
+                                <Button className="jr-btn" color="primary">1 Week</Button>
+                                <Button className="jr-btn" color="primary">1 Day</Button>
                                 <FormControlLabel
                                     control={
                                         <DateAndTimePickers/>
