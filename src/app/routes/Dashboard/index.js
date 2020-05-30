@@ -12,6 +12,7 @@ import TimePickers from "app/components/Pickers/TimePickers";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import DateAndTimePickers from "../../components/Pickers/DateAndTimePickers";
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -36,21 +37,17 @@ class Dashboard extends Component {
                             <>
                                 <FormControlLabel
                                     control={
-                                        <TimePickers/>
+                                        <DateAndTimePickers/>
                                     }
                                     label="Start Time"
+                                    labelPlacement = 'start'
                                 />
                                 <FormControlLabel
                                     control={
-                                        <TimePickers/>
+                                        <DateAndTimePickers/>
                                     }
                                     label="End Time"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <TimePickers/>
-                                    }
-                                    label="Date"
+                                    labelPlacement = 'start'
                                 />
                                 <MultiYChart data={timeSeries.tags.map(tag => tag.tagTimeValues)}
                                              xData={times}

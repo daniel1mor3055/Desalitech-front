@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import moment from 'moment';
 import {DatePicker} from 'material-ui-pickers';
 
-export default class DatePickers extends Component {
+class DatePickers extends Component {
     state = {
         selectedDate: moment(),
     };
@@ -25,7 +25,9 @@ export default class DatePickers extends Component {
                     rightArrowIcon={<i className="zmdi zmdi-arrow-forward"/>}
                 />
             </div>
-        )
+        );
 
     }
 }
+
+export default DatePickers;

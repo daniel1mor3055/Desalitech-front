@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {DateTimePicker} from 'material-ui-pickers';
 
-export default class DateAndTimePickers extends Component {
+class DateAndTimePickers extends Component {
     state = {
         selectedDate: new Date(),
     };
@@ -24,6 +24,8 @@ export default class DateAndTimePickers extends Component {
                     leftArrowIcon={<i className="zmdi zmdi-arrow-back"/>}
                     rightArrowIcon={<i className="zmdi zmdi-arrow-forward"/>}
                 />
-            </div>)
+            </div>);
     }
 }
+
+export default DateAndTimePickers;
