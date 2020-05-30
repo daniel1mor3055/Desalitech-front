@@ -12,13 +12,10 @@ const SEEQ = 'Seeq';
 export const fetchDashboardApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
-        console.log(response)
         camelizeObjectKeys(response.data);
         camelizeArrayOfObjects(response.data.widgets);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, seeqs} = getWidgetsByType(widgets);
-        console.log("widgets are:");
-        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, seeqs};
     } catch (err) {
         console.log(err);

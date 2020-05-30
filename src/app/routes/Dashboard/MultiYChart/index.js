@@ -79,7 +79,7 @@ class MultiYChart extends Component {
                         title: {
                             text: yLabel,
                             style: {
-                                colors: colors[index]
+                                color: colors[index]
                             }
                         },
                         tooltip: {

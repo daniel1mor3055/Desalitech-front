@@ -31,7 +31,7 @@ class Dashboard extends Component {
                                                             showYLabels={true}
                                                             title={'Custom Title'}
                                                             yLabels={timeSeries[0].tags.map(tag => tag.tagId)}
-                                                            colors={['#008FFB', '#00E396', '#FEB019']}/>
+                                                            colors={['#2196f3', '#ff6e40', '#ff6e40']}/>
                         : null}
                 </div>
             </div>;
