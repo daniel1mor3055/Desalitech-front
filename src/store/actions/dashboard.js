@@ -5,7 +5,7 @@ export const fetchDashboardStart = () => (
         type: FETCH_DASHBOARD_START,
     });
 
-export const fetchDashboardSuccess = (triggers, tags, gauges, timeSeries,middleGauges,rightGauges, seeqs) => (
+export const fetchDashboardSuccess = (triggers, tags, gauges, timeSeries,middleGauges,rightGauges,leftGauges, seeqs) => (
     {
         type: FETCH_DASHBOARD_SUCCESS,
         payload: {
@@ -15,6 +15,7 @@ export const fetchDashboardSuccess = (triggers, tags, gauges, timeSeries,middleG
             timeSeries,
             middleGauges,
             rightGauges,
+            leftGauges,
             seeqs,
         }
     });

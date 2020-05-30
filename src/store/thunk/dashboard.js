@@ -7,9 +7,11 @@ export const fetchDashboard = (systemId) => (
     async (dispatch) => {
         dispatch(fetchDashboardStart());
         try {
-            const {admin, triggers, tags, gauges, timeSeries,middleGauges,rightGauges, seeqs} = await fetchDashboardApi(systemId);
+            const {
+                admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs
+            } = await fetchDashboardApi(systemId);
             dispatch(setAdminStatus(admin));
-            dispatch(fetchDashboardSuccess(triggers, tags, gauges, timeSeries,middleGauges,rightGauges, seeqs));
+            dispatch(fetchDashboardSuccess(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs));
         } catch (err) {
             dispatch(fetchDashboardFail(err));
         }

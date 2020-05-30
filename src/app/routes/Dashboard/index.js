@@ -5,6 +5,7 @@ import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import TitleCard from 'app/components/TitleCard';
 import Speedometer from './Speedometer';
+import CardHeader from "app/components/CardHeader";
 import {fetchDashboard} from "store/thunk/dashboard";
 import MultiYChart from "./MultiYChart";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
@@ -19,20 +20,25 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, gauges, timeSeries, middleGauges,
-            rightGauges, seeqs, fetching, error, selectedSystem
+            match, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs, fetching,
+            error, selectedSystem
         } = this.props;
 
         const chart =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
                 <div className="jr-card">
-                    {timeSeries.length !== 0 ? <MultiYChart data={timeSeries[0].tags.map(tag => tag.tagTimeValues)}
-                                                            xData={timeSeries[0].times}
-                                                            showYLabels={true}
-                                                            title={'Custom Title'}
-                                                            yLabels={timeSeries[0].tags.map(tag => tag.tagId)}
-                                                            colors={['#2196f3', '#ff6e40', '#ff6e40']}/>
-                        : null}
+                    {timeSeries.map((timeSeries) => {
+                        const {placement, startDate, endDate, times} = timeSeries;
+                        return (
+                            <MultiYChart data={timeSeries.tags.map(tag => tag.tagTimeValues)}
+                                         xData={times}
+                                         showYLabels={true}
+                                         title={'Custom Title'}
+                                         yLabels={timeSeries.tags.map(tag => tag.tagId)}
+                                         colors={['#2196f3', '#ff6e40', '#ff6e40']}
+                                         key={placement}/>);
+                    })
+                    }
                 </div>
             </div>;
 
@@ -103,6 +109,7 @@ const mapStateToProps = ({dashboard, systems}) => {
         timeSeries: dashboard.timeSeries,
         middleGauges: dashboard.middleGauges,
         rightGauges: dashboard.rightGauges,
+        leftGauges: dashboard.leftGauges,
         seeqs: dashboard.seeqs,
         fetching: dashboard.fetching,
         error: dashboard.error,
