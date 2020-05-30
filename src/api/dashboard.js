@@ -12,6 +12,7 @@ const SEEQ = 'Seeq';
 export const fetchDashboardApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
+        console.log(response)
         camelizeObjectKeys(response.data);
         camelizeArrayOfObjects(response.data.widgets);
         const {admin, widgets} = response.data;

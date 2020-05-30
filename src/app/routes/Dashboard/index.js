@@ -11,8 +11,10 @@ import CircularIndeterminate from "../../components/Progress/CircularIndetermina
 
 class Dashboard extends Component {
     componentDidMount() {
-        const {selectedSystem} = this.props;
-        this.props.onFetchDashboard(selectedSystem);
+        const {location} = this.props;
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
+        this.props.onFetchDashboard(sysId);
     }
 
     render() {
@@ -21,28 +23,16 @@ class Dashboard extends Component {
             rightGauges, seeqs, fetching, error, selectedSystem
         } = this.props;
 
-        let helper = null;
-        let data = null;
-        let xData = null;
-        let yLabels = null;
-
-        if (!fetching && !error) {
-            helper = timeSeries[0];
-            data = [helper.tags[0].tagTimeValues, helper.tags[1].tagTimeValues];
-            xData = helper.times;
-            yLabels = [helper.tags[0].tagId, helper.tags[1].tagId];
-        }
-
-
         const chart =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
                 <div className="jr-card">
-                    <MultiYChart data={data}
-                                 xData={xData}
-                                 showYLabels={true}
-                                 title={'Custom Title'}
-                                 yLabels={yLabels}
-                                colors={['#008FFB','#00E396','#FEB019']}/>
+                    {timeSeries.length !== 0 ? <MultiYChart data={timeSeries[0].tags.map(tag => tag.tagTimeValues)}
+                                                            xData={timeSeries[0].times}
+                                                            showYLabels={true}
+                                                            title={'Custom Title'}
+                                                            yLabels={timeSeries[0].tags.map(tag => tag.tagId)}
+                                                            colors={['#008FFB', '#00E396', '#FEB019']}/>
+                        : null}
                 </div>
             </div>;
 
@@ -100,8 +90,7 @@ class Dashboard extends Component {
                 {/*    </div>*/}
                 {/*</div>*/}
             </div>
-        )
-            ;
+        );
     }
 }
 

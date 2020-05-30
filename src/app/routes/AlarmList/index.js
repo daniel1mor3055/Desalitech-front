@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
-import {fetchAlarms,setEmailNotification} from 'store/thunk/alarmsList';
+import {fetchAlarms, setEmailNotification} from 'store/thunk/alarmsList';
 import ContainerHeader from 'components/ContainerHeader';
 import SearchBox from "components/SearchBox";
 import CardHeader from 'app/components/CardHeader';
@@ -18,9 +18,9 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {location} = this.props
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onFetchAlarms(sysId);
     }
 
@@ -45,7 +45,7 @@ class AlarmList extends PureComponent {
         event.preventDefault();
         const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onSetEmailNotification(sysId, checked);
     };
 
