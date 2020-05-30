@@ -8,7 +8,7 @@ import Speedometer from './Speedometer';
 import CardHeader from "app/components/CardHeader";
 import {fetchDashboard} from "store/thunk/dashboard";
 import MultiYChart from "./MultiYChart";
-import TimePickers from "app/components/TimePicker";
+import TimePickers from "app/components/Pickers/TimePickers";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
