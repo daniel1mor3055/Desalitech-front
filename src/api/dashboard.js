@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeArrayOfObjects, camelizeObjectKeys} from './utils';
+import {camelize, camelizeArrayOfObjects, camelizeObjectKeys, camelizeObjectOfObjectKeys} from './utils';
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -16,8 +16,9 @@ export const fetchDashboardApi = async (systemId) => {
         camelizeObjectKeys(response.data);
         camelizeArrayOfObjects(response.data.widgets);
         const {admin, widgets} = response.data;
-        const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges,leftGauges, seeqs} = getWidgetsByType(widgets);
-        return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges,leftGauges, seeqs};
+        const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
+        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
+        return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);
         throw err;
@@ -104,55 +105,27 @@ function extractSeeq(widget) {
 }
 
 function extractGauge(widget) {
-    const {gaugeData,tags,placement} = widget;
-    const {
-        tag1, tag1Name, tag1Value, tag1Units, tag2, tag2Name, tag2Value, tag2Units, tag3, tag3Name, tag3Value,
-        tag3Units, lLName, lLUnits, lLValue, lName, lUnits, lValue, hName, hUnits, hValue, hHName, hHUnits, hHValue,
-    } = widget;
+    const {gaugeData, tags, placement} = widget;
+    camelizeArrayOfObjects(tags);
+    camelizeObjectKeys(gaugeData);
+    camelizeObjectKeys(gaugeData.lL);
+    camelizeObjectKeys(gaugeData.l);
+    camelizeObjectKeys(gaugeData.h);
+    camelizeObjectKeys(gaugeData.hH);
+    const {lL, l, h, hH} = gaugeData;
 
-    let tags = [
-        {
-            tagId: tag1,
-            tagName: tag1Name,
-            tagValue: tag1Value,
-            tagUnits: tag1Units,
-        }, {
-            tagId: tag2,
-            tagName: tag2Name,
-            tagValue: tag2Value,
-            tagUnits: tag2Units,
-        }, {
-            tagId: tag3,
-            tagName: tag3Name,
-            tagValue: tag3Value,
-            tagUnits: tag3Units,
-        },
-    ];
-    tags = tags.filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
-
-    const lL = {
-        name: lLName,
-        units: lLUnits,
-        value: lLValue,
-    };
-    const l = {
-        name: lName,
-        units: lUnits,
-        value: lValue,
-    };
-    const h = {
-        name: hName,
-        units: hUnits,
-        value: hValue,
-    };
-    const hH = {
-        name: hHName,
-        units: hHUnits,
-        value: hHValue,
-    };
+    const newTags = tags.map((tag, index) => {
+        return {
+            tagId: tag[`tag${index + 1}`],
+            tagName: tag[`tag${index + 1}Name`],
+            tagValue: tag[`tag${index + 1}Value`],
+            tagUnits: tag[`tag${index + 1}Units`],
+        };
+    }).filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
 
     return {
-        tags,
+        tags: newTags,
+        placement,
         lL,
         l,
         h,
@@ -161,8 +134,13 @@ function extractGauge(widget) {
 }
 
 function extractTrigger(widget) {
-    const {tag1, tag1Name, tag1Value, tag1Units, tag2, tag2Name, tag2Value, tag2Units} = widget;
+    const {tags, placement} = widget;
+    camelizeArrayOfObjects(tags);
+
+    const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
+    const {tag2, tag2Name, tag2Value, tag2Units} = tags[1];
     return {
+        placement,
         tag: {
             tagId: tag1,
             tagName: tag1Name,
@@ -174,54 +152,41 @@ function extractTrigger(widget) {
             tagName: tag2Name,
             tagValue: tag2Value,
             tagUnits: tag2Units,
-        }
+        },
     };
 }
 
 function extractTimeSeries(widget) {
-    const {
-        tag1, tag1Name, tag1Value, tag1Units, tag2, tag2Name, tag2Value, tag2Units,
-        tag3, tag3Name, tag3Value, tag3Units, startDate, endDate, influxData
-    } = widget;
+    const {placement, startDate, endDate, tags, influxData} = widget;
+    camelizeArrayOfObjects(tags);
     camelizeArrayOfObjects(influxData);
 
-    let tags = [
-        {
-            tagId: tag1,
-            tagName: tag1Name,
-            tagValue: tag1Value,
-            tagUnits: tag1Units,
+    const newTags = tags.map((tag, index) => {
+        return {
+            tagId: tag[`tag${index + 1}`],
+            tagName: tag[`tag${index + 1}Name`],
+            tagValue: tag[`tag${index + 1}Value`],
+            tagUnits: tag[`tag${index + 1}Units`],
             tagTimeValues: [],
-        }, {
-            tagId: tag2,
-            tagName: tag2Name,
-            tagValue: tag2Value,
-            tagUnits: tag2Units,
-            tagTimeValues: [],
-        }, {
-            tagId: tag3,
-            tagName: tag3Name,
-            tagValue: tag3Value,
-            tagUnits: tag3Units,
-            tagTimeValues: [],
-        },
-    ];
-    tags = tags.filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
+        };
+    }).filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
+
 
     const times = [];
     for (let i = 0; i < influxData.length; i++) {
         times.push(influxData[i].time);
-        for (let j = 0; j < tags.length; j++) {
-            tags[j].tagTimeValues.push(influxData[i][`tag${j + 1}`]);
+        for (let j = 0; j < newTags.length; j++) {
+            newTags[j].tagTimeValues.push(influxData[i][`tag${j + 1}`]);
         }
     }
 
-    tags.forEach(tag => {
+    newTags.forEach(tag => {
         interpolateData(tag.tagTimeValues);
     });
 
     return {
-        tags,
+        tags: newTags,
+        placement,
         times,
         startDate,
         endDate,
@@ -229,15 +194,15 @@ function extractTimeSeries(widget) {
 }
 
 function extractTag(widget) {
-    const {tag1, tag1Name, tag1Value, tag1Units} = widget;
+    const {tags} = widget;
+    camelizeArrayOfObjects(tags);
+    const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
 
     return {
-        tag: {
-            tagId: tag1,
-            tagName: tag1Name,
-            tagValue: tag1Value,
-            tagUnits: tag1Units,
-        }
+        tagId: tag1,
+        tagName: tag1Name,
+        tagValue: tag1Value,
+        tagUnits: tag1Units,
     };
 }
 

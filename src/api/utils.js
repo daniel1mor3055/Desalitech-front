@@ -17,6 +17,7 @@ export const camelizeObjectKeys = (object) => {
     }
 };
 
+
 export const camelizeArrayOfObjects = (arrayOfObjects) => {
     arrayOfObjects.forEach((object) => {
         camelizeObjectKeys(object);
