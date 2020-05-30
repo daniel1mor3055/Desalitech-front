@@ -8,7 +8,10 @@ import Speedometer from './Speedometer';
 import CardHeader from "app/components/CardHeader";
 import {fetchDashboard} from "store/thunk/dashboard";
 import MultiYChart from "./MultiYChart";
+import TimePickers from "app/components/TimePicker";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -30,13 +33,33 @@ class Dashboard extends Component {
                     {timeSeries.map((timeSeries) => {
                         const {placement, startDate, endDate, times} = timeSeries;
                         return (
-                            <MultiYChart data={timeSeries.tags.map(tag => tag.tagTimeValues)}
-                                         xData={times}
-                                         showYLabels={true}
-                                         title={'Custom Title'}
-                                         yLabels={timeSeries.tags.map(tag => tag.tagId)}
-                                         colors={['#2196f3', '#ff6e40', '#ff6e40']}
-                                         key={placement}/>);
+                            <>
+                                <FormControlLabel
+                                    control={
+                                        <TimePickers/>
+                                    }
+                                    label="Start Time"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <TimePickers/>
+                                    }
+                                    label="End Time"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <TimePickers/>
+                                    }
+                                    label="Date"
+                                />
+                                <MultiYChart data={timeSeries.tags.map(tag => tag.tagTimeValues)}
+                                             xData={times}
+                                             showYLabels={true}
+                                             title={'Custom Title'}
+                                             yLabels={timeSeries.tags.map(tag => tag.tagId)}
+                                             colors={['#2196f3', '#ff6e40', '#ff6e40']}
+                                             key={placement}/>
+                            </>);
                     })
                     }
                 </div>
