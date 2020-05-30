@@ -7,6 +7,7 @@ const TIME_SERIES = 'Time Series';
 const GAUGE = 'Gauge';
 const MIDDLE_GAUGE = 'MiddleGauge';
 const RIGHT_GAUGE = 'RightGauge';
+const LEFT_GAUGE = 'LeftGauge';
 const SEEQ = 'Seeq';
 
 export const fetchDashboardApi = async (systemId) => {
@@ -15,8 +16,8 @@ export const fetchDashboardApi = async (systemId) => {
         camelizeObjectKeys(response.data);
         camelizeArrayOfObjects(response.data.widgets);
         const {admin, widgets} = response.data;
-        const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, seeqs} = getWidgetsByType(widgets);
-        return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, seeqs};
+        const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges,leftGauges, seeqs} = getWidgetsByType(widgets);
+        return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges,leftGauges, seeqs};
     } catch (err) {
         console.log(err);
         throw err;
@@ -31,6 +32,7 @@ function getWidgetsByType(widgets) {
     let timeSeries = [];
     let middleGauges = [];
     let rightGauges = [];
+    let leftGauges = [];
     let seeqs = [];
     for (let i = 0; i < widgets.length; i++) {
         const {widgetType} = widgets[i];
@@ -53,6 +55,9 @@ function getWidgetsByType(widgets) {
             case RIGHT_GAUGE:
                 rightGauges.push(extractRelevantData(widgets[i], GAUGE));
                 break;
+            case LEFT_GAUGE:
+                leftGauges.push(extractRelevantData(widgets[i], GAUGE));
+                break;
             case SEEQ:
                 seeqs.push(extractRelevantData(widgets[i], SEEQ));
                 break;
@@ -67,6 +72,7 @@ function getWidgetsByType(widgets) {
         timeSeries,
         middleGauges,
         rightGauges,
+        leftGauges,
         seeqs,
     };
 }
@@ -90,13 +96,15 @@ function extractRelevantData(widget, widgetType) {
 
 
 function extractSeeq(widget) {
-    const {detail1} = widget;
+    const {placement, extraData} = widget;
     return {
-        url: detail1,
+        placement: placement,
+        url: extraData,
     };
 }
 
 function extractGauge(widget) {
+    const {gaugeData,tags,placement} = widget;
     const {
         tag1, tag1Name, tag1Value, tag1Units, tag2, tag2Name, tag2Value, tag2Units, tag3, tag3Name, tag3Value,
         tag3Units, lLName, lLUnits, lLValue, lName, lUnits, lValue, hName, hUnits, hValue, hHName, hHUnits, hHValue,

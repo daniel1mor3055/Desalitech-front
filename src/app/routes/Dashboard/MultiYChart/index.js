@@ -15,7 +15,7 @@ class MultiYChart extends Component {
                     tools: {
                         download: true,
                         selection: true,
-                        zoom: false,
+                        zoom: true,
                         zoomin: false,
                         zoomout: false,
                         pan: false,
@@ -72,9 +72,6 @@ class MultiYChart extends Component {
             )),
             options: {
                 ...state.options,
-                chart: {
-                    ...state.options.chart,
-                },
                 title: {
                     ...state.options.title,
                     text: title
