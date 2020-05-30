@@ -1,12 +1,10 @@
 import axios from 'axios';
-import {camelizeArrayOfObjects, camelizeObjectKeys} from './utils';
+import {camelizeJson} from './utils';
 
 export const fetchPollingApi = async () => {
     try {
         const response = await axios.get('/polling');
-        camelizeObjectKeys(response.data);
-        camelizeArrayOfObjects(response.data.activeAlarms);
-        camelizeArrayOfObjects(response.data.systemsStatus);
+        camelizeJson(response.data);
         response.data.activeAlarms.forEach(activeAlarm => {
             const {alarmId, timeStamp, sysId} = activeAlarm;
             activeAlarm.id = alarmId + timeStamp + sysId;

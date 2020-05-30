@@ -1,11 +1,10 @@
 import axios from 'axios';
-import {camelizeArrayOfObjects, camelizeObjectKeys, capitalizeObjectKeys} from "./utils";
+import {camelizeJson, capitalizeObjectKeys} from "./utils";
 
 export const fetchTagsApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/tag-list?SysId=${systemId}`);
-        camelizeObjectKeys(response.data);
-        camelizeArrayOfObjects(response.data.tags);
+        camelizeJson(response.data);
         return response.data;
     } catch (err) {
         console.log(err);

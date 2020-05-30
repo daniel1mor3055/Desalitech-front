@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelize, camelizeArrayOfObjects, camelizeObjectKeys, camelizeObjectOfObjectKeys} from './utils';
+import {camelizeJson} from './utils';
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -13,11 +13,11 @@ const SEEQ = 'Seeq';
 export const fetchDashboardApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
-        camelizeObjectKeys(response.data);
-        camelizeArrayOfObjects(response.data.widgets);
+        console.log(response);
+        camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
+        // console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);
@@ -106,12 +106,6 @@ function extractSeeq(widget) {
 
 function extractGauge(widget) {
     const {gaugeData, tags, placement} = widget;
-    camelizeArrayOfObjects(tags);
-    camelizeObjectKeys(gaugeData);
-    camelizeObjectKeys(gaugeData.lL);
-    camelizeObjectKeys(gaugeData.l);
-    camelizeObjectKeys(gaugeData.h);
-    camelizeObjectKeys(gaugeData.hH);
     const {lL, l, h, hH} = gaugeData;
 
     const newTags = tags.map((tag, index) => {
@@ -135,7 +129,6 @@ function extractGauge(widget) {
 
 function extractTrigger(widget) {
     const {tags, placement} = widget;
-    camelizeArrayOfObjects(tags);
 
     const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
     const {tag2, tag2Name, tag2Value, tag2Units} = tags[1];
@@ -158,8 +151,6 @@ function extractTrigger(widget) {
 
 function extractTimeSeries(widget) {
     const {placement, startDate, endDate, tags, influxData} = widget;
-    camelizeArrayOfObjects(tags);
-    camelizeArrayOfObjects(influxData);
 
     const newTags = tags.map((tag, index) => {
         return {
@@ -195,7 +186,6 @@ function extractTimeSeries(widget) {
 
 function extractTag(widget) {
     const {tags} = widget;
-    camelizeArrayOfObjects(tags);
     const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
 
     return {

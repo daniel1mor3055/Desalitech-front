@@ -1,11 +1,10 @@
 import axios from 'axios';
-import {camelizeArrayOfObjects, camelizeObjectKeys, capitalizeObjectKeys} from './utils';
+import {camelizeJson, capitalizeObjectKeys} from './utils';
 
 export const fetchAlarmsApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/alarm-list?SysId=${systemId}`);
-        camelizeObjectKeys(response.data);
-        camelizeArrayOfObjects(response.data.alarms);
+        camelizeJson(response.data);
         response.data.alarms.forEach(alarm => {
             const {alarmId, timeStamp} = alarm;
             alarm.id = alarmId + timeStamp;
