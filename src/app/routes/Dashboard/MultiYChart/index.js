@@ -7,7 +7,23 @@ class MultiYChart extends Component {
     state = {
         options: {
             chart: {
-                stacked: false
+                stacked: false,
+                toolbar: {
+                    show: true,
+                    offsetX: -30,
+                    offsetY: 0,
+                    tools: {
+                        download: true,
+                        selection: true,
+                        zoom: false,
+                        zoomin: false,
+                        zoomout: false,
+                        pan: false,
+                        reset: true | '<img src="/static/icons/reset.png" width="20">',
+                        customIcons: []
+                    },
+                    autoSelected: 'zoom'
+                },
             },
             dataLabels: {
                 enabled: false
@@ -28,13 +44,16 @@ class MultiYChart extends Component {
                 fixed: {
                     enabled: true,
                     position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-                    offsetY: 30,
-                    offsetX: 60
+                    offsetY: -70,
+                    offsetX: -30,
                 },
             },
             legend: {
-                horizontalAlign: 'left',
-                offsetX: 40
+                horizontalAlign: 'center',
+                offsetX: 0,
+                onItemClick: {
+                    toggleDataSeries: true
+                },
             }
         },
         series: []
@@ -43,6 +62,7 @@ class MultiYChart extends Component {
     static getDerivedStateFromProps = (props, state) => {
         const {title, xData, data, yLabels, showYLabels, colors} = props;
         return {
+            ...state,
             series: yLabels.map((yLabel, index) => (
                 {
                     name: yLabel,
@@ -52,6 +72,9 @@ class MultiYChart extends Component {
             )),
             options: {
                 ...state.options,
+                chart: {
+                    ...state.options.chart,
+                },
                 title: {
                     ...state.options.title,
                     text: title
@@ -74,14 +97,17 @@ class MultiYChart extends Component {
                         labels: {
                             style: {
                                 colors: colors[index]
-                            }
+                            },
+                            formatter: function(val, index) {
+                                return val.toFixed(2);
+                            },
                         },
-                        title: {
-                            text: yLabel,
-                            style: {
-                                color: colors[index]
-                            }
-                        },
+                        // title: {
+                        //     text: yLabel,
+                        //     style: {
+                        //         color: colors[index]
+                        //     },
+                        // },
                         tooltip: {
                             enabled: true
                         }
