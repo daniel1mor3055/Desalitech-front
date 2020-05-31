@@ -1,11 +1,18 @@
-import {FETCH_DASHBOARD_START, FETCH_DASHBOARD_SUCCESS, FETCH_DASHBOARD_FAIL} from '../actionTypes/dashboard';
+import {
+    FETCH_DASHBOARD_START,
+    FETCH_DASHBOARD_SUCCESS,
+    FETCH_DASHBOARD_FAIL,
+    SET_DATES_FAIL,
+    SET_DATES_START,
+    SET_DATES_SUCCESS
+} from '../actionTypes/dashboard';
 
 export const fetchDashboardStart = () => (
     {
         type: FETCH_DASHBOARD_START,
     });
 
-export const fetchDashboardSuccess = (triggers, tags, gauges, timeSeries,middleGauges,rightGauges,leftGauges, seeqs) => (
+export const fetchDashboardSuccess = (triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs) => (
     {
         type: FETCH_DASHBOARD_SUCCESS,
         payload: {
@@ -29,3 +36,23 @@ export const fetchDashboardFail = (error) => (
     });
 
 
+export const setDatesStart = () => (
+    {
+        type: SET_DATES_START,
+    });
+
+export const setDatesSuccess = (timeSeries) => (
+    {
+        type: SET_DATES_SUCCESS,
+        payload: {
+            timeSeries,
+        }
+    });
+
+export const setDatesFail = (error) => (
+    {
+        type: SET_DATES_FAIL,
+        payload: {
+            error
+        }
+    });

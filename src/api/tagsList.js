@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeObjectKeys} from "./utils";
+import {camelizeJson, capitalizeJson} from "./utils";
 
 export const fetchTagsApi = async (systemId) => {
     try {
@@ -18,7 +18,7 @@ export const postTagApi = async (systemId, tagData) => {
             sysId: systemId,
             ...tagData
         };
-        capitalizeObjectKeys(tagDataToPass);
+        capitalizeJson(tagDataToPass);
         const response = await axios.post(`/system/tag-list`, tagDataToPass);
         return response;
     } catch (err) {

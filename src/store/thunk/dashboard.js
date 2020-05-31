@@ -1,5 +1,5 @@
-import {fetchDashboardApi} from 'api/dashboard';
-import {fetchDashboardFail, fetchDashboardStart, fetchDashboardSuccess} from '../actions/dashboard';
+import {fetchDashboardApi,setDatesApi} from 'api/dashboard';
+import {fetchDashboardFail, fetchDashboardStart, fetchDashboardSuccess,setDatesFail,setDatesStart,setDatesSuccess} from '../actions/dashboard';
 import {setAdminStatus} from "../actions/admin";
 
 
@@ -14,5 +14,17 @@ export const fetchDashboard = (systemId) => (
             dispatch(fetchDashboardSuccess(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs));
         } catch (err) {
             dispatch(fetchDashboardFail(err));
+        }
+    });
+
+
+export const setDates = (timeSeries,sysId) => (
+    async (dispatch) => {
+        dispatch(setDatesStart());
+        try {
+            const response = await setDatesApi(timeSeries,sysId);
+            dispatch(setDatesSuccess(timeSeries));
+        } catch (err) {
+            dispatch(setDatesFail(err));
         }
     });

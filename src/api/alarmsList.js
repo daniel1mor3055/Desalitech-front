@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeObjectKeys} from './utils';
+import {camelizeJson, capitalizeJson} from './utils';
 
 export const fetchAlarmsApi = async (systemId) => {
     try {
@@ -23,7 +23,7 @@ export const setEmailNotificationApi = async (systemId, emailNotification) => {
             sysId: systemId,
             emailNotification: emailNotification ? 'true' : 'false',
         };
-        capitalizeObjectKeys(dataToPass);
+        capitalizeJson(dataToPass);
         const response = await axios.post(`/system/alarm-list`, dataToPass);
         return response;
     } catch (err) {

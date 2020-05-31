@@ -34,6 +34,19 @@ export const capitalizeObjectKeys = (object) => {
     }
 };
 
+export const capitalizeJson = (someObject) => {
+    if (someObject && Array.isArray(someObject)) {
+        someObject.forEach((elem) => capitalizeJson(elem));
+    } else if (someObject && typeof someObject === 'object' && someObject !== null) {
+        capitalizeObjectKeys(someObject);
+        for (let property in someObject) {
+            if (someObject.hasOwnProperty(property)) {
+                capitalizeJson(someObject[property]);
+            }
+        }
+    }
+};
+
 export const camelizeJson = (someObject) => {
     if (someObject && Array.isArray(someObject)) {
         someObject.forEach((elem) => camelizeJson(elem));

@@ -22,9 +22,9 @@ class TagList extends Component {
     };
 
     componentDidMount() {
-        const {location} = this.props
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onFetchTags(sysId);
     }
 
@@ -41,9 +41,9 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {location} = this.props
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onPostTag(sysId, values);
     };
 

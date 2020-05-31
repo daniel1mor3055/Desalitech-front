@@ -31,11 +31,6 @@ class MultiYChart extends Component {
             stroke: {
                 width: [4, 4, 4]
             },
-            title: {
-                text: '',
-                align: 'center',
-                offsetX: 0
-            },
             xaxis: {
                 categories: [],
             },
@@ -60,7 +55,7 @@ class MultiYChart extends Component {
     };
 
     static getDerivedStateFromProps = (props, state) => {
-        const {title, xData, data, yLabels, showYLabels, colors} = props;
+        const {xData, data, yLabels, showYLabels, colors} = props;
         return {
             ...state,
             series: yLabels.map((yLabel, index) => (
@@ -72,10 +67,6 @@ class MultiYChart extends Component {
             )),
             options: {
                 ...state.options,
-                title: {
-                    ...state.options.title,
-                    text: title
-                },
                 xaxis: {
                     ...state.options.xaxis,
                     categories: xData
@@ -99,12 +90,6 @@ class MultiYChart extends Component {
                                 return val.toFixed(2);
                             },
                         },
-                        // title: {
-                        //     text: yLabel,
-                        //     style: {
-                        //         color: colors[index]
-                        //     },
-                        // },
                         tooltip: {
                             enabled: true
                         }
@@ -126,13 +111,11 @@ class MultiYChart extends Component {
 }
 
 MultiYChart.propTypes = {
-    title: PropTypes.string.isRequired,
     xData: PropTypes.array.isRequired,
     data: PropTypes.arrayOf(PropTypes.array).isRequired, // [[data_of_y1],[data_of_y2],...]
     yLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
     colors: PropTypes.arrayOf(PropTypes.any).isRequired,
     showYLabels: PropTypes.bool,
-
 };
 
 export default MultiYChart;

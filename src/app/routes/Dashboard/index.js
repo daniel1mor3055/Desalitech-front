@@ -1,21 +1,32 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 
+import 'react-dates/initialize';
+import 'bootstrap/dist/css/bootstrap-grid.min.css';
+import 'react-dates/lib/css/_datepicker.css';
+import {DateRangePicker} from 'react-dates';
+
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import TitleCard from 'app/components/TitleCard';
 import Speedometer from './Speedometer';
 import CardHeader from "app/components/CardHeader";
 import {fetchDashboard} from "store/thunk/dashboard";
-import MultiYChart from "./MultiYChart";
-import TimePickers from "app/components/Pickers/TimePickers";
+import MultiYChart from "./TimeSeries/MultiYChart";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import DateAndTimePickers from "../../components/Pickers/DateAndTimePickers";
 import Button from "@material-ui/core/Button";
+import TimeSeries from './TimeSeries';
 
 class Dashboard extends Component {
+    // constructor(props) {
+    //     super(props);
+    //
+    //     this.state = {
+    //         startDate: null,
+    //         endDate: null,
+    //     };
+    // }
+
     componentDidMount() {
         const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
@@ -29,43 +40,20 @@ class Dashboard extends Component {
             error, selectedSystem
         } = this.props;
 
-        const chart =
+
+        const timeSeriesJSX =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
-                <div className="jr-card">
-                    {timeSeries.map((timeSeries) => {
-                        const {placement, startDate, endDate, times} = timeSeries;
-                        return (
-                            <>
-                                <Button className="jr-btn" color="primary">1 Year</Button>
-                                <Button className="jr-btn" color="primary">6 Months</Button>
-                                <Button className="jr-btn" color="primary">1 Month</Button>
-                                <Button className="jr-btn" color="primary">1 Week</Button>
-                                <Button className="jr-btn" color="primary">1 Day</Button>
-                                <FormControlLabel
-                                    control={
-                                        <DateAndTimePickers/>
-                                    }
-                                    label="Start Time"
-                                    labelPlacement = 'start'
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <DateAndTimePickers/>
-                                    }
-                                    label="End Time"
-                                    labelPlacement = 'start'
-                                />
-                                <MultiYChart data={timeSeries.tags.map(tag => tag.tagTimeValues)}
-                                             xData={times}
-                                             showYLabels={true}
-                                             title={'Custom Title'}
-                                             yLabels={timeSeries.tags.map(tag => tag.tagId)}
-                                             colors={['#2196f3', '#ff6e40', '#ff6e40']}
-                                             key={placement}/>
-                            </>);
-                    })
-                    }
-                </div>
+                {timeSeries.map((timeSeries) => {
+                    const {startDate, endDate, times, tags, placement} = timeSeries;
+                    return (
+                        <TimeSeries
+                            startDate={startDate}
+                            endDate={endDate}
+                            tags={tags}
+                            times={times}
+                            placement={placement}
+                            key={placement}/>);
+                })}
             </div>;
 
         return (
@@ -77,7 +65,7 @@ class Dashboard extends Component {
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch chart"}</p> : <CircularIndeterminate/>
-                    : chart}
+                    : timeSeriesJSX}
 
                 {/*<div className="row mb-md-3">*/}
                 {/*    <div className="col-lg-3 col-sm-6 col-12">*/}

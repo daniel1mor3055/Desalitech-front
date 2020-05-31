@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {camelizeJson} from './utils';
+import moment from "moment";
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -9,6 +10,7 @@ const MIDDLE_GAUGE = 'MiddleGauge';
 const RIGHT_GAUGE = 'RightGauge';
 const LEFT_GAUGE = 'LeftGauge';
 const SEEQ = 'Seeq';
+const DATE_FORMAT = 'DD-MM HH:mm';
 
 export const fetchDashboardApi = async (systemId) => {
     try {
@@ -24,6 +26,43 @@ export const fetchDashboardApi = async (systemId) => {
     }
 };
 
+export const setDatesApi = async (timeSeries, sysId) => {
+    const dataToPost = manipulateTimeSeries(timeSeries, sysId);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        console.log(response)
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+function manipulateTimeSeries(timeSeries, sysId) {
+    const {startDate, endDate, tags, placement} = timeSeries;
+    let backTags = tags.map((tag, index) => {
+        const {tagId} = tag;
+        return {
+            [`Tag${index + 1}`]: tagId,
+        };
+    });
+
+    for (let i = tags.length; i < 3; i++) {
+        backTags.push({
+            [`Tag${i + 1}`]: ''
+        });
+    }
+
+    return {
+        sysId,
+        tags: backTags,
+        widgetType: 'Time Series',
+        placement,
+        header: '',
+        calculation: '',
+        startDate,
+        endDate,
+    };
+}
 
 function getWidgetsByType(widgets) {
     let triggers = [];
@@ -164,7 +203,7 @@ function extractTimeSeries(widget) {
 
     const times = [];
     for (let i = 0; i < influxData.length; i++) {
-        times.push(influxData[i].time);
+        times.push(moment.utc(influxData[i].time).local().format(DATE_FORMAT));
         for (let j = 0; j < newTags.length; j++) {
             newTags[j].tagTimeValues.push(influxData[i][`tag${j + 1}`]);
         }
@@ -174,12 +213,13 @@ function extractTimeSeries(widget) {
         interpolateData(tag.tagTimeValues);
     });
 
+
     return {
         tags: newTags,
         placement,
         times,
-        startDate,
-        endDate,
+        startDate: moment.utc(moment.unix(startDate)).local(), // Dates are being saved as moment object local time
+        endDate: moment.utc(moment.unix(endDate)).local(), // Dates are being saved as moment object local time
     };
 }
 
