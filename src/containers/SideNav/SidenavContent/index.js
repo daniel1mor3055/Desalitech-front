@@ -7,51 +7,17 @@ import SidenavItem from '../SidenavItems/SidenavItem';
 
 
 class SidenavContent extends Component {
-    static activeLi = (pathname) => {
+    activeLi = (pathname) => {
         const activeLi = document.querySelector('a[href="' + pathname + '"]');
         try {
-            const activeNav = SidenavContent.closest(activeLi, 'ul');
+            const activeNav = this.closest(activeLi, 'ul');
             if (activeNav.classList.contains('sub-menu')) {
-                SidenavContent.closest(activeNav, 'li').classList.add('open');
+                this.closest(activeNav, 'li').classList.add('open');
             } else {
-                SidenavContent.closest(activeLi, 'li').classList.add('open');
+                this.closest(activeLi, 'li').classList.add('open');
             }
         } catch (error) {
         }
-    };
-
-    static closest(el, selector) {
-        try {
-            let matchesFn;
-            ['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector'].some(function (fn) {
-                if (typeof document.body[fn] === 'function') {
-                    matchesFn = fn;
-                    return true;
-                }
-                return false;
-            });
-
-            let parent;
-
-            while (el) {
-                parent = el.parentElement;
-                if (parent && parent[matchesFn](selector)) {
-                    return parent;
-                }
-                el = parent;
-            }
-        } catch (e) {
-
-        }
-
-        return null;
-    }
-
-    static getDerivedStateFromProps = (props, state) => {
-        const {history} = props;
-        const pathname = `${history.location.pathname}`;
-
-        SidenavContent.activeLi(pathname);
     };
 
     componentDidMount() {
@@ -89,9 +55,42 @@ class SidenavContent extends Component {
             };
         }
 
-        SidenavContent.activeLi(pathname);
+        this.activeLi(pathname);
     }
 
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
+        const {history} = nextProps;
+        const pathname = `${history.location.pathname}`;
+
+        this.activeLi(pathname);
+    }
+
+    closest(el, selector) {
+        try {
+            let matchesFn;
+            ['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector'].some(function (fn) {
+                if (typeof document.body[fn] === 'function') {
+                    matchesFn = fn;
+                    return true;
+                }
+                return false;
+            });
+
+            let parent;
+
+            while (el) {
+                parent = el.parentElement;
+                if (parent && parent[matchesFn](selector)) {
+                    return parent;
+                }
+                el = parent;
+            }
+        } catch (e) {
+
+        }
+
+        return null;
+    }
 
     render() {
         const {location} = this.props;
