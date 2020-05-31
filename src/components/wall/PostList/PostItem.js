@@ -47,9 +47,9 @@ class PostItem extends Component {
     }
   }
 
-  componentWillMount() {
-    this.setState({post: this.props.postData, user: this.props.user})
-  }
+  // componentWillMount() {
+  //   this.setState({post: this.props.postData, user: this.props.user})
+  // }
 
   updateCommentValue(evt) {
     this.setState({

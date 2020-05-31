@@ -17,7 +17,9 @@ import blueTheme from './themes/blueTheme';
 class App extends Component {
     static contextType = Auth0Context;
 
-    componentWillMount() {
+    constructor(props) {
+        super(props);
+
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
     }
 

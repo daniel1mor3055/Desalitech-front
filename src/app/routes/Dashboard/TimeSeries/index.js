@@ -90,9 +90,9 @@ class TimeSeries extends Component {
                         onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
                 <DateRangePicker
                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                    startDateId={placement.toString()} // PropTypes.string.isRequired,
+                    startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                    endDateId={placement.toString()} // PropTypes.string.isRequired,
+                    endDateId={'endDate' + placement.toString()} // PropTypes.string.isRequired,
                     onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={focusedInput => this.setState({focusedInput})} // PropTypes.func.isRequired,
