@@ -31,15 +31,16 @@ class SystemsAndLiveAlarms extends React.Component {
     componentDidMount() {
         this.props.onFetchSystems();
         this.props.onFetchPolling();
-        this.dataPolling = setInterval(
+        const dataPolling = setInterval(
             () => {
                 this.props.onFetchPolling();
             },
             30000);
+        this.setState({dataPolling})
     }
 
     componentWillUnmount() {
-        clearInterval(this.dataPolling);
+        clearInterval(this.state.dataPolling);
     }
 
     updateSearchText(evt) {
