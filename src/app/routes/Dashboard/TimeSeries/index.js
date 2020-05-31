@@ -32,7 +32,7 @@ class TimeSeries extends Component {
         });
     };
 
-    handleRangePick = (startDate, endDate) => {
+    handleRangePick = ({startDate, endDate}) => {
         if (endDate === this.state.endDate) {
             this.setState({startDate});
             return null;
@@ -92,9 +92,9 @@ class TimeSeries extends Component {
                         onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
                 <DateRangePicker
                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                    // startDateId="1" // PropTypes.string.isRequired,
+                    startDateId={placement.toString()} // PropTypes.string.isRequired,
                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                    // endDateId="2" // PropTypes.string.isRequired,
+                    endDateId={placement.toString()} // PropTypes.string.isRequired,
                     onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={focusedInput => this.setState({focusedInput})} // PropTypes.func.isRequired,
