@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+import PropTypes from 'prop-types';
+
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {Formik,} from 'formik';
-import * as Yup from 'yup';
-import PropTypes from "prop-types";
+import {withStyles} from '@material-ui/core/styles';
 
+const styles = {};
 
 class EditTagForm extends Component {
 
@@ -140,4 +143,4 @@ EditTagForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired
 };
 
-export default EditTagForm;
+export default withStyles(styles)(EditTagForm);
