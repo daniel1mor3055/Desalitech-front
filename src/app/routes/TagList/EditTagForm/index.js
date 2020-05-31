@@ -118,7 +118,7 @@ class EditTagForm extends Component {
                                             >
                                                 Reset
                                             </Button>
-                                            <Button type={"submit"} color={'primary'} disabled={isSubmitting}>
+                                            <Button type={"submit"} color={'primary'} disabled={isSubmitting || !dirty}>
                                                 Save
                                             </Button>
                                         </DialogActions>
