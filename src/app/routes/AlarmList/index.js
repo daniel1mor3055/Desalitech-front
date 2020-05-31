@@ -13,9 +13,13 @@ import Checkbox from "@material-ui/core/Checkbox";
 
 
 class AlarmList extends PureComponent {
-    state = {
-        searchText: '',
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: '',
+        };
+    }
 
     componentDidMount() {
         this.props.onFetchAlarms();

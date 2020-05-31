@@ -12,14 +12,19 @@ import EditTagForm from "./EditTagForm";
 import IconButton from "@material-ui/core/IconButton";
 
 class TagList extends Component {
-    state = {
-        tagId: null,
-        tagName: null,
-        description: null,
-        units: null,
-        openEditModal: false,
-        searchText: '',
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            tagId: null,
+            tagName: null,
+            description: null,
+            units: null,
+            openEditModal: false,
+            searchText: '',
+        };
+    }
+
 
     componentDidMount() {
         this.props.onFetchTags();

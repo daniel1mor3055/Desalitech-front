@@ -19,9 +19,14 @@ import DataTable from 'app/components/DataTable';
 import CardBox from "../../../components/CardBox";
 
 class SystemsAndLiveAlarms extends React.Component {
-    state = {
-        searchText: ''
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: ''
+        };
+    }
+
 
     componentDidMount() {
         this.props.onFetchSystems();

@@ -4,55 +4,60 @@ import PropTypes from "prop-types";
 
 
 class MultiYChart extends Component {
-    state = {
-        options: {
-            chart: {
-                stacked: false,
-                toolbar: {
-                    show: true,
-                    offsetX: -30,
-                    offsetY: 0,
-                    tools: {
-                        download: true,
-                        selection: true,
-                        zoom: true,
-                        zoomin: false,
-                        zoomout: false,
-                        pan: false,
-                        reset: true | '<img src="/static/icons/reset.png" width="20">',
-                        customIcons: []
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            options: {
+                chart: {
+                    stacked: false,
+                    toolbar: {
+                        show: true,
+                        offsetX: -30,
+                        offsetY: 0,
+                        tools: {
+                            download: true,
+                            selection: true,
+                            zoom: true,
+                            zoomin: false,
+                            zoomout: false,
+                            pan: false,
+                            reset: true | '<img src="/static/icons/reset.png" width="20">',
+                            customIcons: []
+                        },
+                        autoSelected: 'zoom'
                     },
-                    autoSelected: 'zoom'
                 },
-            },
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                width: [4, 4, 4]
-            },
-            xaxis: {
-                categories: [],
-            },
-            yaxis: [],
-            tooltip: {
-                fixed: {
-                    enabled: true,
-                    position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-                    offsetY: -70,
-                    offsetX: -30,
+                dataLabels: {
+                    enabled: false
                 },
-            },
-            legend: {
-                horizontalAlign: 'center',
-                offsetX: 0,
-                onItemClick: {
-                    toggleDataSeries: true
+                stroke: {
+                    width: [4, 4, 4]
                 },
-            }
-        },
-        series: []
-    };
+                xaxis: {
+                    categories: [],
+                },
+                yaxis: [],
+                tooltip: {
+                    fixed: {
+                        enabled: true,
+                        position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
+                        offsetY: -70,
+                        offsetX: -30,
+                    },
+                },
+                legend: {
+                    horizontalAlign: 'center',
+                    offsetX: 0,
+                    onItemClick: {
+                        toggleDataSeries: true
+                    },
+                }
+            },
+            series: []
+        };
+    }
+
 
     static getDerivedStateFromProps = (props, state) => {
         const {xData, data, yLabels, showYLabels, colors} = props;
@@ -86,14 +91,14 @@ class MultiYChart extends Component {
                             style: {
                                 colors: colors[index]
                             },
-                            formatter: function(val, index) {
+                            formatter: function (val, index) {
                                 return val.toFixed(2);
                             },
                         },
                         tooltip: {
                             enabled: true
                         }
-                    }
+                    };
                 }),
             }
         };
