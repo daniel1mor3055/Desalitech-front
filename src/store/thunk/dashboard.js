@@ -3,13 +3,13 @@ import {fetchDashboardFail, fetchDashboardStart, fetchDashboardSuccess,setDatesF
 import {setAdminStatus} from "../actions/admin";
 
 
-export const fetchDashboard = (systemId) => (
+export const fetchDashboard = () => (
     async (dispatch) => {
         dispatch(fetchDashboardStart());
         try {
             const {
                 admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs
-            } = await fetchDashboardApi(systemId);
+            } = await fetchDashboardApi();
             dispatch(setAdminStatus(admin));
             dispatch(fetchDashboardSuccess(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs));
         } catch (err) {
@@ -18,11 +18,11 @@ export const fetchDashboard = (systemId) => (
     });
 
 
-export const setDates = (timeSeries,sysId) => (
+export const setDates = (timeSeries) => (
     async (dispatch) => {
         dispatch(setDatesStart());
         try {
-            const {admin, responseTimeSeries} = await setDatesApi(timeSeries,sysId);
+            const {admin, responseTimeSeries} = await setDatesApi(timeSeries);
             dispatch(setAdminStatus(admin));
             dispatch(setDatesSuccess(responseTimeSeries));
         } catch (err) {

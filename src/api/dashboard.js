@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeJson} from './utils';
+import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
 import moment from "moment";
 
 const TRIGGER = 'Trigger';
@@ -12,9 +12,10 @@ const LEFT_GAUGE = 'LeftGauge';
 const SEEQ = 'Seeq';
 const DATE_FORMAT = 'DD-MM HH:mm';
 
-export const fetchDashboardApi = async (systemId) => {
+export const fetchDashboardApi = async () => {
+    const sysId = extractSystemId();
     try {
-        const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
+        const response = await axios.get(`/system/dashboard?SysId=${sysId}`);
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
@@ -26,7 +27,8 @@ export const fetchDashboardApi = async (systemId) => {
     }
 };
 
-export const setDatesApi = async (timeSeries, sysId) => {
+export const setDatesApi = async (timeSeries) => {
+    const sysId = extractSystemId();
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {

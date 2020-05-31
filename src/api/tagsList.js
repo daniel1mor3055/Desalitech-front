@@ -1,9 +1,10 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeJson} from "./utils";
+import {camelizeJson, capitalizeJson, extractSystemId} from "./utils";
 
-export const fetchTagsApi = async (systemId) => {
+export const fetchTagsApi = async () => {
+    const sysId = extractSystemId();
     try {
-        const response = await axios.get(`/system/tag-list?SysId=${systemId}`);
+        const response = await axios.get(`/system/tag-list?SysId=${sysId}`);
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
@@ -12,10 +13,11 @@ export const fetchTagsApi = async (systemId) => {
     }
 };
 
-export const postTagApi = async (systemId, tagData) => {
+export const postTagApi = async (tagData) => {
+    const sysId = extractSystemId();
     try {
         const tagDataToPass = {
-            sysId: systemId,
+            sysId,
             ...tagData
         };
         capitalizeJson(tagDataToPass);

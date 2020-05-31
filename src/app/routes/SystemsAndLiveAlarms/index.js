@@ -47,13 +47,13 @@ class SystemsAndLiveAlarms extends React.Component {
         const {sysId} = dataObject;
         const {history} = this.props;
         history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
-    }
+    };
 
     handleClickOnAlarmRow = (dataObject) => {
         const {sysId} = dataObject;
         const {history} = this.props;
         history.push(`/app/alarm-list?sysId=${encodeURIComponent(sysId)}`);
-    }
+    };
 
     getFilterData(systems, systemsStatusIcons) {
         let filteredSystems = systems.filter(system => {

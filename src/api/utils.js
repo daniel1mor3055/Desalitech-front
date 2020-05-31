@@ -59,3 +59,10 @@ export const camelizeJson = (someObject) => {
         }
     }
 };
+
+export const extractSystemId = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const sysId = decodeURIComponent(queryParams.get('sysId'));
+    return sysId
+};
+

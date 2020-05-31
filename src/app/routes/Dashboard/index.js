@@ -28,10 +28,7 @@ class Dashboard extends Component {
     // }
 
     componentDidMount() {
-        const {location} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'));
-        this.props.onFetchDashboard(sysId);
+        this.props.onFetchDashboard();
     }
 
     render() {
@@ -133,7 +130,7 @@ const mapStateToProps = ({dashboard, systems}) => {
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchDashboard: (systemId) => dispatch(fetchDashboard(systemId))};
+    return {onFetchDashboard: () => dispatch(fetchDashboard())};
 };
 
 export default connect(mapStateToProps, mapDispatchedToProps)(Dashboard);

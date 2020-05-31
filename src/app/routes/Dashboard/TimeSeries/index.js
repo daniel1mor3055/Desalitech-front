@@ -56,9 +56,7 @@ class TimeSeries extends Component {
     };
 
     postDateChange = (startDate, endDate) => {
-        const {location, tags, times, placement} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'));
+        const {tags, times, placement} = this.props;
         const timeSeries = {
             startDate,
             endDate,
@@ -67,7 +65,7 @@ class TimeSeries extends Component {
             placement
         };
 
-        this.props.onSetDates(timeSeries, sysId);
+        this.props.onSetDates(timeSeries);
     };
 
     render() {
@@ -122,7 +120,7 @@ TimeSeries.propTypes = {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onSetDates: (timeSeries, sysId) => dispatch(setDates(timeSeries, sysId)),
+        onSetDates: (timeSeries) => dispatch(setDates(timeSeries)),
     };
 };
 

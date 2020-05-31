@@ -18,10 +18,7 @@ class AlarmList extends PureComponent {
     };
 
     componentDidMount() {
-        const {location} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'));
-        this.props.onFetchAlarms(sysId);
+        this.props.onFetchAlarms();
     }
 
     updateSearchText(event) {
@@ -43,10 +40,7 @@ class AlarmList extends PureComponent {
 
     handleNotificationChange = (event, checked) => {
         event.preventDefault();
-        const {location} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'));
-        this.props.onSetEmailNotification(sysId, checked);
+        this.props.onSetEmailNotification(checked);
     };
 
 
@@ -110,8 +104,8 @@ const mapStateToProps = ({alarms}) => {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onFetchAlarms: (systemId) => dispatch(fetchAlarms(systemId)),
-        onSetEmailNotification: (systemId, emailNotification) => dispatch(setEmailNotification(systemId, emailNotification))
+        onFetchAlarms: () => dispatch(fetchAlarms()),
+        onSetEmailNotification: (emailNotification) => dispatch(setEmailNotification(emailNotification))
     };
 };
 

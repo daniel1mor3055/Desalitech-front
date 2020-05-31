@@ -101,9 +101,9 @@ class SidenavContent extends Component {
   }
 
   render() {
-    const {location} = this.props
+    const {location} = this.props;
     const queryParams = new URLSearchParams(location.search);
-    const encodedSysId = queryParams.get('sysId')
+    const encodedSysId = queryParams.get('sysId');
     return (
         <CustomScrollbars className=" scrollbar">
           <SidenavList>
