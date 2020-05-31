@@ -19,8 +19,8 @@ CardHeader.defaultProps = {
 };
 
 CardHeader.propTypes = {
-    children: PropTypes.node.isRequired,
-    heading: PropTypes.string,
+    children: PropTypes.node,
+    heading: PropTypes.object, // Actually its string, but if one wishes to use <intl> its also possible
     subHeading: PropTypes.string,
     styleName: PropTypes.string,
 };

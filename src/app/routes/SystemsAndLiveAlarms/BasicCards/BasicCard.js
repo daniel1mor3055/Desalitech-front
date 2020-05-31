@@ -47,7 +47,6 @@ BasicCard.propTypes = {
     recovery: PropTypes.string.isRequired,
     production: PropTypes.string.isRequired,
     conductivity: PropTypes.string.isRequired,
-    systemStatus: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired
 };
 export default BasicCard;
