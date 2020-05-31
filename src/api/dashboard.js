@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson} from './utils';
+import {camelizeJson, capitalizeJson} from './utils';
 import moment from "moment";
 
 const TRIGGER = 'Trigger';
@@ -16,9 +16,10 @@ export const fetchDashboardApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
         camelizeJson(response.data);
+        console.log(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        // console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
+        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);
@@ -28,7 +29,8 @@ export const fetchDashboardApi = async (systemId) => {
 
 export const setDatesApi = async (timeSeries, sysId) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
-    console.log(timeSeries);
+    capitalizeJson(dataToPost);
+    console.log(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
         console.log(response);
@@ -40,22 +42,21 @@ export const setDatesApi = async (timeSeries, sysId) => {
 
 function manipulateTimeSeries(timeSeries, sysId) {
     const {startDate, endDate, tags, placement} = timeSeries;
-    let backTags = tags.map((tag, index) => {
-        const {tagId} = tag;
-        return {
-            [`Tag${index + 1}`]: tagId,
-        };
-    });
+    let backTags = tags.map((tag) => (tag.tagId));
 
     for (let i = tags.length; i < 3; i++) {
-        backTags.push({
-            [`Tag${i + 1}`]: ''
-        });
+        backTags.push('');
     }
 
     return {
         sysId,
-        tags: backTags,
+        tag1: backTags[0],
+        tag2: backTags[1],
+        tag3: backTags[2],
+        detail1: '',
+        detail2: '',
+        detail3: '',
+        detail4: '',
         widgetType: 'Time Series',
         placement,
         header: '',

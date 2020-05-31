@@ -18,6 +18,7 @@ class TimeSeries extends Component {
         this.state = {
             startDate: null,
             endDate: null,
+            focusedInput: null,
         };
     }
 
@@ -30,11 +31,11 @@ class TimeSeries extends Component {
     };
 
     handleDateChange = (startDate, endDate) => {
-        if (endDate===this.state.endDate){
+        if (endDate === this.state.endDate) {
             this.setState({
                 startDate,
             });
-            return null
+            return null;
         }
         const {location, tags, times, placement} = this.props;
         const queryParams = new URLSearchParams(location.search);
@@ -74,6 +75,8 @@ class TimeSeries extends Component {
                     onDatesChange={({startDate, endDate}) => this.handleDateChange(startDate, endDate)} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={focusedInput => this.setState({focusedInput})} // PropTypes.func.isRequired,
+                    numberOfMonths={1}
+                    isOutsideRange={() => false}
                 />
                 <MultiYChart data={tags.map(tag => tag.tagTimeValues)}
                              xData={times}
