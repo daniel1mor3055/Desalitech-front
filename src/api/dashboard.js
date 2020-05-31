@@ -16,7 +16,6 @@ export const fetchDashboardApi = async (systemId) => {
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);

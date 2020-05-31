@@ -18,13 +18,15 @@ class TagList extends Component {
         description: null,
         units: null,
         openEditModal: false,
-        searchText: '',
+        tagIdSearchText: '',
+        tagNameSearchText: '',
+        tagDescriptionSearchText: '',
     };
 
     componentDidMount() {
-        const {location} = this.props
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onFetchTags(sysId);
     }
 
@@ -41,31 +43,58 @@ class TagList extends Component {
     };
 
     handleSubmit = (values) => {
-        const {location} = this.props
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'))
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         this.props.onPostTag(sysId, values);
     };
 
-    updateSearchText(event) {
-        this.setState({
-            searchText: event.target.value,
-        });
+    updateSearchText(event, fieldToSearch) {
+        switch (fieldToSearch) {
+            case 'ID': {
+                this.setState({
+                    tagIdSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'NAME': {
+                this.setState({
+                    tagNameSearchText: event.target.value,
+                });
+                return;
+            }
+            case 'DESCRIPTION': {
+                this.setState({
+                    tagDescriptionSearchText: event.target.value,
+                });
+                return;
+            }
+        }
     }
 
     getFilterData(tags) {
         let filteredTags = tags.filter(tag => {
-            const {tagId, tagName} = tag;
-            return tagId.toLowerCase().includes(this.state.searchText.toLowerCase()) ||
-                tagName.toLowerCase().includes(this.state.searchText.toLowerCase());
+            let {tagId, tagName, description} = tag;
+            if (tagName == null) {
+                tagName = '';
+            }
+            if (tagId == null) {
+                tagId = '';
+            }
+            if (description == null) {
+                description = '';
+            }
+            return tagId.toLowerCase().includes(this.state.tagIdSearchText.toLowerCase()) &&
+                tagName.toLowerCase().includes(this.state.tagNameSearchText.toLowerCase()) &&
+                description.toLowerCase().includes(this.state.tagDescriptionSearchText.toLowerCase())
         });
         const badSearch = !filteredTags.length;
-        filteredTags = badSearch ? tags : filteredTags;
         return {filteredTags, badSearch};
     }
 
     render() {
-        const {openEditModal, tagId, tagName, description, units, searchText} = this.state;
+        const {openEditModal, tagId, tagName, description, units,
+            tagIdSearchText, tagNameSearchText, tagDescriptionSearchText} = this.state;
         const {match, tags, fetching, error} = this.props;
         const columnsIds = ['tagId', 'tagName', 'description', 'units'];
         const columnsLabels = ['Tag ID', 'Tag Name', 'Description', 'Units'];
@@ -74,9 +103,17 @@ class TagList extends Component {
         const tagsList =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Tag ID or by Tag Name"
-                           onChange={(event) => this.updateSearchText(event)}
-                           value={searchText} badSearch={badSearch}/>
+                           placeholder="Filter by Tag ID"
+                           onChange={(event) => this.updateSearchText(event, 'ID')}
+                           value={tagIdSearchText} badSearch={badSearch}/>
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by Tag Name"
+                           onChange={(event) => this.updateSearchText(event, 'NAME')}
+                           value={tagNameSearchText} badSearch={badSearch}/>
+                <SearchBox styleName="d-none d-lg-block"
+                           placeholder="Filter by Description"
+                           onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
+                           value={tagDescriptionSearchText} badSearch={badSearch}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">
                     <DataTable data={filteredTags}
                                columnsIds={columnsIds}
