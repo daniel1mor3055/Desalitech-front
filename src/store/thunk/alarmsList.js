@@ -27,7 +27,7 @@ export const setEmailNotification = (emailNotification) => (
     async (dispatch) => {
         dispatch(setEmailNotificationStart());
         try {
-            const response = await setEmailNotificationApi(emailNotification);
+            await setEmailNotificationApi(emailNotification);
             dispatch(setEmailNotificationSuccess(emailNotification));
             createNotification(SUCCESS_NOTIFICATION, `Email Notifications ${emailNotification ? 'Activated' : 'Deactivated'}`, "Edit Notifications Request");
         } catch (err) {

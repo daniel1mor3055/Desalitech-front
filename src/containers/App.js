@@ -26,7 +26,7 @@ class App extends Component {
     }
 
     render() {
-        const {match, location, locale, isDirectionRTL} = this.props;
+        const {match, locale, isDirectionRTL} = this.props;
         const {loading, loginWithRedirect, isAuthenticated} = this.context;
 
         if (!isAuthenticated && !loading) {

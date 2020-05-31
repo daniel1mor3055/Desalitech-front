@@ -27,7 +27,7 @@ export const postTag = (tagData) => (
     async (dispatch) => {
         dispatch(postTagStart());
         try {
-            const response = await postTagApi(tagData);
+            await postTagApi(tagData);
             dispatch(postTagSuccess(tagData));
             createNotification(SUCCESS_NOTIFICATION, "Tag Edited Successfully", "Edit Tag Request");
         } catch (err) {

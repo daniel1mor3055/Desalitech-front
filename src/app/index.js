@@ -21,7 +21,7 @@ import PrivateRoute from 'app/components/PrivateRoute';
 class App extends Component {
 
   render() {
-    const {match, drawerType, navigationStyle, horizontalNavPosition, location} = this.props;
+    const {match, drawerType, navigationStyle, horizontalNavPosition} = this.props;
     const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
 
     if (isIOS && isMobile) {

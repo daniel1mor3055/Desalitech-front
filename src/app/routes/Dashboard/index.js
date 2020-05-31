@@ -4,39 +4,21 @@ import {connect} from "react-redux";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import {DateRangePicker} from 'react-dates';
 
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
-import TitleCard from 'app/components/TitleCard';
-import Speedometer from './Speedometer';
-import CardHeader from "app/components/CardHeader";
 import {fetchDashboard} from "store/thunk/dashboard";
-import MultiYChart from "./TimeSeries/MultiYChart";
 import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
-import Button from "@material-ui/core/Button";
 import TimeSeries from './TimeSeries';
 
 class Dashboard extends Component {
-    // constructor(props) {
-    //     super(props);
-    //
-    //     this.state = {
-    //         startDate: null,
-    //         endDate: null,
-    //     };
-    // }
 
     componentDidMount() {
         this.props.onFetchDashboard();
     }
 
     render() {
-        const {
-            match, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs, fetching,
-            error, selectedSystem
-        } = this.props;
-
+        const {match, timeSeries, fetching, error} = this.props;
 
         const timeSeriesJSX =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
@@ -61,51 +43,8 @@ class Dashboard extends Component {
                 </div>
 
                 {fetching ?
-                    error ? <p>{"Coudn't fetch chart"}</p> : <CircularIndeterminate/>
+                    error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
                     : timeSeriesJSX}
-
-                {/*<div className="row mb-md-3">*/}
-                {/*    <div className="col-lg-3 col-sm-6 col-12">*/}
-                {/*        <TitleCard*/}
-                {/*            tagName={"Tag Name"}*/}
-                {/*            tagValue={"Tag Value"}*/}
-                {/*            tagDescription={"Tag Description"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <div className="col-lg-3 col-sm-6 col-12">*/}
-                {/*        <TitleCard*/}
-                {/*            tagName={"Tag Name"}*/}
-                {/*            tagValue={"Tag Value"}*/}
-                {/*            tagDescription={"Tag Description"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <div className="col-lg-3 col-sm-6 col-12">*/}
-                {/*        <TitleCard*/}
-                {/*            tagName={"Tag Name"}*/}
-                {/*            tagValue={"Tag Value"}*/}
-                {/*            tagDescription={"Tag Description"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*    <div className="col-lg-3 col-sm-6 col-12">*/}
-                {/*        <TitleCard*/}
-                {/*            tagName={"Tag Name"}*/}
-                {/*            tagValue={"Tag Value"}*/}
-                {/*            tagDescription={"Tag Description"}*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*</div>*/}
-                {/*<div className="col-xl-3 col-md-4 col-sm-6 col-12 order-xl-4">*/}
-                {/*    <div className="jr-card">*/}
-                {/*        <div className="jr-card-header">*/}
-                {/*            <h3 className="card-heading"><IntlMessages id="dashboard.systemStatus"/></h3>*/}
-                {/*        </div>*/}
-                {/*        <Speedometer value={90}/>*/}
-                {/*        <div className="text-center mt-4">*/}
-                {/*            <h4 className="mb-1">Can be defined</h4>*/}
-                {/*            <p className="card-text">Can be defined</p>*/}
-                {/*        </div>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         );
     }

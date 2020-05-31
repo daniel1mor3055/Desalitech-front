@@ -13,22 +13,22 @@ const BasicCard = ({image, title, recovery, production, conductivity,
             <Card className="shadow border-0" style={{margin: '20px'}}>
                 <CardBody>
                     <div className={classnames('BasicCard-TitleClass', systemStatusBorder)}>
-                        <CardImg className='BasicCard-ImgSize' src={image} alt="Card image cap"/>
+                        <CardImg className='BasicCard-ImgSize' src={image} alt="system"/>
                         <h3><strong>
                             System<br/>{title}</strong></h3></div>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
                         <img className='BasicCard-IconClass' src={require('../assets/recovery.svg')}
-                             alt="Card image cap"/>
+                             alt="system"/>
                         <strong> Recovery:</strong>
                         <span className='BasicCard-TextToTheRight'>{recovery}</span></CardSubtitle>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
                         <img className='BasicCard-IconClass' src={require('../assets/production.svg')}
-                             alt="Card image cap"/>
+                             alt="system"/>
                         <strong>Production:</strong>
                         <span className='BasicCard-TextToTheRight'>{production}</span></CardSubtitle>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
                         <img className='BasicCard-IconClass' src={require('../assets/conductivity.svg')}
-                             alt="Card image cap"/>
+                             alt="system"/>
                         <strong>Conductivity:</strong>
                         <span className='BasicCard-TextToTheRight'>{conductivity}</span></CardSubtitle>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
