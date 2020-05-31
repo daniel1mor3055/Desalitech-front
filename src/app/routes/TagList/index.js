@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
 import ContainerHeader from 'components/ContainerHeader';
@@ -11,7 +11,7 @@ import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
 import IconButton from "@material-ui/core/IconButton";
 
-class TagList extends Component {
+class TagList extends PureComponent {
     constructor(props) {
         super(props);
 
