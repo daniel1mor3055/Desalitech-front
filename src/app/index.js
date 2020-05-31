@@ -50,17 +50,17 @@ class App extends Component {
             <div className="app-main-content">
               <Switch>
                 <PrivateRoute path={`${match.url}/dashboard`}
-                         component={asyncComponent(() => import(`app/routes/Dashboard`))}/>
+                         component={asyncComponent(() => import('app/routes/Dashboard'))}/>
                 <PrivateRoute path={`${match.url}/alarm-list`}
-                       component={asyncComponent(() => import(`app/routes/AlarmList`))}/>
+                       component={asyncComponent(() => import('app/routes/AlarmList'))}/>
                 <PrivateRoute path={`${match.url}/tag-list`}
-                       component={asyncComponent(() => import(`app/routes/TagList`))}/>
+                       component={asyncComponent(() => import('app/routes/TagList'))}/>
                 <PrivateRoute path={`${match.url}/documentation`}
-                       component={asyncComponent(() => import(`app/routes/Documentation`))}/>
+                       component={asyncComponent(() => import('app/routes/Documentation'))}/>
                 <PrivateRoute path={`${match.url}/charts`}
-                       component={asyncComponent(() => import(`app/routes/Charts`))}/>
+                       component={asyncComponent(() => import('app/routes/Charts'))}/>
                 <PrivateRoute path={`${match.url}/reports`}
-                       component={asyncComponent(() => import(`app/routes/Reports`))}/>
+                       component={asyncComponent(() => import('app/routes/Reports'))}/>
                 <PrivateRoute component={asyncComponent(() => import('components/Error404'))}/>
               </Switch>
             </div>
