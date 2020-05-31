@@ -16,10 +16,9 @@ export const fetchDashboardApi = async (systemId) => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${systemId}`);
         camelizeJson(response.data);
-        console.log(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
+        // console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);
@@ -30,10 +29,12 @@ export const fetchDashboardApi = async (systemId) => {
 export const setDatesApi = async (timeSeries, sysId) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
-    console.log(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
-        console.log(response);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTimeSeries = extractTimeSeries(widgets[0]);
+        return {admin, responseTimeSeries};
     } catch (err) {
         console.log(err);
         throw err;
@@ -203,7 +204,6 @@ function extractTimeSeries(widget) {
             tagTimeValues: [],
         };
     }).filter(tag => (!((tag.tagId === "") || (tag.tagId === null))));
-
 
     const times = [];
     for (let i = 0; i < influxData.length; i++) {

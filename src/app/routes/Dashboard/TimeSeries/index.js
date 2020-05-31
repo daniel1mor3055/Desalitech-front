@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import moment from "moment";
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
+
 import {DateRangePicker} from 'react-dates';
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
@@ -30,22 +32,33 @@ class TimeSeries extends Component {
         });
     };
 
-    handleDateChange = (startDate, endDate) => {
-        if (endDate === this.state.endDate) {
-            this.setState({
-                startDate,
-            });
-            return null;
-        }
-        const {location, tags, times, placement} = this.props;
-        const queryParams = new URLSearchParams(location.search);
-        const sysId = decodeURIComponent(queryParams.get('sysId'));
-
+    handleRangePick = (startDate, endDate) => {
         this.setState({
             startDate,
             endDate,
         });
 
+        if (endDate !== this.state.endDate) {
+            this.postDateChange(startDate, endDate);
+        }
+    };
+
+
+    handleFromTodayPick = (delta, scale) => {
+        const endDate = moment();
+        const startDate = moment().subtract(delta, scale);
+        this.setState({
+            startDate,
+            endDate
+        });
+
+        this.postDateChange(startDate, endDate);
+    };
+
+    postDateChange = (startDate, endDate) => {
+        const {location, tags, times, placement} = this.props;
+        const queryParams = new URLSearchParams(location.search);
+        const sysId = decodeURIComponent(queryParams.get('sysId'));
         const timeSeries = {
             startDate,
             endDate,
@@ -62,17 +75,27 @@ class TimeSeries extends Component {
 
         return (
             <div className="jr-card">
-                <Button className="jr-btn" color="primary">1 Year</Button>
-                <Button className="jr-btn" color="primary">6 Months</Button>
-                <Button className="jr-btn" color="primary">1 Month</Button>
-                <Button className="jr-btn" color="primary">1 Week</Button>
-                <Button className="jr-btn" color="primary">1 Day</Button>
+                <Button className="jr-btn"
+                        color="primary"
+                        onClick={() => this.handleFromTodayPick(1, 'years')}>1 Year</Button>
+                <Button className="jr-btn"
+                        color="primary"
+                        onClick={() => this.handleFromTodayPick(6, 'months')}>6 Months</Button>
+                <Button className="jr-btn"
+                        color="primary"
+                        onClick={() => this.handleFromTodayPick(1, 'months')}>1 Month</Button>
+                <Button className="jr-btn"
+                        color="primary"
+                        onClick={() => this.handleFromTodayPick(1, 'weeks')}>1 Week</Button>
+                <Button className="jr-btn"
+                        color="primary"
+                        onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
                 <DateRangePicker
                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                    startDateId="1" // PropTypes.string.isRequired,
+                    // startDateId="1" // PropTypes.string.isRequired,
                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                    endDateId="2" // PropTypes.string.isRequired,
-                    onDatesChange={({startDate, endDate}) => this.handleDateChange(startDate, endDate)} // PropTypes.func.isRequired,
+                    // endDateId="2" // PropTypes.string.isRequired,
+                    onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={focusedInput => this.setState({focusedInput})} // PropTypes.func.isRequired,
                     numberOfMonths={1}

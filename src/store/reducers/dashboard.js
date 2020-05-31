@@ -1,4 +1,11 @@
-import {FETCH_DASHBOARD_START, FETCH_DASHBOARD_SUCCESS, FETCH_DASHBOARD_FAIL} from '../actionTypes/dashboard';
+import {
+    FETCH_DASHBOARD_START,
+    FETCH_DASHBOARD_SUCCESS,
+    FETCH_DASHBOARD_FAIL,
+    SET_DATES_SUCCESS,
+    SET_DATES_START,
+    SET_DATES_FAIL
+} from '../actionTypes/dashboard';
 
 const initialState = {
     triggers: [],
@@ -10,6 +17,7 @@ const initialState = {
     leftGauges: [],
     seeqs: [],
     fetching: true,
+    posting: false,
     error: null,
 };
 
@@ -21,10 +29,49 @@ const reducer = (state = initialState, action) => {
             return fetchDashboardSuccess(state, action);
         case FETCH_DASHBOARD_FAIL:
             return fetchDashboardFail(state, action);
+        case SET_DATES_START:
+            return setDatesStart(state, action);
+        case SET_DATES_SUCCESS:
+            return setDatesSuccess(state, action);
+        case SET_DATES_FAIL:
+            return setDatesFail(state, action);
         default:
             return state;
     }
 };
+
+function setDatesSuccess(state, action) {
+    const newTimeSeries = state.timeSeries.map((timeSeries) => {
+        if (timeSeries.placement !== action.payload.responseTimeSeries.placement) {
+            return timeSeries;
+        } else {
+            return action.payload.responseTimeSeries;
+        }
+    });
+
+    return {
+        ...state,
+        posting: false,
+        error: null,
+        timeSeries: newTimeSeries,
+    };
+}
+
+function setDatesFail(state, action) {
+    return {
+        ...state,
+        posting: false,
+        error: action.payload.error,
+    };
+}
+
+function setDatesStart(state, action) {
+    return {
+        ...state,
+        posting: true,
+        error: null,
+    };
+}
 
 function fetchDashboardStart(state, action) {
     return {

@@ -22,8 +22,9 @@ export const setDates = (timeSeries,sysId) => (
     async (dispatch) => {
         dispatch(setDatesStart());
         try {
-            const response = await setDatesApi(timeSeries,sysId);
-            // dispatch(setDatesSuccess(timeSeries));
+            const {admin, responseTimeSeries} = await setDatesApi(timeSeries,sysId);
+            dispatch(setAdminStatus(admin));
+            dispatch(setDatesSuccess(responseTimeSeries));
         } catch (err) {
             dispatch(setDatesFail(err));
         }

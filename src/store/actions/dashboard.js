@@ -41,11 +41,11 @@ export const setDatesStart = () => (
         type: SET_DATES_START,
     });
 
-export const setDatesSuccess = (timeSeries) => (
+export const setDatesSuccess = (responseTimeSeries) => (
     {
         type: SET_DATES_SUCCESS,
         payload: {
-            timeSeries,
+            responseTimeSeries,
         }
     });
 
