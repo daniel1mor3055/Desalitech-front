@@ -44,13 +44,11 @@ function postTagStart(state, action) {
 }
 
 function postTagSuccess(state, action) {
-    const tagToChange = state.tags.find(tag => tag.tagId === action.payload.tagData.tagId);
-    const index = state.tags.indexOf(tagToChange);
     const newTags = state.tags.map(tag => {
         if (tag.tagId !== action.payload.tagData.tagId) {
             return tag;
         } else {
-            return {...action.payload.tagData};
+            return action.payload.tagData;
         }
     });
 

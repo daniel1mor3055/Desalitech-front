@@ -28,7 +28,7 @@ export const postTag = (systemId, tagData) => (
         dispatch(postTagStart());
         try {
             const response = await postTagApi(systemId, tagData);
-            dispatch(postTagSuccess(response, tagData));
+            dispatch(postTagSuccess(tagData));
             createNotification(SUCCESS_NOTIFICATION, "Tag Edited Successfully", "Edit Tag Request");
         } catch (err) {
             dispatch(postTagFail(err));
