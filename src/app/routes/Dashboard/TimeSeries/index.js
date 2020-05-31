@@ -30,6 +30,12 @@ class TimeSeries extends Component {
     };
 
     handleDateChange = (startDate, endDate) => {
+        if (endDate===this.state.endDate){
+            this.setState({
+                startDate,
+            });
+            return null
+        }
         const {location, tags, times, placement} = this.props;
         const queryParams = new URLSearchParams(location.search);
         const sysId = decodeURIComponent(queryParams.get('sysId'));
