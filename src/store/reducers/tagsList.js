@@ -9,7 +9,7 @@ import {
 
 const initialState = {
     tags: [],
-    fetching: false,
+    fetching: true,
     posting: false,
     error: null,
 };
@@ -88,7 +88,6 @@ function fetchTagsSuccess(state, action) {
 function fetchTagsFail(state, action) {
     return {
         ...state,
-        tags: [],
         fetching: false,
         error: action.payload.error,
     };
