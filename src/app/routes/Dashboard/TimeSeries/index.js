@@ -33,14 +33,14 @@ class TimeSeries extends Component {
     };
 
     handleRangePick = (startDate, endDate) => {
-        this.setState({
-            startDate,
-            endDate,
-        });
-
-        if (endDate !== this.state.endDate) {
+        if (endDate === this.state.endDate) {
+            this.setState({startDate});
+            return null;
+        } else {
+            this.setState({startDate, endDate});
             this.postDateChange(startDate, endDate);
         }
+
     };
 
 
