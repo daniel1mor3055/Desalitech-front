@@ -12,6 +12,8 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 import {setDates} from 'store/thunk/dashboard';
+import ChooseTagsForm from '../ChooseTagsForm';
+import LongMenu from "../../../components/LongMenu";
 
 class TimeSeries extends Component {
     constructor(props) {
@@ -21,6 +23,7 @@ class TimeSeries extends Component {
             startDate: null,
             endDate: null,
             focusedInput: null,
+            chooseTagsFormOpen: false,
         };
     }
 
@@ -68,8 +71,14 @@ class TimeSeries extends Component {
         this.props.onSetDates(timeSeries);
     };
 
+    handleChooseTagsForm = (event) => {
+        event.preventDefault();
+        this.setState({chooseTagsFormOpen: !this.state.chooseTagsFormOpen});
+    };
+
     render() {
-        const {tags, times, placement} = this.props;
+        const {chooseTagsFormOpen} = this.state;
+        const {tags, times, placement, backgroundTags} = this.props;
 
         return (
             <div className="jr-card">
@@ -99,6 +108,12 @@ class TimeSeries extends Component {
                     numberOfMonths={1}
                     isOutsideRange={() => false}
                 />
+                <button onClick={this.handleChooseTagsForm}>Toggle Form</button>
+                <ChooseTagsForm
+                    tagsIds={['da','sa']}
+                    numberOfFields={3}
+                    open={chooseTagsFormOpen}/>
+                {/*Need to add here the CHOOSETAGFORM, REMEMBER TO CHECK IF DATA IS ALREADY FETCHED*/}
                 <MultiYChart data={tags.map(tag => tag.tagTimeValues)}
                              xData={times}
                              showYLabels={true}
@@ -116,6 +131,7 @@ TimeSeries.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,
+    backgroundTags: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const mapDispatchedToProps = dispatch => {

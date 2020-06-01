@@ -7,18 +7,22 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import ContainerHeader from 'components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
-import {fetchDashboard} from "store/thunk/dashboard";
-import CircularIndeterminate from "../../components/Progress/CircularIndeterminate";
+import {fetchDashboard, fetchBackgroundTags} from "store/thunk/dashboard";
+import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import TimeSeries from './TimeSeries';
 
 class Dashboard extends Component {
 
     componentDidMount() {
+        const {backgroundTagsFetching} = this.props;
         this.props.onFetchDashboard();
+        if (!backgroundTagsFetching) {
+            this.props.onFetchBackgroundTags();
+        }
     }
 
     render() {
-        const {match, timeSeries, fetching, error} = this.props;
+        const {match, timeSeries, fetching, error, backgroundTags} = this.props;
 
         const timeSeriesJSX =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
@@ -31,7 +35,8 @@ class Dashboard extends Component {
                             tags={tags}
                             times={times}
                             placement={placement}
-                            key={placement}/>);
+                            key={placement}
+                            backgroundTags={backgroundTags}/>);
                 })}
             </div>;
 
@@ -51,7 +56,7 @@ class Dashboard extends Component {
 }
 
 
-const mapStateToProps = ({dashboard, systems}) => {
+const mapStateToProps = ({dashboard, tags}) => {
     return {
         triggers: dashboard.triggers,
         tags: dashboard.tags,
@@ -63,13 +68,17 @@ const mapStateToProps = ({dashboard, systems}) => {
         seeqs: dashboard.seeqs,
         fetching: dashboard.fetching,
         error: dashboard.error,
-        selectedSystem: systems.selectedSystem,
+        backgroundTags: tags.tags,
+        backgroundTagsFetching: tags.fetching,
     };
 };
 
 
 const mapDispatchedToProps = dispatch => {
-    return {onFetchDashboard: () => dispatch(fetchDashboard())};
+    return {
+        onFetchDashboard: () => dispatch(fetchDashboard()),
+        onFetchBackgroundTags: () => dispatch(fetchBackgroundTags())
+    };
 };
 
 export default connect(mapStateToProps, mapDispatchedToProps)(Dashboard);

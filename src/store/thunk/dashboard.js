@@ -1,5 +1,13 @@
-import {fetchDashboardApi,setDatesApi} from 'api/dashboard';
-import {fetchDashboardFail, fetchDashboardStart, fetchDashboardSuccess,setDatesFail,setDatesStart,setDatesSuccess} from '../actions/dashboard';
+import {fetchDashboardApi, setDatesApi} from 'api/dashboard';
+import {fetchTags} from './tagsList';
+import {
+    fetchDashboardFail,
+    fetchDashboardStart,
+    fetchDashboardSuccess,
+    setDatesFail,
+    setDatesStart,
+    setDatesSuccess
+} from '../actions/dashboard';
 import {setAdminStatus} from "../actions/admin";
 
 
@@ -17,6 +25,7 @@ export const fetchDashboard = () => (
         }
     });
 
+export const fetchBackgroundTags = () => (fetchTags());
 
 export const setDates = (timeSeries) => (
     async (dispatch) => {
