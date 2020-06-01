@@ -1,15 +1,12 @@
-import {fetchDashboardApi, setDatesApi,chooseTagsApi} from 'api/dashboard';
+import {fetchDashboardApi, timeSeriesChangeApi} from 'api/dashboard';
 import {fetchTags} from './tagsList';
 import {
     fetchDashboardFail,
     fetchDashboardStart,
     fetchDashboardSuccess,
-    setDatesFail,
-    setDatesStart,
-    setDatesSuccess,
-    chooseTagsFail,
-    chooseTagsStart,
-    chooseTagsSuccess,
+    timeSeriesChangeFail,
+    timeSeriesChangeStart,
+    timeSeriesChangeSuccess,
 } from '../actions/dashboard';
 import {setAdminStatus} from "../actions/admin";
 
@@ -30,27 +27,14 @@ export const fetchDashboard = () => (
 
 export const fetchBackgroundTags = () => (fetchTags());
 
-export const setDates = (timeSeries) => (
+export const timeSeriesChange = (timeSeries) => (
     async (dispatch) => {
-        dispatch(setDatesStart());
+        dispatch(timeSeriesChangeStart());
         try {
-            const {admin, responseTimeSeries} = await setDatesApi(timeSeries);
+            const {admin, responseTimeSeries} = await timeSeriesChangeApi(timeSeries);
             dispatch(setAdminStatus(admin));
-            dispatch(setDatesSuccess(responseTimeSeries));
+            dispatch(timeSeriesChangeSuccess(responseTimeSeries));
         } catch (err) {
-            dispatch(setDatesFail(err));
-        }
-    });
-
-
-export const chooseTags = (timeSeries) => (
-    async (dispatch) => {
-        dispatch(chooseTagsStart());
-        try {
-            const {admin, responseTimeSeries} = await chooseTagsApi(timeSeries);
-            dispatch(setAdminStatus(admin));
-            dispatch(chooseTagsSuccess(responseTimeSeries));
-        } catch (err) {
-            dispatch(chooseTagsFail(err));
+            dispatch(timeSeriesChangeFail(err));
         }
     });

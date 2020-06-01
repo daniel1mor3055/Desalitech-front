@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {setDates, chooseTags} from 'store/thunk/dashboard';
+import {timeSeriesChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 
 class TimeSeries extends Component {
@@ -40,7 +40,7 @@ class TimeSeries extends Component {
             return null;
         } else {
             this.setState({startDate, endDate});
-            this.postDateChange(startDate, endDate);
+            this.dateTimeSeriesChange(startDate, endDate);
         }
     };
 
@@ -53,10 +53,10 @@ class TimeSeries extends Component {
             endDate
         });
 
-        this.postDateChange(startDate, endDate);
+        this.dateTimeSeriesChange(startDate, endDate);
     };
 
-    postDateChange = (startDate, endDate) => {
+    dateTimeSeriesChange = (startDate, endDate) => {
         const {tags, times, placement} = this.props;
         const timeSeries = {
             startDate,
@@ -66,7 +66,7 @@ class TimeSeries extends Component {
             placement
         };
 
-        this.props.onSetDates(timeSeries);
+        this.props.onTimeSeriesChange(timeSeries);
     };
 
     handleOpenChooseTagsForm = (event) => {
@@ -78,7 +78,7 @@ class TimeSeries extends Component {
         this.setState({chooseTagsFormOpen: false});
     };
 
-    handleSubmit = (values) => {
+    handleSubmitTagsForm = (values) => {
         const {startDate, endDate, times, placement} = this.props;
         const tags = Object.keys(values).map((key) => ({
             tagId: values[key],
@@ -90,7 +90,7 @@ class TimeSeries extends Component {
             placement,
             tags,
         };
-        this.props.onChooseTags(timeSeries);
+        this.props.onTimeSeriesChange(timeSeries);
     };
 
     render() {
@@ -128,7 +128,7 @@ class TimeSeries extends Component {
                 <button onClick={this.handleOpenChooseTagsForm}>Toggle Form</button>
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
-                    handleSubmit={this.handleSubmit}
+                    handleSubmit={this.handleSubmitTagsForm}
                     tagsIds={['da', 'sa']}
                     numberOfFields={3}
                     open={chooseTagsFormOpen}/>
@@ -153,8 +153,7 @@ TimeSeries.propTypes = {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onSetDates: (timeSeries) => dispatch(setDates(timeSeries)),
-        onChooseTags: (timeSeries) => dispatch(chooseTags(timeSeries)),
+        onTimeSeriesChange: (timeSeries) => dispatch(timeSeriesChange(timeSeries)),
     };
 };
 

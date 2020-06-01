@@ -2,12 +2,9 @@ import {
     FETCH_DASHBOARD_START,
     FETCH_DASHBOARD_SUCCESS,
     FETCH_DASHBOARD_FAIL,
-    SET_DATES_SUCCESS,
-    SET_DATES_START,
-    SET_DATES_FAIL,
-    CHOOSE_TAGS_SUCCESS,
-    CHOOSE_TAGS_START,
-    CHOOSE_TAGS_FAIL,
+    TIME_SERIES_CHANGE_SUCCESS,
+    TIME_SERIES_CHANGE_START,
+    TIME_SERIES_CHANGE_FAIL,
 } from '../actionTypes/dashboard';
 
 const initialState = {
@@ -32,37 +29,19 @@ const reducer = (state = initialState, action) => {
             return fetchDashboardSuccess(state, action);
         case FETCH_DASHBOARD_FAIL:
             return fetchDashboardFail(state, action);
-        case SET_DATES_START:
-            return setDatesStart(state, action);
-        case SET_DATES_SUCCESS:
-            return setDatesSuccess(state, action);
-        case SET_DATES_FAIL:
-            return setDatesFail(state, action);
-        case CHOOSE_TAGS_START:
-            return chooseTagsStart(state, action);
-        case CHOOSE_TAGS_SUCCESS:
-            return chooseTagsSuccess(state, action);
-        case CHOOSE_TAGS_FAIL:
-            return chooseTagsFail(state, action);
+        case TIME_SERIES_CHANGE_START:
+            return timeSeriesChangeStart(state, action);
+        case TIME_SERIES_CHANGE_SUCCESS:
+            return timeSeriesChangeSuccess(state, action);
+        case TIME_SERIES_CHANGE_FAIL:
+            return timeSeriesChangeFail(state, action);
         default:
             return state;
     }
 };
 
 
-function chooseTagsSuccess(state, action) {
-    return setDatesSuccess(state, action);
-}
-
-function chooseTagsFail(state, action) {
-    return setDatesFail(state, action);
-}
-
-function chooseTagsStart(state, action) {
-    return setDatesStart(state, action);
-}
-
-function setDatesSuccess(state, action) {
+function timeSeriesChangeSuccess(state, action) {
     const newTimeSeries = state.timeSeries.map((timeSeries) => {
         if (timeSeries.placement !== action.payload.responseTimeSeries.placement) {
             return timeSeries;
@@ -79,7 +58,7 @@ function setDatesSuccess(state, action) {
     };
 }
 
-function setDatesFail(state, action) {
+function timeSeriesChangeFail(state, action) {
     return {
         ...state,
         posting: false,
@@ -87,7 +66,7 @@ function setDatesFail(state, action) {
     };
 }
 
-function setDatesStart(state, action) {
+function timeSeriesChangeStart(state, action) {
     return {
         ...state,
         posting: true,

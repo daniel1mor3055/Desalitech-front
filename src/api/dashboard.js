@@ -17,7 +17,6 @@ export const fetchDashboardApi = async () => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${sysId}`);
         camelizeJson(response.data);
-        console.log(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
         console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
@@ -28,29 +27,7 @@ export const fetchDashboardApi = async () => {
     }
 };
 
-export const setDatesApi = async (timeSeries) => {
-    console.log('original time series');
-    console.log(timeSeries);
-    const sysId = extractSystemId();
-    const dataToPost = manipulateTimeSeries(timeSeries, sysId);
-    capitalizeJson(dataToPost);
-    console.log(dataToPost);
-    try {
-        const response = await axios.post('/system/dashboard', dataToPost);
-        camelizeJson(response.data);
-        const {admin, widgets} = response.data;
-        const responseTimeSeries = extractTimeSeries(widgets[0]);
-        return {admin, responseTimeSeries};
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-};
-
-
-export const chooseTagsApi = async (timeSeries) => {
-    console.log('original time series');
-    console.log(timeSeries);
+export const timeSeriesChangeApi = async (timeSeries) => {
     const sysId = extractSystemId();
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
