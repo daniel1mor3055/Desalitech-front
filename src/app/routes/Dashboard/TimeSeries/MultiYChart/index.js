@@ -36,6 +36,9 @@ class MultiYChart extends Component {
                 },
                 xaxis: {
                     categories: [],
+                    // labels: {
+                    //     trim: true,
+                    // }
                 },
                 yaxis: [],
                 tooltip: {
@@ -47,6 +50,7 @@ class MultiYChart extends Component {
                     },
                 },
                 legend: {
+                    showForSingleSeries: true,
                     horizontalAlign: 'center',
                     offsetX: 0,
                     onItemClick: {

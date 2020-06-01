@@ -14,6 +14,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/core/styles';
 import {connect} from "react-redux";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
+import Typography from "@material-ui/core/Typography";
+import Toolbar from "@material-ui/core/Toolbar";
 
 const styles = {};
 
@@ -40,6 +42,28 @@ class ChooseTagsForm extends Component {
         return validationSchema;
     };
 
+    verifyValues = (values) => {
+        let valuesArray = [];
+        console.log(values);
+        for (let property in values) {
+            if (values.hasOwnProperty(property)) {
+                if (values[property] === null || values[property] === '') {
+                    values[property] = '';
+                } else {
+                    valuesArray.push(values[property]);
+                }
+            }
+        }
+        console.log(valuesArray);
+        if ((new Set(valuesArray)).size !== valuesArray.length) {
+            return {global: 'Tags should be different'};
+        }
+        if (valuesArray.length === 0) {
+            return {global: 'Choose at least one tag'};
+        }
+        return null;
+    };
+
 
     render() {
         const {tagsIds, open, handleClose, handleSubmit, numberOfFields, tags, fetching, error} = this.props;
@@ -49,12 +73,18 @@ class ChooseTagsForm extends Component {
                 <Formik
                     initialValues={initialValues}
                     onSubmit={async (values, {setSubmitting, setErrors}) => {
-                        setSubmitting(true);
-                        try {
-                            await handleSubmit(values);
-                            handleClose();
-                        } catch (e) {
-                            // setErrors({globalError: error.message});
+                        setErrors({});
+                        const globalError = this.verifyValues(values);
+                        if (globalError !== null) {
+                            setErrors(globalError);
+                        } else {
+                            setSubmitting(true);
+                            try {
+                                await handleSubmit(values);
+                                handleClose();
+                            } catch (error) {
+                                setErrors({global: error.message});
+                            }
                         }
                         setSubmitting(false);
                     }}
@@ -63,6 +93,7 @@ class ChooseTagsForm extends Component {
                 >
                     {(props) => {
                         const {
+                            errors,
                             dirty,
                             isSubmitting,
                             handleChange,
@@ -71,6 +102,9 @@ class ChooseTagsForm extends Component {
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
+                                {errors.global && <Typography variant={'subtitle1'} color={'error'} align={'center'}>
+                                    {errors.global}
+                                </Typography>}
                                 {Object.keys(initialValues).map((key, index) => (
                                     <Field name={key}
                                            key={key}
