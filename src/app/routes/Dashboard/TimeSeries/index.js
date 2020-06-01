@@ -128,11 +128,9 @@ class TimeSeries extends Component {
                     numberOfMonths={1}
                     isOutsideRange={() => false}
                 />
-                
                 <IconButton className="jr-btn jr-btn-lg" color="primary" onClick={this.handleOpenChooseTagsForm}>
                     <AddCircleOutline/>
                 </IconButton>
-
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
                     handleSubmit={this.handleSubmitTagsForm}
@@ -143,7 +141,7 @@ class TimeSeries extends Component {
                              xData={times}
                              showYLabels={true}
                              yLabels={tags.map(tag => tag.tagId)}
-                             colors={['#2196f3', '#ff6e40', '#ff6e40']}
+                             colors={['#2196f3', '#ff6e40', '#ff3a8c']}
                              key={placement}/>
             </div>);
     }

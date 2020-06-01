@@ -41,8 +41,8 @@ class MultiYChart extends Component {
                 tooltip: {
                     fixed: {
                         enabled: true,
-                        position: 'bottomRight', // topRight, topLeft, bottomRight, bottomLeft
-                        offsetY: 50,
+                        position: 'bottomLeft', // topRight, topLeft, bottomRight, bottomLeft
+                        offsetY: -90,
                         offsetX: 0,
                     },
                 },
@@ -72,6 +72,7 @@ class MultiYChart extends Component {
             )),
             options: {
                 ...state.options,
+                colors: colors,
                 xaxis: {
                     ...state.options.xaxis,
                     categories: xData

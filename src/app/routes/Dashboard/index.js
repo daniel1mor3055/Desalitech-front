@@ -39,9 +39,6 @@ class Dashboard extends Component {
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
-                <div className="d-flex justify-content-center">
-                    <h1><IntlMessages id="pages.dashboardPage.description"/></h1>
-                </div>
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
