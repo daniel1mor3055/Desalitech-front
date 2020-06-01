@@ -125,7 +125,10 @@ class TimeSeries extends Component {
                     numberOfMonths={1}
                     isOutsideRange={() => false}
                 />
-                <button onClick={this.handleOpenChooseTagsForm}>Toggle Form</button>
+                <Button className="jr-btn jr-btn-lg" color="primary" onClick={this.handleOpenChooseTagsForm}>
+                    <i className="zmdi zmdi-github"/>
+                </Button>
+
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
                     handleSubmit={this.handleSubmitTagsForm}
