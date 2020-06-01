@@ -5,8 +5,8 @@ import {isIOS, isMobile} from 'react-device-detect';
 
 import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
-import Footer from 'components/Footer';
-import Tour from 'components/Tour';
+import Footer from 'app/components/Footer';
+import Tour from 'app/components/Tour';
 import {
   ABOVE_THE_HEADER,
   BELOW_THE_HEADER,
@@ -15,7 +15,7 @@ import {
   HORIZONTAL_NAVIGATION,
 } from 'store/actionTypes';
 import asyncComponent from 'util/asyncComponent';
-import TopNav from 'components/TopNav';
+import TopNav from 'app/components/TopNav';
 import PrivateRoute from 'app/components/PrivateRoute';
 
 class App extends Component {
@@ -61,7 +61,7 @@ class App extends Component {
                        component={asyncComponent(() => import('app/routes/Charts'))}/>
                 <PrivateRoute path={`${match.url}/reports`}
                        component={asyncComponent(() => import('app/routes/Reports'))}/>
-                <PrivateRoute component={asyncComponent(() => import('components/Error404'))}/>
+                <PrivateRoute component={asyncComponent(() => import('app/components/Error404'))}/>
               </Switch>
             </div>
             <Footer/>

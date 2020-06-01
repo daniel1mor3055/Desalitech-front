@@ -14,12 +14,12 @@ import {
     HORIZONTAL_NAVIGATION,
     INSIDE_THE_HEADER
 } from 'store/actionTypes';
-import AppNotification from 'components/AppNotification';
+import AppNotification from 'app/components/AppNotification';
 import CardHeader from 'app/components/CardHeader';
 import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
 import IntlMessages from 'util/IntlMessages';
-import Menu from 'components/TopNav/Menu';
-import UserInfoPopup from 'components/UserInfo/UserInfoPopup';
+import Menu from 'app/components/TopNav/Menu';
+import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
 
 

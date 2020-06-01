@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 import IntlMessages from 'util/IntlMessages';
-import ContainerHeader from 'components/ContainerHeader';
+import ContainerHeader from 'app/components/ContainerHeader';
 
 class Documentation extends Component {
 
