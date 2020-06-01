@@ -109,7 +109,8 @@ const ChooseTagsForm = ({tagsIds, open, handleClose, handleSubmit, numberOfField
                                                    fullWidth: true,
                                                    margin: 'normal',
                                                    variant: 'outlined',
-                                                   label: `Tag${index+1} ID`
+                                                   label: `Tag${index+1} ID`,
+                                                   onChange: handleChange,
                                                }}
                                         />
                                     ))}
