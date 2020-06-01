@@ -7,6 +7,7 @@ import 'react-dates/lib/css/_datepicker.css';
 
 
 import IconButton from '@material-ui/core/IconButton';
+import {AddCircleOutline} from '@material-ui/icons';
 import {DateRangePicker} from 'react-dates';
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
@@ -127,10 +128,10 @@ class TimeSeries extends Component {
                     numberOfMonths={1}
                     isOutsideRange={() => false}
                 />
-                <Button className="jr-btn jr-btn-lg" color="primary" onClick={this.handleOpenChooseTagsForm}>
-                    <i className="zmdi zmdi-github"/>
-                </Button>
-                AddCircleOutline,
+                
+                <IconButton className="jr-btn jr-btn-lg" color="primary" onClick={this.handleOpenChooseTagsForm}>
+                    <AddCircleOutline/>
+                </IconButton>
 
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
