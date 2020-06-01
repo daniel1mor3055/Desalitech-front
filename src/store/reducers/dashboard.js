@@ -4,7 +4,10 @@ import {
     FETCH_DASHBOARD_FAIL,
     SET_DATES_SUCCESS,
     SET_DATES_START,
-    SET_DATES_FAIL
+    SET_DATES_FAIL,
+    CHOOSE_TAGS_SUCCESS,
+    CHOOSE_TAGS_START,
+    CHOOSE_TAGS_FAIL,
 } from '../actionTypes/dashboard';
 
 const initialState = {
@@ -35,10 +38,29 @@ const reducer = (state = initialState, action) => {
             return setDatesSuccess(state, action);
         case SET_DATES_FAIL:
             return setDatesFail(state, action);
+        case CHOOSE_TAGS_START:
+            return chooseTagsStart(state, action);
+        case CHOOSE_TAGS_SUCCESS:
+            return chooseTagsSuccess(state, action);
+        case CHOOSE_TAGS_FAIL:
+            return chooseTagsFail(state, action);
         default:
             return state;
     }
 };
+
+
+function chooseTagsSuccess(state, action) {
+    return setDatesSuccess(state, action);
+}
+
+function chooseTagsFail(state, action) {
+    return setDatesFail(state, action);
+}
+
+function chooseTagsStart(state, action) {
+    return setDatesStart(state, action);
+}
 
 function setDatesSuccess(state, action) {
     const newTimeSeries = state.timeSeries.map((timeSeries) => {

@@ -11,9 +11,8 @@ import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
-import {setDates} from 'store/thunk/dashboard';
+import {setDates, chooseTags} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
-import LongMenu from "../../../components/LongMenu";
 
 class TimeSeries extends Component {
     constructor(props) {
@@ -43,7 +42,6 @@ class TimeSeries extends Component {
             this.setState({startDate, endDate});
             this.postDateChange(startDate, endDate);
         }
-
     };
 
 
@@ -71,14 +69,33 @@ class TimeSeries extends Component {
         this.props.onSetDates(timeSeries);
     };
 
-    handleChooseTagsForm = (event) => {
+    handleOpenChooseTagsForm = (event) => {
         event.preventDefault();
-        this.setState({chooseTagsFormOpen: !this.state.chooseTagsFormOpen});
+        this.setState({chooseTagsFormOpen: true});
+    };
+
+    handleCloseChooseTagsForm = () => {
+        this.setState({chooseTagsFormOpen: false});
+    };
+
+    handleSubmit = (values) => {
+        const {startDate, endDate, times, placement} = this.props;
+        const tags = Object.keys(values).map((key) => ({
+            tagId: values[key],
+        }));
+        const timeSeries = {
+            startDate,
+            endDate,
+            times,
+            placement,
+            tags,
+        };
+        this.props.onChooseTags(timeSeries);
     };
 
     render() {
         const {chooseTagsFormOpen} = this.state;
-        const {tags, times, placement, backgroundTags} = this.props;
+        const {tags, times, placement} = this.props;
 
         return (
             <div className="jr-card">
@@ -108,12 +125,13 @@ class TimeSeries extends Component {
                     numberOfMonths={1}
                     isOutsideRange={() => false}
                 />
-                <button onClick={this.handleChooseTagsForm}>Toggle Form</button>
+                <button onClick={this.handleOpenChooseTagsForm}>Toggle Form</button>
                 <ChooseTagsForm
-                    tagsIds={['da','sa']}
+                    handleClose={this.handleCloseChooseTagsForm}
+                    handleSubmit={this.handleSubmit}
+                    tagsIds={['da', 'sa']}
                     numberOfFields={3}
                     open={chooseTagsFormOpen}/>
-                {/*Need to add here the CHOOSETAGFORM, REMEMBER TO CHECK IF DATA IS ALREADY FETCHED*/}
                 <MultiYChart data={tags.map(tag => tag.tagTimeValues)}
                              xData={times}
                              showYLabels={true}
@@ -131,12 +149,12 @@ TimeSeries.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,
-    backgroundTags: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const mapDispatchedToProps = dispatch => {
     return {
         onSetDates: (timeSeries) => dispatch(setDates(timeSeries)),
+        onChooseTags: (timeSeries) => dispatch(chooseTags(timeSeries)),
     };
 };
 

@@ -14,15 +14,12 @@ import TimeSeries from './TimeSeries';
 class Dashboard extends Component {
 
     componentDidMount() {
-        const {backgroundTagsFetching} = this.props;
         this.props.onFetchDashboard();
-        if (!backgroundTagsFetching) {
-            this.props.onFetchBackgroundTags();
-        }
+        this.props.onFetchBackgroundTags();
     }
 
     render() {
-        const {match, timeSeries, fetching, error, backgroundTags} = this.props;
+        const {match, timeSeries, fetching, error} = this.props;
 
         const timeSeriesJSX =
             <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
@@ -35,8 +32,7 @@ class Dashboard extends Component {
                             tags={tags}
                             times={times}
                             placement={placement}
-                            key={placement}
-                            backgroundTags={backgroundTags}/>);
+                            key={placement}/>);
                 })}
             </div>;
 
@@ -68,8 +64,6 @@ const mapStateToProps = ({dashboard, tags}) => {
         seeqs: dashboard.seeqs,
         fetching: dashboard.fetching,
         error: dashboard.error,
-        backgroundTags: tags.tags,
-        backgroundTagsFetching: tags.fetching,
     };
 };
 

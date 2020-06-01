@@ -29,6 +29,28 @@ export const fetchDashboardApi = async () => {
 };
 
 export const setDatesApi = async (timeSeries) => {
+    console.log('original time series');
+    console.log(timeSeries);
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTimeSeries(timeSeries, sysId);
+    capitalizeJson(dataToPost);
+    console.log(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTimeSeries = extractTimeSeries(widgets[0]);
+        return {admin, responseTimeSeries};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+
+export const chooseTagsApi = async (timeSeries) => {
+    console.log('original time series');
+    console.log(timeSeries);
     const sysId = extractSystemId();
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);

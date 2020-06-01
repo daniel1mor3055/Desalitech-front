@@ -4,7 +4,10 @@ import {
     FETCH_DASHBOARD_FAIL,
     SET_DATES_FAIL,
     SET_DATES_START,
-    SET_DATES_SUCCESS
+    SET_DATES_SUCCESS,
+    CHOOSE_TAGS_FAIL,
+    CHOOSE_TAGS_START,
+    CHOOSE_TAGS_SUCCESS
 } from '../actionTypes/dashboard';
 
 export const fetchDashboardStart = () => (
@@ -52,6 +55,27 @@ export const setDatesSuccess = (responseTimeSeries) => (
 export const setDatesFail = (error) => (
     {
         type: SET_DATES_FAIL,
+        payload: {
+            error
+        }
+    });
+
+export const chooseTagsStart = () => (
+    {
+        type: CHOOSE_TAGS_START,
+    });
+
+export const chooseTagsSuccess = (responseTimeSeries) => (
+    {
+        type: CHOOSE_TAGS_SUCCESS,
+        payload: {
+            responseTimeSeries,
+        }
+    });
+
+export const chooseTagsFail = (error) => (
+    {
+        type: CHOOSE_TAGS_FAIL,
         payload: {
             error
         }

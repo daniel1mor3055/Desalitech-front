@@ -12,28 +12,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {withStyles} from '@material-ui/core/styles';
+import {connect} from "react-redux";
+import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 
 const styles = {};
 
-const options = [
-    'None',
-    'Atria',
-    'Callisto',
-    'Dione',
-    'Ganymede',
-    'Hangouts Call',
-    'Luna',
-    'Oberon',
-    'Phobos',
-    'Pyxis',
-    'Sedna',
-    'Titania',
-    'Triton',
-    'Umbriel',
-];
-
-const ChooseTagsForm = ({tagsIds, open, handleClose, handleSubmit, numberOfFields, backgroundTags}) => {
-    const getInitialValues = (tagsIds, numberOfFields) => {
+class ChooseTagsForm extends Component {
+    getInitialValues = (tagsIds, numberOfFields) => {
         let initialValues = {};
         for (let i = 0; i < numberOfFields; i++) {
             if (i < tagsIds.length) {
@@ -45,7 +30,7 @@ const ChooseTagsForm = ({tagsIds, open, handleClose, handleSubmit, numberOfField
         return initialValues;
     };
 
-    const getValidationSchemaObject = (initialValues) => {
+    getValidationSchemaObject = (initialValues) => {
         let validationSchema = {};
         for (let property in initialValues) {
             if (Object.prototype.hasOwnProperty.call(initialValues, property)) {
@@ -56,97 +41,99 @@ const ChooseTagsForm = ({tagsIds, open, handleClose, handleSubmit, numberOfField
     };
 
 
-    const initialValues = getInitialValues(tagsIds, numberOfFields);
+    render() {
+        const {tagsIds, open, handleClose, handleSubmit, numberOfFields, tags, fetching, error} = this.props;
+        const initialValues = this.getInitialValues(tagsIds, numberOfFields);
 
+        const chooseTagsFormJSX = (
+                <Formik
+                    initialValues={initialValues}
+                    onSubmit={async (values, {setSubmitting, setErrors}) => {
+                        setSubmitting(true);
+                        try {
+                            await handleSubmit(values);
+                            handleClose();
+                        } catch (e) {
+                            // setErrors({globalError: error.message});
+                        }
+                        setSubmitting(false);
+                    }}
 
-    return (
-        <Dialog
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-        >
-            <>
-                <DialogTitle id="form-dialog-title">Choose Your Tags</DialogTitle>
-                <DialogContent>
-                    <Formik
-                        initialValues={initialValues}
-                        onSubmit={async (values, {setSubmitting, setErrors}) => {
-                            // Should check here if at least one field is not empty
-                            // should check if all chosen tags are different
-                            setSubmitting(true);
-                            try {
-                                await handleSubmit(values);
-                                handleClose();
-                            } catch (e) {
-                                // setErrors({globalError: error.message});
-                            }
-                            setSubmitting(false);
-                        }}
-
-                        validationSchema={Yup.object().shape(getValidationSchemaObject(initialValues))}
-                    >
-                        {(props) => {
-                            const {
-                                values,
-                                touched,
-                                errors,
-                                dirty,
-                                isSubmitting,
-                                handleChange,
-                                handleBlur,
-                                handleSubmit,
-                                handleReset,
-                            } = props;
-                            return (
-                                <form onSubmit={handleSubmit}>
-                                    {Object.keys(initialValues).map((key, index) => (
-                                        <Field name={key}
-                                               key={key}
-                                               label={`Tag${index+1} ID`}
-                                               component={FormikAutocomplete}
-                                               options={options}
-                                               textFieldProps={{
-                                                   fullWidth: true,
-                                                   margin: 'normal',
-                                                   variant: 'outlined',
-                                                   label: `Tag${index+1} ID`,
-                                                   onChange: handleChange,
-                                               }}
-                                        />
-                                    ))}
-                                    {/*<TextField*/}
-                                    {/*    label="Tag ID"*/}
-                                    {/*    name="tagId"*/}
-                                    {/*    value={values.tagId}*/}
-                                    {/*    onChange={handleChange}*/}
-                                    {/*    onBlur={handleBlur}*/}
-                                    {/*    helperText={(errors.tagId && touched.tagId) && errors.tagId}*/}
-                                    {/*    margin="normal"*/}
-                                    {/*    disabled*/}
-                                    {/*/>*/}
-                                    <DialogActions>
-                                        <Button
-                                            type="button"
-                                            className="outline"
-                                            color={'secondary'}
-                                            onClick={handleReset}
-                                            disabled={!dirty || isSubmitting}
-                                        >
-                                            Reset
-                                        </Button>
-                                        <Button type={"submit"} color={'primary'} disabled={isSubmitting || !dirty}>
-                                            Save
-                                        </Button>
-                                    </DialogActions>
-                                </form>
-                            );
-                        }}
-                    </Formik>
-                </DialogContent>
-            </>
-        </Dialog>
-    );
-};
+                    validationSchema={Yup.object().shape(this.getValidationSchemaObject(initialValues))}
+                >
+                    {(props) => {
+                        const {
+                            dirty,
+                            isSubmitting,
+                            handleChange,
+                            handleSubmit,
+                            handleReset,
+                        } = props;
+                        return (
+                            <form onSubmit={handleSubmit}>
+                                {Object.keys(initialValues).map((key, index) => (
+                                    <Field name={key}
+                                           key={key}
+                                           label={`Tag${index + 1} ID`}
+                                           component={FormikAutocomplete}
+                                           options={tags.map((tag) => (tag.tagId)).sort()}
+                                           textFieldProps={{
+                                               fullWidth: true,
+                                               margin: 'normal',
+                                               variant: 'outlined',
+                                               label: `Tag${index + 1} ID`,
+                                               onChange: handleChange,
+                                           }}
+                                    />
+                                ))}
+                                {/*<TextField*/}
+                                {/*    label="Tag ID"*/}
+                                {/*    name="tagId"*/}
+                                {/*    value={values.tagId}*/}
+                                {/*    onChange={handleChange}*/}
+                                {/*    onBlur={handleBlur}*/}
+                                {/*    helperText={(errors.tagId && touched.tagId) && errors.tagId}*/}
+                                {/*    margin="normal"*/}
+                                {/*    disabled*/}
+                                {/*/>*/}
+                                <DialogActions>
+                                    <Button
+                                        type="button"
+                                        className="outline"
+                                        color={'secondary'}
+                                        onClick={handleReset}
+                                        disabled={!dirty || isSubmitting}
+                                    >
+                                        Reset
+                                    </Button>
+                                    <Button type={"submit"} color={'primary'} disabled={isSubmitting || !dirty}>
+                                        Save
+                                    </Button>
+                                </DialogActions>
+                            </form>
+                        );
+                    }}
+                </Formik>
+            )
+        ;
+        return (
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="form-dialog-title"
+            >
+                <>
+                    <DialogTitle id="form-dialog-title">Choose Your Tags</DialogTitle>
+                    <DialogContent>
+                        {fetching ?
+                            error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
+                            : chooseTagsFormJSX}
+                    </DialogContent>
+                </>
+            </Dialog>
+        );
+    }
+}
 
 
 ChooseTagsForm.propTypes = {
@@ -155,7 +142,14 @@ ChooseTagsForm.propTypes = {
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
     numberOfFields: PropTypes.number.isRequired,
-    backgroundTags: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default withStyles(styles)(ChooseTagsForm);
+const mapStateToProps = ({tags}) => {
+    return {
+        tags: tags.tags,
+        fetching: tags.fetching,
+        error: tags.error,
+    };
+};
+
+export default connect(mapStateToProps)(withStyles(styles)(ChooseTagsForm));

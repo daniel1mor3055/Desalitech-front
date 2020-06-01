@@ -1,4 +1,4 @@
-import {fetchDashboardApi, setDatesApi} from 'api/dashboard';
+import {fetchDashboardApi, setDatesApi,chooseTagsApi} from 'api/dashboard';
 import {fetchTags} from './tagsList';
 import {
     fetchDashboardFail,
@@ -6,7 +6,10 @@ import {
     fetchDashboardSuccess,
     setDatesFail,
     setDatesStart,
-    setDatesSuccess
+    setDatesSuccess,
+    chooseTagsFail,
+    chooseTagsStart,
+    chooseTagsSuccess,
 } from '../actions/dashboard';
 import {setAdminStatus} from "../actions/admin";
 
@@ -36,5 +39,18 @@ export const setDates = (timeSeries) => (
             dispatch(setDatesSuccess(responseTimeSeries));
         } catch (err) {
             dispatch(setDatesFail(err));
+        }
+    });
+
+
+export const chooseTags = (timeSeries) => (
+    async (dispatch) => {
+        dispatch(chooseTagsStart());
+        try {
+            const {admin, responseTimeSeries} = await chooseTagsApi(timeSeries);
+            dispatch(setAdminStatus(admin));
+            dispatch(chooseTagsSuccess(responseTimeSeries));
+        } catch (err) {
+            dispatch(chooseTagsFail(err));
         }
     });
