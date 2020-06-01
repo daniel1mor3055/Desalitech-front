@@ -5,6 +5,8 @@ import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 
+
+import IconButton from '@material-ui/core/IconButton';
 import {DateRangePicker} from 'react-dates';
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
@@ -128,6 +130,7 @@ class TimeSeries extends Component {
                 <Button className="jr-btn jr-btn-lg" color="primary" onClick={this.handleOpenChooseTagsForm}>
                     <i className="zmdi zmdi-github"/>
                 </Button>
+                AddCircleOutline,
 
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
