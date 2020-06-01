@@ -129,7 +129,7 @@ class TimeSeries extends Component {
                 <ChooseTagsForm
                     handleClose={this.handleCloseChooseTagsForm}
                     handleSubmit={this.handleSubmitTagsForm}
-                    tagsIds={['da', 'sa']}
+                    tagsIds={tags.map(tag => tag.tagId)}
                     numberOfFields={3}
                     open={chooseTagsFormOpen}/>
                 <MultiYChart data={tags.map(tag => tag.tagTimeValues)}
