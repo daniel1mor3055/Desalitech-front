@@ -1,12 +1,12 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
-import ContainerHeader from 'components/ContainerHeader';
+import ContainerHeader from 'app/components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
 import {fetchTags, postTag} from 'store/thunk/tagsList';
-import CardBox from 'components/CardBox';
-import SearchBox from 'components/SearchBox';
+import CardBox from 'app/components/CardBox';
+import SearchBox from 'app/components/SearchBox';
 import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
 import IconButton from "@material-ui/core/IconButton";

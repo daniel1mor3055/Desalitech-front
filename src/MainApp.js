@@ -34,7 +34,7 @@ class MainApp extends Component {
                     <Switch>
                         <Route path="/" component={App}/>
                         <Route
-                            component={asyncComponent(() => import('components/Error404'))}/>
+                            component={asyncComponent(() => import('app/components/Error404'))}/>
                     </Switch>
                 </Auth0Provider>
                 <NotificationContainer/>

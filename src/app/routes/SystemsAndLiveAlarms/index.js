@@ -4,19 +4,19 @@ import {connect} from 'react-redux';
 import {isIOS, isMobile} from 'react-device-detect';
 
 import Header from 'app/components/Header';
-import Footer from 'components/Footer';
-import Tour from 'components/Tour/index';
+import Footer from 'app/components/Footer';
+import Tour from 'app/components/Tour/index';
 import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/actionTypes';
-import TopNav from 'components/TopNav';
+import TopNav from 'app/components/TopNav';
 import BasicCard from "./BasicCards/BasicCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
-import SearchBox from "components/SearchBox";
+import SearchBox from "app/components/SearchBox";
 import {fetchSystems} from "store/thunk/systemSelect";
 import {fetchPolling} from "store/thunk/polling";
 import DataTable from 'app/components/DataTable';
-import CardBox from "../../../components/CardBox";
+import CardBox from "app/components/CardBox";
 
 class SystemsAndLiveAlarms extends React.Component {
     constructor(props) {

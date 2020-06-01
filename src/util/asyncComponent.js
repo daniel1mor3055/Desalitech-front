@@ -3,7 +3,7 @@ import Nprogress from 'nprogress';
 import ReactPlaceholder from 'react-placeholder';
 import 'nprogress/nprogress.css';
 import 'react-placeholder/lib/reactPlaceholder.css';
-import CircularProgress from "../components/CircularProgress/index";
+import CircularProgress from "app/components/CircularProgress/index";
 
 export default function asyncComponent(importComponent) {
   class AsyncFunc extends Component {

@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 
 
-import ContainerHeader from 'components/ContainerHeader';
+import ContainerHeader from 'app/components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import TitleCard from 'app/components/TitleCard';
 import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
