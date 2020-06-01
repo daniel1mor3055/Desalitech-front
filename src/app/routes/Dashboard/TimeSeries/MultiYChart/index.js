@@ -41,9 +41,9 @@ class MultiYChart extends Component {
                 tooltip: {
                     fixed: {
                         enabled: true,
-                        position: 'topLeft', // topRight, topLeft, bottomRight, bottomLeft
-                        offsetY: -70,
-                        offsetX: -30,
+                        position: 'bottomRight', // topRight, topLeft, bottomRight, bottomLeft
+                        offsetY: 50,
+                        offsetX: 0,
                     },
                 },
                 legend: {
