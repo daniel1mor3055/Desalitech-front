@@ -28,6 +28,7 @@ export const setEmailNotificationApi = async (emailNotification) => {
         };
         capitalizeJson(dataToPass);
         const response = await axios.post(`/system/alarm-list`, dataToPass);
+        console.log(response);
         return response;
     } catch (err) {
         console.log(err);

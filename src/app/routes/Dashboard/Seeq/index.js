@@ -7,12 +7,11 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
-import TitleCard from "app/components/TitleCard";
-import {tagChange} from 'store/thunk/dashboard';
+import {seeqChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
 
-class Tag extends Component {
+class Seeq extends Component {
     constructor(props) {
         super(props);
 
@@ -31,48 +30,47 @@ class Tag extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {tagId} = values;
+        const {url} = values;
         const {placement} = this.props;
 
-        const tag = {
-            tagId,
+        const seeq = {
+            url,
             placement
         };
-        this.props.onTagChange(tag);
+        this.props.onSeeqChange(seeq);
     };
 
-    getFormInitialValues = (tagId) => {
+    getFormInitialValues = (url) => {
         const initialValues = {
-            tagId,
+            url,
         };
         return initialValues;
     };
 
     getFormValidationSchemaObject = () => {
         const validationSchema = {
-            tagId: Yup.string().required('required'),
+            url: Yup.string().required('required'),
         };
         return validationSchema;
     };
 
     render() {
         const {chooseTagsFormOpen} = this.state;
-        const {tagId, tagName, tagValue, tagUnits} = this.props;
-        const initialFormValues = this.getFormInitialValues(tagId);
+        const {url, placement} = this.props;
+        const initialFormValues = this.getFormInitialValues(url);
 
         return (
             <Widget onClick={this.handleOpenChooseTagsForm}>
                 <>
-                    <TitleCard
-                        tagName={(tagName !== '' && tagName != null) ? tagName : tagId}
-                        tagValue={tagValue === undefined || tagValue === null ? '' : tagValue}
-                        tagUnits={tagUnits === undefined || tagUnits === null ? '' : tagUnits}
-                    />
+                    <iframe
+                        src={url}
+                        title="SEEQ data">
+                    </iframe>
                     <ChooseTagsForm
-                        labels={['Tag ID']}
+                        labels={['URL']}
                         verifyValues={() => null}
                         validationSchemaObject={this.getFormValidationSchemaObject()}
-                        formTitle={'Choose tag to display'}
+                        formTitle={'Enter a valid Seeq URL'}
                         initialValues={initialFormValues}
                         handleClose={this.handleCloseChooseTagsForm}
                         handleSubmit={this.handleFormSubmit}
@@ -84,18 +82,14 @@ class Tag extends Component {
 }
 
 
-Tag.propTypes = {
-    tagId: PropTypes.string.isRequired,
-    tagName: PropTypes.string.isRequired,
-    tagValue: PropTypes.string.isRequired,
-    tagUnits: PropTypes.string.isRequired,
-    placement: PropTypes.number.isRequired,
+Seeq.propTypes = {
+    url: PropTypes.string.isRequired,
 };
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onTagChange: (tag) => dispatch(tagChange(tag)),
+        onSeeqChange: (seeq) => dispatch(seeqChange(seeq)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(Tag));
+export default withRouter(connect(null, mapDispatchedToProps)(Seeq));

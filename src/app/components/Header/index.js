@@ -16,11 +16,13 @@ import {
 } from 'store/actionTypes';
 import AppNotification from 'app/components/AppNotification';
 import CardHeader from 'app/components/CardHeader';
-import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
+import {toggleCollapsedNav} from 'store/actions/Setting';
+import {fetchSystemName} from 'store/thunk/header';
 import IntlMessages from 'util/IntlMessages';
 import Menu from 'app/components/TopNav/Menu';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
+import CircularIndeterminate from "../Progress/CircularIndeterminate";
 
 
 class Header extends Component {
@@ -37,6 +39,13 @@ class Header extends Component {
         };
     }
 
+    componentDidMount() {
+        const {systemName} = this.props;
+        if (systemName === '') {
+            this.props.onFetchSystemName();
+        }
+    }
+
     onAppNotificationSelect = () => {
         this.setState({
             appNotification: !this.state.appNotification
@@ -49,24 +58,13 @@ class Header extends Component {
         });
     };
 
-    handleRequestClose = () => {
-        this.setState({
-            langSwitcher: false,
-            userInfo: false,
-            mailNotification: false,
-            appNotification: false,
-            searchBox: false,
-            apps: false
-        });
-    };
-
     onToggleCollapsedNav = (e) => {
         const val = !this.props.navCollapsed;
         this.props.toggleCollapsedNav(val);
     };
 
     render() {
-        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin} = this.props;
+        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin, systemName, fetching, error} = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const sidebarIcon = showSidebarIcon ?
             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
@@ -91,7 +89,10 @@ class Header extends Component {
                         <img src={require("assets/images/desalitech-logo.png")} alt="desalitech" title="desalitech"/>
                     </Link>
                     <Typography variant={'h4'} color={'inherit'} align={'center'}>
-                        {/*{window.location.pathname.includes('/app/system-select') ? null : selectedSystemName}*/}
+                        {window.location.pathname.includes('/app/system-select') ? null
+                            : fetching ?
+                                error ? <p>{"Coudn't fetch system name"}</p> : <CircularIndeterminate/>
+                                : systemName}
                     </Typography>
 
                     {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
@@ -165,15 +166,24 @@ Header.defaultProps = {
     showSidebarIcon: true
 };
 
-const mapStateToProps = ({admin, settings, systems}) => {
+const mapStateToProps = ({settings, header}) => {
     return {
         drawerType: settings.drawerType,
         locale: settings.locale,
         navigationStyle: settings.navigationStyle,
         horizontalNavPosition: settings.horizontalNavPosition,
-        // selectedSystemName: systems.selectedSystemName,
-        admin: admin.admin,
+        admin: header.admin,
+        systemName: header.systemName,
+        fetching: header.fetching,
+        error: header.error,
     };
 };
 
-export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, switchLanguage})(Header));
+const mapDispatchedToProps = dispatch => {
+    return {
+        onFetchSystemName: () => dispatch(fetchSystemName()),
+        toggleCollapsedNav: (isNavCollapsed) => dispatch(toggleCollapsedNav(isNavCollapsed)),
+    };
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(Header));

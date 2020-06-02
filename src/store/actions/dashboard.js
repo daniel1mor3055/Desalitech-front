@@ -13,7 +13,10 @@ import {
     TAG_CHANGE_SUCCESS,
     TRIGGER_CHANGE_FAIL,
     TRIGGER_CHANGE_START,
-    TRIGGER_CHANGE_SUCCESS
+    TRIGGER_CHANGE_SUCCESS,
+    SEEQ_CHANGE_FAIL,
+    SEEQ_CHANGE_START,
+    SEEQ_CHANGE_SUCCESS
 } from '../actionTypes/dashboard';
 
 
@@ -72,7 +75,7 @@ export const gaugeChangeStart = () => (
         type: GAUGE_CHANGE_START,
     });
 
-export const gaugeChangeSuccess = (responseGauge, gaugeType) => (
+export const gaugeChangeSuccess = (gaugeType, responseGauge) => (
     {
         type: GAUGE_CHANGE_SUCCESS,
         payload: {
@@ -126,6 +129,27 @@ export const triggerChangeSuccess = (responseTrigger) => (
 export const triggerChangeFail = (error) => (
     {
         type: TRIGGER_CHANGE_FAIL,
+        payload: {
+            error
+        }
+    });
+
+export const seeqChangeStart = () => (
+    {
+        type: SEEQ_CHANGE_START,
+    });
+
+export const seeqChangeSuccess = (responseSeeq) => (
+    {
+        type: SEEQ_CHANGE_SUCCESS,
+        payload: {
+            responseSeeq,
+        }
+    });
+
+export const seeqChangeFail = (error) => (
+    {
+        type: SEEQ_CHANGE_FAIL,
         payload: {
             error
         }

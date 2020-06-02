@@ -36,15 +36,12 @@ class MultiYChart extends Component {
                 },
                 xaxis: {
                     categories: [],
-                    // labels: {
-                    //     trim: true,
-                    // }
                 },
                 yaxis: [],
                 tooltip: {
                     fixed: {
                         enabled: true,
-                        position: 'bottomLeft', // topRight, topLeft, bottomRight, bottomLeft
+                        position: 'bottomLeft',
                         offsetY: -90,
                         offsetX: 0,
                     },
@@ -95,9 +92,6 @@ class MultiYChart extends Component {
                         labels: {
                             style: {
                                 colors: colors[index]
-                            },
-                            formatter: function (val, index) {
-                                return val.toFixed(2);
                             },
                         },
                         tooltip: {

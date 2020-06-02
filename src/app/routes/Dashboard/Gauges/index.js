@@ -35,12 +35,10 @@ class Gauge extends Component {
 
     handleFormSubmit = (values) => {
         const {lL, l, h, hH, measuredTag} = values;
-        const {gaugeType, gaugeData} = this.props;
-        const {placement} = gaugeData;
+        const {gaugeType, gaugeData: {placement}} = this.props;
 
         const gauge = {
             measuredTag,
-            gaugeType,
             placement,
             lL,
             l,
@@ -48,7 +46,7 @@ class Gauge extends Component {
             hH
         };
 
-        this.props.onGaugeChange(gauge);
+        this.props.onGaugeChange(gaugeType, gauge);
     };
 
     getFormInitialValues = (gaugeData) => {
@@ -99,21 +97,20 @@ class Gauge extends Component {
     };
 
     static getDerivedStateFromProps = (props, state) => {
-        const {gaugeData} = props;
-        const {lL, l, h, hH} = gaugeData;
-        const shouldForceRender = (lL !== state.lL || l !== state.l || h !== state.h || hH !== state.hH);
+        const {gaugeData: {lL, l, h, hH}} = props;
+
         return {
             ...state,
             lL,
             l,
             h,
             hH,
-            shouldForceRender,
+            shouldForceRender: (lL !== state.lL || l !== state.l || h !== state.h || hH !== state.hH),
         };
     };
 
     render() {
-        const {chooseTagsFormOpen,lL, l, h, hH,shouldForceRender} = this.state;
+        const {chooseTagsFormOpen, lL, l, h, hH, shouldForceRender} = this.state;
         const {gaugeType, gaugeData} = this.props;
         const {tags} = gaugeData;
 
@@ -174,7 +171,7 @@ Gauge.propTypes = {
 
 const mapDispatchedToProps = dispatch => {
     return {
-        onGaugeChange: (gauge) => dispatch(gaugeChange(gauge)),
+        onGaugeChange: (gaugeType, gauge) => dispatch(gaugeChange(gaugeType, gauge)),
     };
 };
 

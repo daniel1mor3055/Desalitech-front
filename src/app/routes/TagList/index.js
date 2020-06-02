@@ -47,44 +47,39 @@ class TagList extends PureComponent {
         this.props.onPostTag(values);
     };
 
-    updateSearchText(event, fieldToSearch) {
-        switch (fieldToSearch) {
-            case 'ID': {
-                this.setState({
-                    tagIdSearchText: event.target.value,
-                });
-                return;
-            }
-            case 'NAME': {
-                this.setState({
-                    tagNameSearchText: event.target.value,
-                });
-                return;
-            }
-            case 'DESCRIPTION': {
-                this.setState({
-                    tagDescriptionSearchText: event.target.value,
-                });
-                return;
-            }
-        }
+    getSearchOptions = () => {
+        return {
+            'ID': 'tagIdSearchText',
+            'NAME': 'tagNameSearchText',
+            'DESCRIPTION': 'tagDescriptionSearchText',
+        };
+    };
+
+    updateSearchText(event, id) {
+        const stateSearchOptions = this.getSearchOptions();
+
+        this.setState({[stateSearchOptions[id]]: event.target.value});
     }
 
+    handleSearchClear(event, id) {
+        event.preventDefault();
+        const stateSearchOptions = this.getSearchOptions();
+
+        this.setState({[stateSearchOptions[id]]: ''});
+    }
+
+
     getFilterData(tags) {
+        const {tagIdSearchText, tagNameSearchText, tagDescriptionSearchText} = this.state;
         let filteredTags = tags.filter(tag => {
-            let {tagId, tagName, description} = tag;
-            if (tagName == null) {
-                tagName = '';
-            }
-            if (tagId == null) {
-                tagId = '';
-            }
-            if (description == null) {
-                description = '';
-            }
-            return tagId.toLowerCase().includes(this.state.tagIdSearchText.toLowerCase()) &&
-                tagName.toLowerCase().includes(this.state.tagNameSearchText.toLowerCase()) &&
-                description.toLowerCase().includes(this.state.tagDescriptionSearchText.toLowerCase());
+            const {tagId, tagName, description} = tag;
+            const tagNameToSearch = tagName === null ? '' : tagName;
+            const tagIdToSearch = tagId === null ? '' : tagId;
+            const tagDescriptionToSearch = description === null ? '' : description;
+
+            return tagIdToSearch.toLowerCase().includes(tagIdSearchText.toLowerCase()) &&
+                tagNameToSearch.toLowerCase().includes(tagNameSearchText.toLowerCase()) &&
+                tagDescriptionToSearch.toLowerCase().includes(tagDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredTags.length;
         return {filteredTags, badSearch};
@@ -102,18 +97,27 @@ class TagList extends PureComponent {
 
         const tagsList =
             <div className="row animated slideInUpTiny animation-duration-3">
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Tag ID"
-                           onChange={(event) => this.updateSearchText(event, 'ID')}
-                           value={tagIdSearchText} badSearch={badSearch}/>
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Tag Name"
-                           onChange={(event) => this.updateSearchText(event, 'NAME')}
-                           value={tagNameSearchText} badSearch={badSearch}/>
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Description"
-                           onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
-                           value={tagDescriptionSearchText} badSearch={badSearch}/>
+                <SearchBox
+                    showClear={true}
+                    styleName="d-none d-lg-block"
+                    placeholder="Filter by Tag ID"
+                    onChange={(event) => this.updateSearchText(event, 'ID')}
+                    value={tagIdSearchText} badSearch={badSearch}
+                    handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
+                <SearchBox
+                    showClear={true}
+                    styleName="d-none d-lg-block"
+                    placeholder="Filter by Tag Name"
+                    onChange={(event) => this.updateSearchText(event, 'NAME')}
+                    value={tagNameSearchText} badSearch={badSearch}
+                    handleClear={(event) => this.handleSearchClear(event, 'NAME')}/>
+                <SearchBox
+                    showClear={true}
+                    styleName="d-none d-lg-block"
+                    placeholder="Filter by Description"
+                    onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
+                    value={tagDescriptionSearchText} badSearch={badSearch}
+                    handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
                 <CardBox styleName="col-12" cardStyle=" p-0">
                     <DataTable data={filteredTags}
                                columnsIds={columnsIds}

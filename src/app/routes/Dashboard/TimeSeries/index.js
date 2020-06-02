@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import moment from "moment";
+import momentPropTypes from 'react-moment-proptypes';
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
@@ -58,12 +59,11 @@ class TimeSeries extends Component {
     };
 
     dateTimeSeriesChange = (startDate, endDate) => {
-        const {tags, times, placement} = this.props;
+        const {tags, placement} = this.props;
         const timeSeries = {
             startDate,
             endDate,
             tags,
-            times,
             placement
         };
 
@@ -80,58 +80,55 @@ class TimeSeries extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {startDate, endDate, times, placement} = this.props;
+        const {startDate, endDate, placement} = this.props;
         const tags = Object.keys(values).map((key) => ({
             tagId: values[key],
         }));
         const timeSeries = {
             startDate,
             endDate,
-            times,
             placement,
             tags,
         };
         this.props.onTimeSeriesChange(timeSeries);
     };
 
-    getFormInitialValues = (tags, numberOfFields) => {
+    getFormInitialValues = (tags) => {
         let initialValues = {};
-        for (let i = 0; i < numberOfFields; i++) {
+        for (let i = 0; i < 3; i++) {
             if (i < tags.length) {
-                initialValues[`tag${i}Id`] = tags[i].tagId;
+                initialValues[`tag${i + 1}Id`] = tags[i].tagId;
             } else {
-                initialValues[`tag${i}Id`] = '';
+                initialValues[`tag${i + 1}Id`] = '';
             }
         }
         return initialValues;
     };
 
-    getFormValidationSchemaObject = (initialValues) => {
-        let validationSchema = {};
-        for (let property in initialValues) {
-            if (Object.prototype.hasOwnProperty.call(initialValues, property)) {
-                validationSchema[property] = Yup.string().nullable();
-            }
-        }
-        return validationSchema;
+    getFormValidationSchemaObject = () => {
+        return {
+            tag1Id: Yup.string().nullable(),
+            tag2Id: Yup.string().nullable(),
+            tag3Id: Yup.string().nullable(),
+        };
     };
 
     verifyFormValues = (values) => {
-        let valuesArray = [];
+        let notEmptyValues = [];
         for (let property in values) {
             if (values.hasOwnProperty(property)) {
                 if (values[property] === null || values[property] === '') {
                     values[property] = '';
                 } else {
-                    valuesArray.push(values[property]);
+                    notEmptyValues.push(values[property]);
                 }
             }
         }
 
-        if ((new Set(valuesArray)).size !== valuesArray.length) {
+        if ((new Set(notEmptyValues)).size !== notEmptyValues.length) {
             return {global: 'Tags should be different'};
         }
-        if (valuesArray.length === 0) {
+        if (notEmptyValues.length === 0) {
             return {global: 'Choose at least one tag'};
         }
         return null;
@@ -140,25 +137,20 @@ class TimeSeries extends Component {
     render() {
         const {chooseTagsFormOpen} = this.state;
         const {tags, times, placement} = this.props;
-        const initialFormValues = this.getFormInitialValues(tags, 3);
+        const initialFormValues = this.getFormInitialValues(tags);
 
         return (
             <Widget childrenStyle={'col-12'} styleName={'col-12'} onClick={this.handleOpenChooseTagsForm}>
                 <>
-                    <Button className="jr-btn"
-                            color="primary"
+                    <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'years')}>1 Year</Button>
-                    <Button className="jr-btn"
-                            color="primary"
+                    <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(6, 'months')}>6 Months</Button>
-                    <Button className="jr-btn"
-                            color="primary"
+                    <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'months')}>1 Month</Button>
-                    <Button className="jr-btn"
-                            color="primary"
+                    <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'weeks')}>1 Week</Button>
-                    <Button className="jr-btn"
-                            color="primary"
+                    <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
                     <DateRangePicker
                         startDate={this.state.startDate} // momentPropTypes.momentObj or null,
@@ -176,13 +168,13 @@ class TimeSeries extends Component {
                     <ChooseTagsForm
                         labels={['Tag1 ID', 'Tag2 ID', 'Tag3 ID']}
                         verifyValues={this.verifyFormValues}
-                        validationSchemaObject={this.getFormValidationSchemaObject(initialFormValues)}
+                        validationSchemaObject={this.getFormValidationSchemaObject()}
                         formTitle={'Choose tags to display'}
                         initialValues={initialFormValues}
                         handleClose={this.handleCloseChooseTagsForm}
                         handleSubmit={this.handleFormSubmit}
                         open={chooseTagsFormOpen}/>
-                    <MultiYChart data={tags.map(tag => tag.tagTimeValues)}
+                    <MultiYChart data={tags.map(tag => tag.tagTimeValues.map((timeValue) => timeValue.toFixed(2)))}
                                  xData={times}
                                  showYLabels={true}
                                  yLabels={tags.map(tag => tag.tagId)}
@@ -196,8 +188,8 @@ class TimeSeries extends Component {
 
 
 TimeSeries.propTypes = {
-    startDate: PropTypes.object.isRequired, // Actually its a moment object
-    endDate: PropTypes.object.isRequired, // Actually its a moment object
+    startDate: momentPropTypes.momentObj, // Actually its a moment object
+    endDate: momentPropTypes.momentObj, // Actually its a moment object
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,

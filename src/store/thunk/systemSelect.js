@@ -1,6 +1,6 @@
 import {fetchSystemsApi} from 'api/systemSelect';
 import {fetchSystemsFail, fetchSystemsStart, fetchSystemsSuccess} from '../actions/systemsAndLiveAlarms';
-import {setAdminStatus} from "../actions/admin";
+import {setAdminStatus} from "../actions/header";
 
 export const fetchSystems = () => (
     async (dispatch) => {

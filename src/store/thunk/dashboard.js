@@ -1,4 +1,11 @@
-import {fetchDashboardApi, timeSeriesChangeApi, gaugeChangeApi, tagChangeApi,triggerChangeApi} from 'api/dashboard';
+import {
+    fetchDashboardApi,
+    timeSeriesChangeApi,
+    gaugeChangeApi,
+    tagChangeApi,
+    triggerChangeApi,
+    seeqChangeApi
+} from 'api/dashboard';
 import {fetchTags} from './tagsList';
 import {
     fetchDashboardFail,
@@ -16,8 +23,11 @@ import {
     triggerChangeFail,
     triggerChangeStart,
     triggerChangeSuccess,
+    seeqChangeFail,
+    seeqChangeStart,
+    seeqChangeSuccess
 } from '../actions/dashboard';
-import {setAdminStatus} from "../actions/admin";
+import {setAdminStatus} from "../actions/header";
 
 
 export const fetchDashboard = () => (
@@ -48,14 +58,13 @@ export const timeSeriesChange = (timeSeries) => (
         }
     });
 
-export const gaugeChange = (gauge) => (
+export const gaugeChange = (gaugeType, gauge) => (
     async (dispatch) => {
         dispatch(gaugeChangeStart());
         try {
-            const {gaugeType} = gauge;
-            const {admin, responseGauge} = await gaugeChangeApi(gauge);
+            const {admin, responseGauge} = await gaugeChangeApi(gaugeType, gauge);
             dispatch(setAdminStatus(admin));
-            dispatch(gaugeChangeSuccess(responseGauge, gaugeType));
+            dispatch(gaugeChangeSuccess(gaugeType, responseGauge));
         } catch (err) {
             dispatch(gaugeChangeFail(err));
         }
@@ -82,5 +91,17 @@ export const triggerChange = (trigger) => (
             dispatch(triggerChangeSuccess(responseTrigger));
         } catch (err) {
             dispatch(triggerChangeFail(err));
+        }
+    });
+
+export const seeqChange = (seeq) => (
+    async (dispatch) => {
+        dispatch(seeqChangeStart());
+        try {
+            const {admin, responseSeeq} = await seeqChangeApi(seeq);
+            dispatch(setAdminStatus(admin));
+            dispatch(seeqChangeSuccess(responseSeeq));
+        } catch (err) {
+            dispatch(seeqChangeFail(err));
         }
     });

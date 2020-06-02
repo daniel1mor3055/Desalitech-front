@@ -14,6 +14,9 @@ import {
     TRIGGER_CHANGE_SUCCESS,
     TRIGGER_CHANGE_START,
     TRIGGER_CHANGE_FAIL,
+    SEEQ_CHANGE_SUCCESS,
+    SEEQ_CHANGE_START,
+    SEEQ_CHANGE_FAIL,
 } from '../actionTypes/dashboard';
 
 
@@ -63,6 +66,12 @@ const reducer = (state = initialState, action) => {
             return triggerChangeSuccess(state, action);
         case TRIGGER_CHANGE_FAIL:
             return triggerChangeFail(state, action);
+        case SEEQ_CHANGE_START:
+            return seeqChangeStart(state, action);
+        case SEEQ_CHANGE_SUCCESS:
+            return seeqChangeSuccess(state, action);
+        case SEEQ_CHANGE_FAIL:
+            return seeqChangeFail(state, action);
         default:
             return state;
     }
@@ -94,6 +103,39 @@ function triggerChangeFail(state, action) {
 }
 
 function triggerChangeStart(state, action) {
+    return {
+        ...state,
+        posting: true,
+        error: null,
+    };
+}
+
+function seeqChangeSuccess(state, action) {
+    const newSeeqs = state.seeqs.map((seeq) => {
+        if (seeq.placement !== action.payload.responseSeeq.placement) {
+            return seeq;
+        } else {
+            return action.payload.responseSeeq;
+        }
+    });
+
+    return {
+        ...state,
+        posting: false,
+        error: null,
+        seeqs: newSeeqs,
+    };
+}
+
+function seeqChangeFail(state, action) {
+    return {
+        ...state,
+        posting: false,
+        error: action.payload.error,
+    };
+}
+
+function seeqChangeStart(state, action) {
     return {
         ...state,
         posting: true,

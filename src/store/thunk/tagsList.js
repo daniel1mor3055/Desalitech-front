@@ -8,7 +8,7 @@ import {
     postTagSuccess
 } from '../actions/tagsList';
 import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from 'app/components/Notifications';
-import {setAdminStatus} from "../actions/admin";
+import {setAdminStatus} from "../actions/header";
 
 
 export const fetchTags = () => (
