@@ -5,6 +5,8 @@ import SwipeableViews from 'react-swipeable-views';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import {extractCurrentTabFromURL} from "api/utils";
+import {withRouter} from 'react-router-dom';
 
 function TabContainer({children, dir}) {
     return (
@@ -19,18 +21,21 @@ TabContainer.propTypes = {
     dir: PropTypes.string.isRequired,
 };
 
+
 class ChangeAlarmsSystemTabs extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            value: 0,
+            value: extractCurrentTabFromURL() === 'active_alarms' ? 1 : 0
         };
     }
 
 
     handleChange = (event, value) => {
         this.setState({value});
+        const currentTab = value ? 'active_alarms' : 'system_select';
+        window.history.pushState({currentTab: currentTab}, "", `system-select-active-alarms?currentTab=${currentTab}`);
     };
 
     handleChangeIndex = index => {
@@ -74,4 +79,4 @@ ChangeAlarmsSystemTabs.propTypes = {
     alarms: PropTypes.node.isRequired,
 };
 
-export default withStyles(null, {withTheme: true})(ChangeAlarmsSystemTabs);
+export default withStyles(null, {withTheme: true})(withRouter(ChangeAlarmsSystemTabs));

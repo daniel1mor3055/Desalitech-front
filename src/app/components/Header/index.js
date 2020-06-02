@@ -14,7 +14,7 @@ import {
     HORIZONTAL_NAVIGATION,
     INSIDE_THE_HEADER
 } from 'store/actionTypes';
-import AppNotification from 'app/components/AppNotification';
+import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
 import CardHeader from 'app/components/CardHeader';
 import {toggleCollapsedNav} from 'store/actions/Setting';
 import {fetchSystemName} from 'store/thunk/header';
@@ -47,6 +47,10 @@ class Header extends Component {
     }
 
     onAppNotificationSelect = () => {
+        const didReadNotifications = JSON.parse(localStorage.getItem('didReadNotifications'));
+        if (didReadNotifications === false) {
+            localStorage.setItem('didReadNotifications', JSON.stringify(true));
+        }
         this.setState({
             appNotification: !this.state.appNotification
         });
@@ -63,9 +67,43 @@ class Header extends Component {
         this.props.toggleCollapsedNav(val);
     };
 
+    activeAlarmsLocalStorageSync = () => {
+        const {activeAlarms, fetchingPoll} = this.props;
+        if (!fetchingPoll && !(activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
+            const activeAlarmIdArray = activeAlarms.map((activeAlarm) => {
+                    const {id} = activeAlarm;
+                    return id;
+                }
+            );
+            const localStorageActiveAlarmIdArray = JSON.parse(localStorage.getItem('activeAlarmIdArray'));
+            const localStorageIsDifferent = localStorageActiveAlarmIdArray ?
+                activeAlarmIdArray.some(r => localStorageActiveAlarmIdArray.indexOf(r) === -1) : true;
+            if (localStorageIsDifferent) {
+                localStorage.setItem('activeAlarmIdArray', JSON.stringify(activeAlarmIdArray));
+                if (!activeAlarmIdArray.length) {
+                    localStorage.setItem('didReadNotifications', JSON.stringify(true));
+                }
+                if (activeAlarmIdArray.length) {
+                    localStorage.setItem('didReadNotifications', JSON.stringify(false));
+                }
+            }
+        }
+    };
+
+    notificationsIconToShow = () => {
+        const didReadNotifications = JSON.parse(localStorage.getItem('didReadNotifications'));
+        if (didReadNotifications == null || didReadNotifications) {
+            return '';
+        }
+        return 'icon-alert animated infinite wobble';
+    };
+
     render() {
-        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin, systemName, fetching, error} = this.props;
+        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon,
+            admin, systemName, fetching, error, activeAlarms} = this.props;
+        this.activeAlarmsLocalStorageSync();
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
+        const notificationsIconToShow = this.notificationsIconToShow();
         const sidebarIcon = showSidebarIcon ?
             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
                         onClick={this.onToggleCollapsedNav}>
@@ -116,13 +154,13 @@ class Header extends Component {
                                     tag="span"
                                     data-toggle="dropdown">
                                     <IconButton className="icon-btn">
-                                        <i className="zmdi zmdi-notifications-none icon-alert animated infinite wobble"/>
+                                        <i className={`zmdi zmdi-notifications-none ${notificationsIconToShow}`}/>
                                     </IconButton>
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <CardHeader styleName="align-items-center"
-                                                heading={<IntlMessages id="appNotification.title"/>}/>
-                                    <AppNotification/>
+                                                heading={"Active Alarms"}/>
+                                    <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
                                 </DropdownMenu>
                             </Dropdown>
                         </li>
@@ -166,7 +204,7 @@ Header.defaultProps = {
     showSidebarIcon: true
 };
 
-const mapStateToProps = ({settings, header}) => {
+const mapStateToProps = ({header, settings, poll}) => {
     return {
         drawerType: settings.drawerType,
         locale: settings.locale,
@@ -175,6 +213,8 @@ const mapStateToProps = ({settings, header}) => {
         admin: header.admin,
         systemName: header.systemName,
         fetching: header.fetching,
+        activeAlarms: poll.activeAlarms,
+        fetchingPoll: poll.fetching,
         error: header.error,
     };
 };

@@ -93,7 +93,7 @@ class SidenavContent extends Component {
     }
 
     render() {
-        const {location} = this.props;
+        const {location, children} = this.props;
         const queryParams = new URLSearchParams(location.search);
         const encodedSysId = queryParams.get('sysId');
         return (
@@ -111,6 +111,7 @@ class SidenavContent extends Component {
                                  icon={"zmdi-file-text"}/>
                     <SidenavItem relativePath={`documentation?sysId=${encodedSysId}`} id={"pages.documentationPage"}
                                  icon={"zmdi-folder"}/>
+                    {children}
                 </SidenavList>
             </CustomScrollbars>
         );

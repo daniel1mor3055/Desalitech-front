@@ -1,16 +1,20 @@
 import {
     FETCH_POLLING_FAIL,
+    FETCH_POLLING_START,
     FETCH_POLLING_SUCCESS
 } from '../actionTypes/polling';
 
 const initialState = {
     systemsStatus: [],
-    activeAlarms: [],
+    activeAlarms: ['null'],
+    fetching: false,
     error: null
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case FETCH_POLLING_START:
+            return fetchPollingStart(state, action);
         case FETCH_POLLING_FAIL:
             return fetchPollingFail(state, action);
         case FETCH_POLLING_SUCCESS:
@@ -20,20 +24,29 @@ const reducer = (state = initialState, action) => {
     }
 };
 
+function fetchPollingStart(state, action) {
+    return {
+        ...state,
+        fetching: true,
+        error: null,
+    };
+}
+
 function fetchPollingSuccess(state, action) {
     return {
         ...state,
         activeAlarms: action.payload.activeAlarms,
         systemsStatus: action.payload.systemsStatus,
         error: null,
+        fetching: false,
     };
 }
 
 function fetchPollingFail(state, action) {
     return {
         ...state,
-        fetching: false,
         error: action.payload.error,
+        fetching: false,
     };
 
 }

@@ -68,3 +68,16 @@ export const extractSystemId = () => {
     return sysId;
 };
 
+export const extractCurrentTabFromURL = () => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const currentTab = decodeURIComponent(queryParams.get('currentTab'));
+    return currentTab;
+};
+
+export const dashboardIsCurrentLocation = () => {
+    return window.location.pathname.includes('/app/dashboard');
+};
+
+export const pollAllSystems = () => {
+    return window.location.pathname.includes('/app/system-select-active-alarms');
+};
