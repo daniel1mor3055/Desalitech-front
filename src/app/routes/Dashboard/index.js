@@ -14,6 +14,7 @@ import Gauge from "app/components/Gauges";
 import SolidCard from "app/components/SolidCards/SolidCards";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import TimeSeries from './TimeSeries';
+import {CardMedia} from '@material-ui/core';
 
 class Dashboard extends Component {
 
@@ -24,9 +25,10 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error
+            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
+        console.log('SEEQS', seeqs);
         const middleGaugesJSX = middleGauges.map((middleGauge) => (
                 <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
             )
@@ -77,6 +79,17 @@ class Dashboard extends Component {
                 })}
             </div>;
 
+        const seeqJSX = seeqs.map((seeq) => {
+                const {url} = seeq;
+                return (
+                    <iframe
+                        src={url}
+                        title="SEEQ data">
+                    </iframe>
+                );
+            }
+        );
+
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
@@ -88,7 +101,8 @@ class Dashboard extends Component {
                         leftGaugesJSX,
                         rightGaugesJSX,
                         tagsJSX,
-                        triggersJSX]}
+                        triggersJSX,
+                        seeqJSX]}
             </div>
         );
     }
