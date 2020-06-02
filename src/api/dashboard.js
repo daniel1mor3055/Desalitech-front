@@ -33,7 +33,6 @@ export const timeSeriesChangeApi = async (timeSeries) => {
     const sysId = extractSystemId();
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
-    console.log(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
         camelizeJson(response.data);
@@ -45,6 +44,122 @@ export const timeSeriesChangeApi = async (timeSeries) => {
         throw err;
     }
 };
+
+export const gaugeChangeApi = async (gauge) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateGauge(gauge, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseGauge = extractGauge(widgets[0]);
+        return {admin, responseGauge};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const tagChangeApi = async (tag) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTag(tag, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTag = extractTag(widgets[0]);
+        return {admin, responseTag};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const triggerChangeApi = async (trigger) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTrigger(trigger, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTrigger = extractTrigger(widgets[0]);
+        return {admin, responseTrigger};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+function manipulateTrigger(trigger, sysId) {
+    const {placement, tagId, controllerTagId} = trigger;
+
+    return {
+        sysId,
+        tag1: tagId,
+        tag2: controllerTagId,
+        tag3: '',
+        detail1: '',
+        detail2: '',
+        detail3: '',
+        detail4: '',
+        widgetType: 'Trigger',
+        placement,
+        header: '',
+        calculation: '',
+        startDate: '',
+        endDate: '',
+    };
+}
+
+function manipulateTag(tag, sysId) {
+    const {placement, tagId} = tag;
+
+    return {
+        sysId,
+        tag1: tagId,
+        tag2: '',
+        tag3: '',
+        detail1: '',
+        detail2: '',
+        detail3: '',
+        detail4: '',
+        widgetType: 'Tag',
+        placement,
+        header: '',
+        calculation: '',
+        startDate: '',
+        endDate: '',
+    };
+}
+
+function manipulateGauge(gauge, sysId) {
+    const {measuredTag, gaugeType, placement, lL, l, h, hH} = gauge;
+    const gaugesTypesOptions = {
+        'MIDDLE': 'MiddleGauge',
+        'RIGHT': 'RightGauge',
+        'LEFT': 'LeftGauge',
+    };
+
+    return {
+        sysId,
+        tag1: measuredTag,
+        tag2: '',
+        tag3: '',
+        detail1: lL,
+        detail2: l,
+        detail3: h,
+        detail4: hH,
+        widgetType: gaugesTypesOptions[gaugeType],
+        placement,
+        header: '',
+        calculation: '',
+        startDate: '',
+        endDate: '',
+    };
+}
 
 function manipulateTimeSeries(timeSeries, sysId) {
     const {startDate, endDate, tags, placement} = timeSeries;
@@ -233,10 +348,11 @@ function extractTimeSeries(widget) {
 }
 
 function extractTag(widget) {
-    const {tags} = widget;
+    const {tags, placement} = widget;
     const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
 
     return {
+        placement,
         tagId: tag1,
         tagName: tag1Name,
         tagValue: tag1Value,

@@ -5,15 +5,14 @@ import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 
-
 import ContainerHeader from 'app/components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
-import TitleCard from 'app/components/TitleCard';
 import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
-import Gauge from "app/components/Gauges";
-import SolidCard from "app/components/SolidCards/SolidCards";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
+import Gauge from "./Gauges";
 import TimeSeries from './TimeSeries';
+import Tag from './Tag';
+import Trigger from "./Trigger";
 
 class Dashboard extends Component {
 
@@ -40,26 +39,12 @@ class Dashboard extends Component {
             )
         );
         const tagsJSX = tags.map((tag) => {
-            const {tagId, tagName, tagValue, tagUnits} = tag;
-            return <div className="col-lg-3 col-sm-6 col-12">
-                <TitleCard
-                    tagName={(tagName !== '' && tagName != null) ? tagName : tagId}
-                    tagValue={tagValue}
-                    tagUnits={tagUnits}
-                />
-            </div>;
+            const {tagId, tagName, tagValue, tagUnits, placement} = tag;
+            return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>;
         });
         const triggersJSX = triggers.map((trigger) => {
-            const {controllerTag, tag} = trigger;
-            return <div className="col-lg-3 col-sm-6 col-12">
-                <SolidCard
-                    tagName={(controllerTag.tagName !== '' && controllerTag.tagName != null) ?
-                        controllerTag.tagName : controllerTag.tagId}
-                    tagValue={controllerTag.tagValue}
-                    tagUnits={controllerTag.tagUnits}
-                    colorIndicator={tag.tagValue}
-                />
-            </div>;
+            const {controllerTag, tag, placement} = trigger;
+            return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>;
         });
 
         const timeSeriesJSX =

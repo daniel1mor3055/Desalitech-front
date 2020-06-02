@@ -5,6 +5,15 @@ import {
     TIME_SERIES_CHANGE_FAIL,
     TIME_SERIES_CHANGE_START,
     TIME_SERIES_CHANGE_SUCCESS,
+    GAUGE_CHANGE_FAIL,
+    GAUGE_CHANGE_START,
+    GAUGE_CHANGE_SUCCESS,
+    TAG_CHANGE_FAIL,
+    TAG_CHANGE_START,
+    TAG_CHANGE_SUCCESS,
+    TRIGGER_CHANGE_FAIL,
+    TRIGGER_CHANGE_START,
+    TRIGGER_CHANGE_SUCCESS
 } from '../actionTypes/dashboard';
 
 
@@ -58,3 +67,66 @@ export const timeSeriesChangeFail = (error) => (
         }
     });
 
+export const gaugeChangeStart = () => (
+    {
+        type: GAUGE_CHANGE_START,
+    });
+
+export const gaugeChangeSuccess = (responseGauge, gaugeType) => (
+    {
+        type: GAUGE_CHANGE_SUCCESS,
+        payload: {
+            responseGauge,
+            gaugeType,
+        }
+    });
+
+export const gaugeChangeFail = (error) => (
+    {
+        type: GAUGE_CHANGE_FAIL,
+        payload: {
+            error
+        }
+    });
+
+export const tagChangeStart = () => (
+    {
+        type: TAG_CHANGE_START,
+    });
+
+export const tagChangeSuccess = (responseTag) => (
+    {
+        type: TAG_CHANGE_SUCCESS,
+        payload: {
+            responseTag,
+        }
+    });
+
+export const tagChangeFail = (error) => (
+    {
+        type: TAG_CHANGE_FAIL,
+        payload: {
+            error
+        }
+    });
+
+export const triggerChangeStart = () => (
+    {
+        type: TRIGGER_CHANGE_START,
+    });
+
+export const triggerChangeSuccess = (responseTrigger) => (
+    {
+        type: TRIGGER_CHANGE_SUCCESS,
+        payload: {
+            responseTrigger,
+        }
+    });
+
+export const triggerChangeFail = (error) => (
+    {
+        type: TRIGGER_CHANGE_FAIL,
+        payload: {
+            error
+        }
+    });
