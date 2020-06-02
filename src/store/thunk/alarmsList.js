@@ -7,7 +7,7 @@ import {
     setEmailNotificationStart,
     setEmailNotificationSuccess
 } from '../actions/alarmsList';
-import {setAdminStatus} from '../actions/admin';
+import {setAdminStatus} from '../actions/header';
 import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from "app/components/Notifications";
 
 

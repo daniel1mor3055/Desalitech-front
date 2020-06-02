@@ -26,42 +26,44 @@ class AlarmList extends PureComponent {
         this.props.onFetchAlarms();
     }
 
-    updateSearchText(event, fieldToSearch) {
-        switch (fieldToSearch) {
-            case 'ID': {
-                this.setState({
-                    alarmIdSearchText: event.target.value,
-                });
-                return;
-            }
-            case 'DESCRIPTION': {
-                this.setState({
-                    alarmDescriptionSearchText: event.target.value,
-                });
-                return;
-            }
-        }
+    getSearchOptions = () => {
+        return {
+            'ID': 'alarmIdSearchText',
+            'DESCRIPTION': 'alarmDescriptionSearchText',
+        };
+    };
+
+    updateSearchText(event, id) {
+        const stateSearchOptions = this.getSearchOptions();
+
+        this.setState({[stateSearchOptions[id]]: event.target.value});
+
+    }
+
+    handleSearchClear(event, id) {
+        event.preventDefault();
+        const stateSearchOptions = this.getSearchOptions();
+
+        this.setState({[stateSearchOptions[id]]: ''});
     }
 
     getFilterData(alarms) {
+        const {alarmIdSearchText, alarmDescriptionSearchText} = this.state;
         let filteredAlarms = alarms.filter(alarm => {
-            let {alarmId, description} = alarm;
-            if (alarmId == null) {
-                alarmId = '';
-            }
-            if (description == null) {
-                description = '';
-            }
-            return alarmId.toLowerCase().includes(this.state.alarmIdSearchText.toLowerCase()) &&
-                description.toLowerCase().includes(this.state.alarmDescriptionSearchText.toLowerCase());
+            const {alarmId, description} = alarm;
+            const alarmIdToSearch = alarmId === null ? '' : alarmId;
+            const descriptionToSearch = description === null ? '' : description;
+
+            return alarmIdToSearch.toLowerCase().includes(alarmIdSearchText.toLowerCase()) &&
+                descriptionToSearch.toLowerCase().includes(alarmDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredAlarms.length;
         return {filteredAlarms, badSearch};
     }
 
-    handleNotificationChange = (event, checked) => {
+    handleNotificationChange = (event) => {
         event.preventDefault();
-        this.props.onSetEmailNotification(checked);
+        this.props.onSetEmailNotification(event.target.checked);
     };
 
 
@@ -89,14 +91,20 @@ class AlarmList extends PureComponent {
                                 label="E-mail Notification"
                             />
                         </CardHeader>
-                        <SearchBox styleName="d-none d-lg-block"
-                                   placeholder="Filter by Alarm ID"
-                                   onChange={(event) => this.updateSearchText(event,'ID')}
-                                   value={alarmIdSearchText} badSearch={badSearch}/>
-                        <SearchBox styleName="d-none d-lg-block"
-                                   placeholder="Filter by Alarm Description"
-                                   onChange={(event) => this.updateSearchText(event,'DESCRIPTION')}
-                                   value={alarmDescriptionSearchText} badSearch={badSearch}/>
+                        <SearchBox
+                            showClear={true}
+                            styleName="d-none d-lg-block"
+                            placeholder="Filter by Alarm ID"
+                            onChange={(event) => this.updateSearchText(event, 'ID')}
+                            value={alarmIdSearchText} badSearch={badSearch}
+                            handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
+                        <SearchBox
+                            showClear={true}
+                            styleName="d-none d-lg-block"
+                            placeholder="Filter by Alarm Description"
+                            onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
+                            value={alarmDescriptionSearchText} badSearch={badSearch}
+                            handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
                         <DataTable data={filteredAlarms}
                                    columnsIds={columnsIds}
                                    columnsLabels={columnsLabels}

@@ -45,7 +45,7 @@ function fetchAlarmsStart(state, action) {
 function fetchAlarmsSuccess(state, action) {
     return {
         ...state,
-        emailNotification: action.payload.emailNotification === 'true',
+        emailNotification: action.payload.emailNotification === 'true' || action.payload.emailNotification,
         alarms: action.payload.alarms,
         fetching: false,
         error: null,

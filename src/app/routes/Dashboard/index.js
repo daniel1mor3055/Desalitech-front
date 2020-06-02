@@ -13,6 +13,7 @@ import Gauge from "./Gauges";
 import TimeSeries from './TimeSeries';
 import Tag from './Tag';
 import Trigger from "./Trigger";
+import Seeq from './Seeq';
 
 class Dashboard extends Component {
 
@@ -23,43 +24,66 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error
+            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs,
         } = this.props;
 
         const middleGaugesJSX = middleGauges.map((middleGauge) => (
-                <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
+                </div>
             )
         );
         const leftGaugesJSX = leftGauges.map((leftGauge) => (
-                <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
+                </div>
             )
         );
         const rightGaugesJSX = rightGauges.map((rightGauge) => (
-                <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
+                </div>
             )
         );
         const tagsJSX = tags.map((tag) => {
             const {tagId, tagName, tagValue, tagUnits, placement} = tag;
-            return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>;
+            return (
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>
+                </div>);
         });
         const triggersJSX = triggers.map((trigger) => {
             const {controllerTag, tag, placement} = trigger;
-            return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>;
+            return (
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>
+                </div>);
         });
 
+        const seeqJSX = seeqs.map((seeq) => {
+                const {url, placement} = seeq;
+                return (
+                    <div className="dashboard animated slideInUpTiny animation-duration-3">
+                        <Seeq url={url} placement={placement}/>
+                    </div>);
+            }
+        );
+
         const timeSeriesJSX =
-            <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
-                {timeSeries.map((timeSeries) => {
-                    const {startDate, endDate, times, tags, placement} = timeSeries;
-                    return (
-                        <TimeSeries
-                            startDate={startDate}
-                            endDate={endDate}
-                            tags={tags}
-                            times={times}
-                            placement={placement}
-                            key={placement}/>);
-                })}
+            <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
+                    {timeSeries.map((timeSeries) => {
+                        const {startDate, endDate, times, tags, placement} = timeSeries;
+                        return (
+                            <TimeSeries
+                                startDate={startDate}
+                                endDate={endDate}
+                                tags={tags}
+                                times={times}
+                                placement={placement}
+                                key={placement}/>);
+                    })}
+                </div>
             </div>;
 
         return (
@@ -73,7 +97,8 @@ class Dashboard extends Component {
                         leftGaugesJSX,
                         rightGaugesJSX,
                         tagsJSX,
-                        triggersJSX]}
+                        triggersJSX,
+                        seeqJSX]}
             </div>
         );
     }

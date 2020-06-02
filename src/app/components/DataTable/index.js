@@ -101,6 +101,7 @@ class DataTable extends React.Component {
         return {
             ...state,
             data: data,
+            page: props.data.length !== state.data.length ? 0 : state.page
         };
     };
 

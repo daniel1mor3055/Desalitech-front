@@ -45,9 +45,9 @@ export const timeSeriesChangeApi = async (timeSeries) => {
     }
 };
 
-export const gaugeChangeApi = async (gauge) => {
+export const gaugeChangeApi = async (gaugeType, gauge) => {
     const sysId = extractSystemId();
-    const dataToPost = manipulateGauge(gauge, sysId);
+    const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
@@ -93,6 +93,45 @@ export const triggerChangeApi = async (trigger) => {
     }
 };
 
+
+export const seeqChangeApi = async (seeq) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateSeeq(seeq, sysId);
+    console.log(dataToPost);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseSeeq = extractSeeq(widgets[0]);
+        return {admin, responseSeeq};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+function manipulateSeeq(seeq, sysId) {
+    const {placement, url} = seeq;
+
+    return {
+        sysId,
+        tag1: '',
+        tag2: '',
+        tag3: '',
+        detail1: url,
+        detail2: '',
+        detail3: '',
+        detail4: '',
+        widgetType: 'Seeq',
+        placement,
+        header: '',
+        calculation: '',
+        startDate: '',
+        endDate: '',
+    };
+}
+
 function manipulateTrigger(trigger, sysId) {
     const {placement, tagId, controllerTagId} = trigger;
 
@@ -135,8 +174,8 @@ function manipulateTag(tag, sysId) {
     };
 }
 
-function manipulateGauge(gauge, sysId) {
-    const {measuredTag, gaugeType, placement, lL, l, h, hH} = gauge;
+function manipulateGauge(gaugeType, gauge, sysId) {
+    const {measuredTag, placement, lL, l, h, hH} = gauge;
     const gaugesTypesOptions = {
         'MIDDLE': 'MiddleGauge',
         'RIGHT': 'RightGauge',

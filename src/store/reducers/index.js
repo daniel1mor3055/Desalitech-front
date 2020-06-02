@@ -6,9 +6,9 @@ import systems from './systemsAndLiveAlarms';
 import alarms from './alarmsList';
 import tags from './tagsList';
 import auth from './auth';
-import admin from './admin';
 import poll from './polling';
 import dashboard from './dashboard';
+import header from './header';
 
 
 export default (history) => combineReducers({
@@ -18,7 +18,7 @@ export default (history) => combineReducers({
     alarms: alarms,
     tags: tags,
     auth: auth,
-    admin: admin,
     poll: poll,
     dashboard: dashboard,
+    header: header,
 });
