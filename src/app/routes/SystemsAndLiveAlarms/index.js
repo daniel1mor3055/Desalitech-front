@@ -29,6 +29,7 @@ class SystemsAndLiveAlarms extends React.Component {
             activeAlarmSystemIdSearchText: '',
             activeAlarmIdSearchText: '',
             activeAlarmDescriptionSearchText: '',
+            dataPolling: ''
         };
     }
 
@@ -85,16 +86,14 @@ class SystemsAndLiveAlarms extends React.Component {
     };
 
     getFilterData(systems, systemsStatusIcons) {
+        const {systemIdSearchText, systemNameSearchText} = this.state;
         let filteredSystems = systems.filter(system => {
-            let {sysId, systemName} = system;
-            if (sysId == null) {
-                sysId = '';
-            }
-            if (systemName == null) {
-                systemName = '';
-            }
-            return sysId.toLowerCase().includes(this.state.systemIdSearchText.toLowerCase()) &&
-                systemName.toLowerCase().includes(this.state.systemNameSearchText.toLowerCase());
+            const {sysId, systemName} = system;
+            const sysIdToSearch = sysId === null ? '' : sysId;
+            const systemNameToSearch = systemName === null ? '' : systemName;
+
+            return sysIdToSearch.toLowerCase().includes(systemIdSearchText.toLowerCase()) &&
+                systemNameToSearch.toLowerCase().includes(systemNameSearchText.toLowerCase());
         });
         const badSearch = !filteredSystems.length;
         for (let i = 0; i < filteredSystems.length; i++) {
@@ -133,9 +132,9 @@ class SystemsAndLiveAlarms extends React.Component {
         const {activeAlarms} = this.props;
         let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
             const {sysId, alarmId, description} = activeAlarm;
-            const sysIdToSearch = sysId === null ? '' : sysId;
-            const alarmIdToSearch = alarmId === null ? '' : alarmId;
-            const descriptionToSearch = description === null ? '' : description;
+            const sysIdToSearch = sysId == null ? '' : sysId;
+            const alarmIdToSearch = alarmId == null ? '' : alarmId;
+            const descriptionToSearch = description == null ? '' : description;
 
             return sysIdToSearch.toLowerCase().includes(activeAlarmSystemIdSearchText.toLowerCase()) &&
                 alarmIdToSearch.toLowerCase().includes(activeAlarmIdSearchText.toLowerCase()) &&
@@ -148,7 +147,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history,
+            history, errorPoll, fetchingPoll
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -219,46 +218,55 @@ class SystemsAndLiveAlarms extends React.Component {
                 </div>;
         }
 
+        const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
+        const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
+        const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
+        let alarmsJSX = <CircularIndeterminate/>;
+        if (!errorPoll && !fetchingPoll) {
+            alarmsJSX =
+                <div className="row animated slideInUpTiny animation-duration-3">
+                    <SearchBox
+                        showClear={true}
+                        styleName="d-none d-lg-block"
+                        placeholder="Filter by System ID"
+                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
+                        value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}
+                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_SYSTEM_ID')}/>
+                    <SearchBox
+                        showClear={true}
+                        styleName="d-none d-lg-block"
+                        placeholder="Filter by Alarm ID"
+                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
+                        value={this.state.activeAlarmIdSearchText} badSearch={badSearch}
+                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_ID')}/>
+                    <SearchBox
+                        showClear={true}
+                        styleName="d-none d-lg-block"
+                        placeholder="Filter by Description"
+                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
+                        value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}
+                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_DESCRIPTION')}/>
+                    <CardBox styleName="col-12" cardStyle=" p-0">
+                        <DataTable data={filteredActiveAlarms}
+                                   columnsIds={columnsIds}
+                                   columnsLabels={columnsLabels}
+                                   initialOrderBy={'sysId'}
+                                   cellIdentifier={'id'}
+                                   onRowClick={this.handleClickOnAlarmRow}
+                        />
+                    </CardBox>
+                </div>;
+        }
+
         if (error) {
             systemsCards = <p>{"Couldn't fetch systems"}</p>;
             systemsTable = <p>{"Couldn't fetch systems"}</p>;
         }
-        const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
-        const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
-        const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
-        const alarmsJSX =
-            <div className="row animated slideInUpTiny animation-duration-3">
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by System ID"
-                    onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
-                    value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_SYSTEM_ID')}/>
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by Alarm ID"
-                    onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
-                    value={this.state.activeAlarmIdSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_ID')}/>
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by Description"
-                    onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
-                    value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_DESCRIPTION')}/>
-                <CardBox styleName="col-12" cardStyle=" p-0">
-                    <DataTable data={filteredActiveAlarms}
-                               columnsIds={columnsIds}
-                               columnsLabels={columnsLabels}
-                               initialOrderBy={'sysId'}
-                               cellIdentifier={'id'}
-                               onRowClick={this.handleClickOnAlarmRow}
-                    />
-                </CardBox>
-            </div>;
+
+        if (errorPoll) {
+            alarmsJSX = <p>{"Couldn't fetch active alarms"}</p>;
+        }
+
         const systemsJSX = admin ?
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
@@ -298,6 +306,8 @@ const mapStateToProps = ({settings, systems, header, poll}) => {
         admin: header.admin,
         activeAlarms: poll.activeAlarms,
         systemsStatus: poll.systemsStatus,
+        fetchingPoll: poll.fetching,
+        errorPoll: poll.error,
     };
 };
 

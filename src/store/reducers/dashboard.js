@@ -17,6 +17,7 @@ import {
     SEEQ_CHANGE_SUCCESS,
     SEEQ_CHANGE_START,
     SEEQ_CHANGE_FAIL,
+    FETCH_DASHBOARD_POLLING_SUCCESS,
 } from '../actionTypes/dashboard';
 
 
@@ -72,6 +73,8 @@ const reducer = (state = initialState, action) => {
             return seeqChangeSuccess(state, action);
         case SEEQ_CHANGE_FAIL:
             return seeqChangeFail(state, action);
+        case FETCH_DASHBOARD_POLLING_SUCCESS:
+            return fetchDashboardPollingSuccess(state, action);
         default:
             return state;
     }
@@ -253,6 +256,18 @@ function fetchDashboardStart(state, action) {
         ...state,
         fetching: true,
         error: null,
+    };
+}
+
+
+function fetchDashboardPollingSuccess(state, action) {
+    return {
+        ...state,
+        triggers: action.payload.triggers,
+        tags: action.payload.tags,
+        middleGauges: action.payload.middleGauges,
+        rightGauges: action.payload.rightGauges,
+        leftGauges: action.payload.leftGauges,
     };
 }
 

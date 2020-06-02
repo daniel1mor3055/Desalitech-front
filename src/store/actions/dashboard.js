@@ -16,7 +16,8 @@ import {
     TRIGGER_CHANGE_SUCCESS,
     SEEQ_CHANGE_FAIL,
     SEEQ_CHANGE_START,
-    SEEQ_CHANGE_SUCCESS
+    SEEQ_CHANGE_SUCCESS,
+    FETCH_DASHBOARD_POLLING_SUCCESS
 } from '../actionTypes/dashboard';
 
 
@@ -47,6 +48,20 @@ export const fetchDashboardFail = (error) => (
             error
         }
     });
+
+
+export const fetchDashboardPollingSuccess = (triggers, tags, middleGauges, rightGauges, leftGauges) => (
+    {
+        type: FETCH_DASHBOARD_POLLING_SUCCESS,
+        payload: {
+            triggers,
+            tags,
+            middleGauges,
+            rightGauges,
+            leftGauges,
+        }
+    });
+
 
 
 export const timeSeriesChangeStart = () => (

@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs,
+            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
         const middleGaugesJSX = middleGauges.map((middleGauge) => (

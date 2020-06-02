@@ -16,10 +16,10 @@ class Gauge extends Component {
 
         this.state = {
             chooseTagsFormOpen: false,
-            lL: '',
-            l: '',
-            h: '',
-            hH: '',
+            lL: null,
+            l: null,
+            h: null,
+            hH: null,
             shouldForceRender: false,
         };
     }
@@ -91,21 +91,22 @@ class Gauge extends Component {
         }
 
         if (!correctOrder) {
-            return {global: "Make sure LL Value < L Value < H Value < HH Value or Tags"};
+            return {global: "Make sure that LL Value < L Value < H Value < HH Value"};
         }
         return null;
     };
 
     static getDerivedStateFromProps = (props, state) => {
         const {gaugeData: {lL, l, h, hH}} = props;
-
         return {
             ...state,
-            lL,
-            l,
-            h,
-            hH,
-            shouldForceRender: (lL !== state.lL || l !== state.l || h !== state.h || hH !== state.hH),
+            lL: lL,
+            l: l,
+            h: h,
+            hH: hH,
+            shouldForceRender: state.lL==null ||
+                (lL.value !== state.lL.value || l.value !== state.l.value ||
+                    h.value !== state.h.value || hH.value !== state.hH.value),
         };
     };
 
@@ -150,7 +151,7 @@ class Gauge extends Component {
                     </div>
                 </ResponsiveContainer>
                 <ChooseTagsForm
-                    formTitle={'Choose gauge settings'}
+                    formTitle={'Choose gauge settings - numerical values or tag IDs'}
                     verifyValues={this.verifyFormValues}
                     validationSchemaObject={this.getFormValidationSchemaObject(initialFormValues)}
                     labels={['Tag ID', 'LL Value', 'L Value', 'H Value', 'HH Value']}

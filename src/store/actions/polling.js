@@ -1,7 +1,13 @@
 import {
+    FETCH_POLLING_START,
     FETCH_POLLING_FAIL,
     FETCH_POLLING_SUCCESS
 } from '../actionTypes/polling';
+
+export const fetchPollingStart = () => (
+    {
+        type: FETCH_POLLING_START,
+    });
 
 export const fetchPollingSuccess = (activeAlarms, systemsStatus) => (
     {
