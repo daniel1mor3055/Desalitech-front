@@ -29,6 +29,7 @@ class App extends Component {
     }
 
     componentDidMount() {
+        this.props.onFetchPolling();
         const dataPolling = setInterval(
             () => {
                 this.props.onFetchPolling();
