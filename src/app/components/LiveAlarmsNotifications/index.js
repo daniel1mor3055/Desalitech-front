@@ -1,10 +1,20 @@
 import React from 'react';
 
 import NotificationItem from './NotificationItem';
-import {notifications} from './data';
 import CustomScrollbars from 'util/CustomScrollbars';
 
-const AppNotification = () => {
+function prepareAlarmsForNotifications(activeAlarms){
+    return activeAlarms.map((activeAlarm) => {
+        const {alarmId, sysId, timeStamp} = activeAlarm
+        return {
+            alarmId, sysId, timeStamp
+        }
+    })
+}
+
+
+const LiveAlarmsNotifications = ({activeAlarms}) => {
+    const notifications = prepareAlarmsForNotifications(activeAlarms)
   return (
     <CustomScrollbars className="messages-list scrollbar" style={{height: 280}}>
       <ul className="list-unstyled">
@@ -15,5 +25,5 @@ const AppNotification = () => {
   )
 };
 
-export default AppNotification;
+export default LiveAlarmsNotifications;
 

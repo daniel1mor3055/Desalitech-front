@@ -14,7 +14,7 @@ import {
     HORIZONTAL_NAVIGATION,
     INSIDE_THE_HEADER
 } from 'store/actionTypes';
-import AppNotification from 'app/components/AppNotification';
+import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
 import CardHeader from 'app/components/CardHeader';
 import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
 import IntlMessages from 'util/IntlMessages';
@@ -66,7 +66,7 @@ class Header extends Component {
     };
 
     render() {
-        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin} = this.props;
+        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin, activeAlarms} = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const sidebarIcon = showSidebarIcon ?
             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
@@ -120,8 +120,8 @@ class Header extends Component {
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <CardHeader styleName="align-items-center"
-                                                heading={<IntlMessages id="appNotification.title"/>}/>
-                                    <AppNotification/>
+                                                heading={"Live Alarms"}/>
+                                    <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
                                 </DropdownMenu>
                             </Dropdown>
                         </li>
@@ -165,7 +165,7 @@ Header.defaultProps = {
     showSidebarIcon: true
 };
 
-const mapStateToProps = ({admin, settings, systems}) => {
+const mapStateToProps = ({admin, settings, poll}) => {
     return {
         drawerType: settings.drawerType,
         locale: settings.locale,
@@ -173,6 +173,7 @@ const mapStateToProps = ({admin, settings, systems}) => {
         horizontalNavPosition: settings.horizontalNavPosition,
         // selectedSystemName: systems.selectedSystemName,
         admin: admin.admin,
+        activeAlarms: poll.activeAlarms,
     };
 };
 
