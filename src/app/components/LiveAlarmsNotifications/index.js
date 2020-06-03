@@ -21,7 +21,7 @@ const LiveAlarmsNotifications = ({activeAlarms}) => {
             <ul className="list-unstyled">
                 {notifications.map((notification, index) => <NotificationItem key={index} notification={notification}/>)
                 }
-                <SidenavItem relativePath={'system-select-active-alarms'} id={"pages.seeAllActiveAlarms"}
+                <SidenavItem relativePath={'system-select-active-alarms?currentTab=active_alarms'} id={"pages.seeAllActiveAlarms"}
                              />
             </ul>
         </CustomScrollbars>

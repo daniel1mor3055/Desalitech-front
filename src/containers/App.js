@@ -38,7 +38,7 @@ class App extends Component {
 
         let redirect = null;
         if (isAuthenticated && !loading) {
-            redirect = <Redirect exact from={'/'} to={'/app/system-select-active-alarms'}/>;
+            redirect = <Redirect exact from={'/'} to={'/app/system-select-active-alarms?currentTab=system_select'}/>;
         }
 
 

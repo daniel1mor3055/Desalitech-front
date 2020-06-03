@@ -163,7 +163,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history,
+            history, ac
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -227,37 +227,42 @@ class SystemsAndLiveAlarms extends React.Component {
                 </div>;
         }
 
-        if (error) {
-            systemsCards = <p>{"Couldn't fetch systems"}</p>;
-            systemsTable = <p>{"Couldn't fetch systems"}</p>;
-        }
         const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
         const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
-        const alarmsJSX =
-            <div className="row animated slideInUpTiny animation-duration-3">
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by System ID"
-                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
-                           value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}/>
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Alarm ID"
-                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
-                           value={this.state.activeAlarmIdSearchText} badSearch={badSearch}/>
-                <SearchBox styleName="d-none d-lg-block"
-                           placeholder="Filter by Description"
-                           onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
-                           value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}/>
-                <CardBox styleName="col-12" cardStyle=" p-0">
-                    <DataTable data={filteredActiveAlarms}
-                               columnsIds={columnsIds}
-                               columnsLabels={columnsLabels}
-                               initialOrderBy={'sysId'}
-                               cellIdentifier={'id'}
-                               onRowClick={this.handleClickOnAlarmRow}
-                    />
-                </CardBox>
-            </div>;
+        let alarmsJSX = <CircularIndeterminate/>
+        if (!error && !fetching) {
+            alarmsJSX =
+                <div className="row animated slideInUpTiny animation-duration-3">
+                    <SearchBox styleName="d-none d-lg-block"
+                               placeholder="Filter by System ID"
+                               onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
+                               value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}/>
+                    <SearchBox styleName="d-none d-lg-block"
+                               placeholder="Filter by Alarm ID"
+                               onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
+                               value={this.state.activeAlarmIdSearchText} badSearch={badSearch}/>
+                    <SearchBox styleName="d-none d-lg-block"
+                               placeholder="Filter by Description"
+                               onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
+                               value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}/>
+                    <CardBox styleName="col-12" cardStyle=" p-0">
+                        <DataTable data={filteredActiveAlarms}
+                                   columnsIds={columnsIds}
+                                   columnsLabels={columnsLabels}
+                                   initialOrderBy={'sysId'}
+                                   cellIdentifier={'id'}
+                                   onRowClick={this.handleClickOnAlarmRow}
+                        />
+                    </CardBox>
+                </div>;
+        }
+
+        if (error) {
+            systemsCards = <p>{"Couldn't fetch systems"}</p>;
+            systemsTable = <p>{"Couldn't fetch systems"}</p>;
+            alarmsJSX = <p>{"Couldn't fetch systems"}</p>;
+        }
         const systemsJSX = admin ?
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
