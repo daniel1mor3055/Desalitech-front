@@ -68,3 +68,10 @@ export const extractSystemId = () => {
     return sysId;
 };
 
+export const dashboardIsCurrentLocation = () => {
+    return window.location.pathname.includes('/app/dashboard');
+};
+
+export const pollAllSystems = () => {
+    return window.location.pathname.includes('/app/system-select');
+};

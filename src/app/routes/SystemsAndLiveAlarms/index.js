@@ -28,6 +28,7 @@ class SystemsAndLiveAlarms extends React.Component {
             activeAlarmSystemIdSearchText: '',
             activeAlarmIdSearchText: '',
             activeAlarmDescriptionSearchText: '',
+            dataPolling: ''
         };
     }
 

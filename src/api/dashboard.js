@@ -73,7 +73,7 @@ function manipulateTimeSeries(timeSeries, sysId) {
 }
 
 
-function getWidgetsByType(widgets) {
+export function getWidgetsByType(widgets) {
     let triggers = [];
     let tags = [];
     let gauges = [];

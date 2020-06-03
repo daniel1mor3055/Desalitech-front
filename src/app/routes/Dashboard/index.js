@@ -28,7 +28,6 @@ class Dashboard extends Component {
             match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
-        console.log('SEEQS', seeqs);
         const middleGaugesJSX = middleGauges.map((middleGauge) => (
                 <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
             )

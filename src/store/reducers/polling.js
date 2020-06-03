@@ -32,7 +32,6 @@ function fetchPollingSuccess(state, action) {
 function fetchPollingFail(state, action) {
     return {
         ...state,
-        fetching: false,
         error: action.payload.error,
     };
 

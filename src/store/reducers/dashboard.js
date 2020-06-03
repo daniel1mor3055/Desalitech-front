@@ -5,6 +5,7 @@ import {
     TIME_SERIES_CHANGE_SUCCESS,
     TIME_SERIES_CHANGE_START,
     TIME_SERIES_CHANGE_FAIL,
+    FETCH_DASHBOARD_POLLING_SUCCESS,
 } from '../actionTypes/dashboard';
 
 
@@ -36,6 +37,8 @@ const reducer = (state = initialState, action) => {
             return timeSeriesChangeSuccess(state, action);
         case TIME_SERIES_CHANGE_FAIL:
             return timeSeriesChangeFail(state, action);
+        case FETCH_DASHBOARD_POLLING_SUCCESS:
+            return fetchDashboardPollingSuccess(state, action);
         default:
             return state;
     }
@@ -79,6 +82,18 @@ function fetchDashboardStart(state, action) {
         ...state,
         fetching: true,
         error: null,
+    };
+}
+
+
+function fetchDashboardPollingSuccess(state, action) {
+    return {
+        ...state,
+        triggers: action.payload.triggers,
+        tags: action.payload.tags,
+        middleGauges: action.payload.middleGauges,
+        rightGauges: action.payload.rightGauges,
+        leftGauges: action.payload.leftGauges,
     };
 }
 
