@@ -163,7 +163,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, ac
+            history, errorPoll, fetchingPoll
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -231,7 +231,7 @@ class SystemsAndLiveAlarms extends React.Component {
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
         const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
         let alarmsJSX = <CircularIndeterminate/>
-        if (!error && !fetching) {
+        if (!errorPoll && !fetchingPoll) {
             alarmsJSX =
                 <div className="row animated slideInUpTiny animation-duration-3">
                     <SearchBox styleName="d-none d-lg-block"
@@ -261,6 +261,8 @@ class SystemsAndLiveAlarms extends React.Component {
         if (error) {
             systemsCards = <p>{"Couldn't fetch systems"}</p>;
             systemsTable = <p>{"Couldn't fetch systems"}</p>;
+        }
+        if(errorPoll){
             alarmsJSX = <p>{"Couldn't fetch systems"}</p>;
         }
         const systemsJSX = admin ?
@@ -302,6 +304,8 @@ const mapStateToProps = ({settings, systems, admin, poll}) => {
         admin: admin.admin,
         activeAlarms: poll.activeAlarms,
         systemsStatus: poll.systemsStatus,
+        fetchingPoll: poll.fetching,
+        errorPoll: poll.error,
     };
 };
 

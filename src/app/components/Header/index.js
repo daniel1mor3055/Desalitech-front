@@ -17,7 +17,6 @@ import {
 import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
 import CardHeader from 'app/components/CardHeader';
 import {switchLanguage, toggleCollapsedNav} from 'store/actions/Setting';
-import IntlMessages from 'util/IntlMessages';
 import Menu from 'app/components/TopNav/Menu';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
@@ -38,6 +37,10 @@ class Header extends Component {
     }
 
     onAppNotificationSelect = () => {
+        const didReadNotifications = JSON.parse(localStorage.getItem('didReadNotifications'));
+        if (didReadNotifications === false) {
+            localStorage.setItem('didReadNotifications', JSON.stringify(true));
+        }
         this.setState({
             appNotification: !this.state.appNotification
         });
@@ -65,9 +68,42 @@ class Header extends Component {
         this.props.toggleCollapsedNav(val);
     };
 
+    activeAlarmsLocalStorageSync = () => {
+        const {activeAlarms, fetching} = this.props;
+        if (!fetching && !(activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
+            const activeAlarmIdArray = activeAlarms.map((activeAlarm) => {
+                    const {id} = activeAlarm;
+                    return id;
+                }
+            );
+            const localStorageActiveAlarmIdArray = JSON.parse(localStorage.getItem('activeAlarmIdArray'));
+            const localStorageIsDifferent = localStorageActiveAlarmIdArray ?
+                activeAlarmIdArray.some(r => localStorageActiveAlarmIdArray.indexOf(r) === -1) : true;
+            if (localStorageIsDifferent) {
+                localStorage.setItem('activeAlarmIdArray', JSON.stringify(activeAlarmIdArray));
+                if (!activeAlarmIdArray.length) {
+                    localStorage.setItem('didReadNotifications', JSON.stringify(true));
+                }
+                if (activeAlarmIdArray.length) {
+                    localStorage.setItem('didReadNotifications', JSON.stringify(false));
+                }
+            }
+        }
+    };
+
+    notificationsIconToShow = () => {
+        const didReadNotifications = JSON.parse(localStorage.getItem('didReadNotifications'));
+        if (didReadNotifications == null || didReadNotifications) {
+            return '';
+        }
+        return 'icon-alert animated infinite wobble';
+    };
+
     render() {
+        this.activeAlarmsLocalStorageSync();
         const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon, admin, activeAlarms} = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
+        const notificationsIconToShow = this.notificationsIconToShow();
         const sidebarIcon = showSidebarIcon ?
             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
                         onClick={this.onToggleCollapsedNav}>
@@ -115,7 +151,7 @@ class Header extends Component {
                                     tag="span"
                                     data-toggle="dropdown">
                                     <IconButton className="icon-btn">
-                                        <i className="zmdi zmdi-notifications-none icon-alert animated infinite wobble"/>
+                                        <i className={`zmdi zmdi-notifications-none ${notificationsIconToShow}`}/>
                                     </IconButton>
                                 </DropdownToggle>
                                 <DropdownMenu right>
@@ -174,6 +210,7 @@ const mapStateToProps = ({admin, settings, poll}) => {
         // selectedSystemName: systems.selectedSystemName,
         admin: admin.admin,
         activeAlarms: poll.activeAlarms,
+        fetching: poll.fetching,
     };
 };
 
