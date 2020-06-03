@@ -122,6 +122,7 @@
   "pages.reportsPage": "Reports",
   "pages.reportsPageRedux": "Reports Redux",
   "pages.documentationPage": "Documentation",
+  "pages.seeAllActiveAlarms": "See All Active Alarms",
   "pages.documentationPagePageRedux": "Documentation Redux",
   "pages.tagListPage": "Tag List",
   "pages.tagListPageRedux": "Tag List Redux",

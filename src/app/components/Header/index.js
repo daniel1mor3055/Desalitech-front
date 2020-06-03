@@ -120,7 +120,7 @@ class Header extends Component {
                                 </DropdownToggle>
                                 <DropdownMenu right>
                                     <CardHeader styleName="align-items-center"
-                                                heading={"Live Alarms"}/>
+                                                heading={"Active Alarms"}/>
                                     <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
                                 </DropdownMenu>
                             </Dropdown>

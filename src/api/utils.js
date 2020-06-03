@@ -73,5 +73,5 @@ export const dashboardIsCurrentLocation = () => {
 };
 
 export const pollAllSystems = () => {
-    return window.location.pathname.includes('/app/system-select');
+    return window.location.pathname.includes('/app/system-select-active-alarms');
 };

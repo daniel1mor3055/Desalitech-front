@@ -38,7 +38,7 @@ class App extends Component {
 
         let redirect = null;
         if (isAuthenticated && !loading) {
-            redirect = <Redirect exact from={'/'} to={'/app/system-select'}/>;
+            redirect = <Redirect exact from={'/'} to={'/app/system-select-active-alarms'}/>;
         }
 
 
@@ -62,7 +62,7 @@ class App extends Component {
                         <RTL>
                             <div className="app-main">
                                 <Switch>
-                                    <PrivateRoute path={`${match.url}app/system-select`}
+                                    <PrivateRoute path={`${match.url}app/system-select-active-alarms`}
                                                   component={asyncComponent(() => import('../app/routes/SystemsAndLiveAlarms'))}/>
                                     <PrivateRoute path={`${match.url}app`}
                                                   component={asyncComponent(() => import('../app'))}/>
