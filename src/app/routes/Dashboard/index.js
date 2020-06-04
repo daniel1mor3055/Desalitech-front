@@ -70,7 +70,7 @@ class Dashboard extends Component {
         );
 
         const timeSeriesJSX =
-            <div className="dashboard animated slideInUpTiny animation-duration-10">
+            <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
                     {timeSeries.map((timeSeries) => {
                         const {startDate, endDate, times, tags, placement} = timeSeries;
