@@ -147,7 +147,7 @@ class SystemsAndLiveAlarms extends React.Component {
     render() {
         const {
             navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, errorPoll, fetchingPoll
+            history, errorPoll, fetchingPoll, activeAlarms
         } = this.props;
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -222,7 +222,7 @@ class SystemsAndLiveAlarms extends React.Component {
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
         const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
         let alarmsJSX = <CircularIndeterminate/>;
-        if (!errorPoll && !fetchingPoll) {
+        if (!errorPoll && !(fetchingPoll && activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
             alarmsJSX =
                 <div className="row animated slideInUpTiny animation-duration-3">
                     <SearchBox
