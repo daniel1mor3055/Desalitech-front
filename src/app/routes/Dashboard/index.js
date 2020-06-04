@@ -26,65 +26,66 @@ class Dashboard extends Component {
         const {
             match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
+        const renderedArray = [];
 
-        const middleGaugesJSX = middleGauges.map((middleGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
-                </div>
-            )
-        );
-        const leftGaugesJSX = leftGauges.map((leftGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
-                </div>
-            )
-        );
-        const rightGaugesJSX = rightGauges.map((rightGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
-                </div>
-            )
-        );
-        const tagsJSX = tags.map((tag) => {
-            const {tagId, tagName, tagValue, tagUnits, placement} = tag;
-            return (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>
-                </div>);
-        });
-        const triggersJSX = triggers.map((trigger) => {
-            const {controllerTag, tag, placement} = trigger;
-            return (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>
-                </div>);
-        });
-
-        const seeqJSX = seeqs.map((seeq) => {
-                const {url, placement} = seeq;
-                return (
-                    <div className="dashboard animated slideInUpTiny animation-duration-3">
-                        <Seeq url={url} placement={placement}/>
-                    </div>);
-            }
-        );
-
-        const timeSeriesJSX =
-            <div className="dashboard animated slideInUpTiny animation-duration-3">
-                <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
-                    {timeSeries.map((timeSeries) => {
-                        const {startDate, endDate, times, tags, placement} = timeSeries;
-                        return (
-                            <TimeSeries
-                                startDate={startDate}
-                                endDate={endDate}
-                                tags={tags}
-                                times={times}
-                                placement={placement}
-                                key={placement}/>);
-                    })}
-                </div>
+        middleGauges.forEach((middleGauge) => {
+            const {placement} = middleGauge;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
             </div>;
+        });
+
+
+        leftGauges.forEach((leftGauge) => {
+            const {placement} = leftGauge;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
+            </div>
+        });
+
+        rightGauges.forEach((rightGauge) => {
+            const {placement} = rightGauge;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
+            </div>
+        });
+
+        tags.forEach((tag) => {
+            const {tagId, tagName, tagValue, tagUnits, placement} = tag;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>
+            </div>
+        });
+
+        triggers.forEach((trigger) => {
+            const {controllerTag, tag, placement} = trigger;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>
+            </div>
+        });
+
+        seeqs.forEach((seeq) => {
+            const {url, placement} = seeq;
+            renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
+                <Seeq url={url} placement={placement}/>
+            </div>
+        });
+
+        timeSeries.forEach((timeSeries) => {
+            const {startDate, endDate, times, tags, placement} = timeSeries;
+            renderedArray[placement] =
+                <div className="dashboard animated slideInUpTiny animation-duration-3">
+                    <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
+                        <TimeSeries
+                            startDate={startDate}
+                            endDate={endDate}
+                            tags={tags}
+                            times={times}
+                            placement={placement}
+                            key={placement}/>
+                    </div>
+                </div>;
+        });
 
         return (
             <div className="app-wrapper">
@@ -92,13 +93,7 @@ class Dashboard extends Component {
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
-                    : [timeSeriesJSX,
-                        middleGaugesJSX,
-                        leftGaugesJSX,
-                        rightGaugesJSX,
-                        tagsJSX,
-                        triggersJSX,
-                        seeqJSX]}
+                    : renderedArray}
             </div>
         );
     }
