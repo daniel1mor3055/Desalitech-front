@@ -114,6 +114,8 @@ class TimeSeries extends Component {
     };
 
     verifyFormValues = (values) => {
+        const {tagList} = this.props;
+        let invalidTagsFlag = false
         let notEmptyValues = [];
         for (let property in values) {
             if (values.hasOwnProperty(property)) {
@@ -124,7 +126,15 @@ class TimeSeries extends Component {
                 }
             }
         }
-
+        console.log('notEmptyValues', notEmptyValues)
+        notEmptyValues.forEach((notEmptyValue) => {
+            if (!tagList.some(tag => tag.tagId.toLowerCase() === notEmptyValue.toLowerCase())) {
+                invalidTagsFlag = true
+            }
+        });
+        if (invalidTagsFlag){
+            return {global: "Make sure you provide valid tags"};
+        }
         if ((new Set(notEmptyValues)).size !== notEmptyValues.length) {
             return {global: 'Tags should be different'};
         }
@@ -195,10 +205,16 @@ TimeSeries.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
+const mapStateToProps = ({tags}) => {
+    return {
+        tagList: tags.tags,
+    };
+};
+
 const mapDispatchedToProps = dispatch => {
     return {
         onTimeSeriesChange: (timeSeries) => dispatch(timeSeriesChange(timeSeries)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(TimeSeries));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(TimeSeries));

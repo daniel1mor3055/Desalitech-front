@@ -82,7 +82,7 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
+            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs, tagList
         } = this.props;
         const renderedArray = [];
 
@@ -150,15 +150,17 @@ class Dashboard extends Component {
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
                 <Widget onClick={this.handleOpenChooseAddWidgetForm}>
                     <>
-                        {chosenWidgetToAddFormOpen && !addWidgetFormOpen ? <ChooseTagsForm
+                        {chosenWidgetToAddFormOpen && !addWidgetFormOpen ?
+                            <ChooseTagsForm
                             labels={getLabels(chosenWidgetToAdd)}
-                            verifyValues={getVerifyValuesFunction(chosenWidgetToAdd)}
+                            verifyValues={getVerifyValuesFunction(chosenWidgetToAdd, tagList)}
                             validationSchemaObject={getFormValidationSchemaObject(chosenWidgetToAdd)}
                             formTitle={getFormTitle(chosenWidgetToAdd)}
                             initialValues={getInitialValue(chosenWidgetToAdd)}
                             handleClose={this.handleCloseChosenWidgetToAddForm}
                             handleSubmit={getHandleFormSubmit(chosenWidgetToAdd)}
-                            open={chosenWidgetToAddFormOpen}/> : <ChooseTagsForm
+                            open={chosenWidgetToAddFormOpen}/> :
+                            <ChooseTagsForm
                             labels={['Widget Type']}
                             verifyValues={this.verifyAddWidgetFormValues}
                             validationSchemaObject={this.getAddWidgetFormValidationSchemaObject()}
@@ -180,7 +182,7 @@ class Dashboard extends Component {
 }
 
 
-const mapStateToProps = ({dashboard}) => {
+const mapStateToProps = ({dashboard, tags}) => {
     return {
         triggers: dashboard.triggers,
         tags: dashboard.tags,
@@ -192,6 +194,7 @@ const mapStateToProps = ({dashboard}) => {
         seeqs: dashboard.seeqs,
         fetching: dashboard.fetching,
         error: dashboard.error,
+        tagList: tags.tags,
     };
 };
 

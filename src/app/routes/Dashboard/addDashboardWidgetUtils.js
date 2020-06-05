@@ -66,12 +66,8 @@ export const getLabels = (widgetType) => {
         case 'Time Series': {
             return ['Tag1 ID', 'Tag2 ID', 'Tag3 ID'];
         }
-        case 'Middle Gauge': {
-            return ['Tag ID', 'LL Value', 'L Value', 'H Value', 'HH Value'];
-        }
-        case 'Right Gauge': {
-            return ['Tag ID', 'LL Value', 'L Value', 'H Value', 'HH Value'];
-        }
+        case 'Middle Gauge':
+        case 'Right Gauge':
         case 'Left Gauge': {
             return ['Tag ID', 'LL Value', 'L Value', 'H Value', 'HH Value'];
         }
@@ -81,61 +77,37 @@ export const getLabels = (widgetType) => {
     }
 };
 
-
-function verifyGauges(values) {
-    const numericValues = [];
-    for (let property in values) {
-        if (values.hasOwnProperty(property)) {
-            if (!isNaN(values[property])) {
-                numericValues.push(+values[property]);
-            }
-        }
-    }
-
-    let correctOrder = true;
-    for (let i = 0; i < numericValues.length - 1; i++) {
-        if (numericValues[i] > numericValues[i + 1]) {
-            correctOrder = false;
-            break;
-        }
-    }
-
-    if (!correctOrder) {
-        return {global: "Make sure that LL Value < L Value < H Value < HH Value"};
-    }
-    return null;
-};
-
-export const getVerifyValuesFunction = (widgetType) => {
+export const getVerifyValuesFunction = (widgetType, tagList) => {
     switch (widgetType) {
-        case 'AddWidget': {
+        case 'Tag': {
             return (values) => {
-                const availableWidgets = ['Tag', 'Trigger', 'Time Series', 'Middle Gauge', 'Right Gauge',
-                    'Left Gauge', 'Seeq'];
-                const {widget} = values;
-
-                if (!availableWidgets.some(availableWidget => availableWidget === widget)) {
-                    return {global: "Make sure to choose a valid widget type"};
+                const {tagId} = values;
+                if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase())) {
+                    return {global: "Make sure you provide a valid tag"};
                 }
                 return null;
             };
         }
-        case 'Tag': {
-            return () => null;
-        }
         case 'Trigger': {
             return (values) => {
-                if (values.tagId === values.controllerTagId) {
+                console.log('values', values);
+                const {tagId, controllerTagId} = values;
+                if (tagId === controllerTagId) {
                     return {global: "Tag and its controller should be different"};
+                }
+                if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase()) ||
+                    !tagList.some(tag => tag.tagId.toLowerCase() === controllerTagId.toLowerCase())) {
+                    return {global: "Make sure you provide valid tags"};
                 }
                 return null;
             };
         }
         case 'Time Series': {
             return (values) => {
+                let invalidTagsFlag = false;
                 let notEmptyValues = [];
                 for (let property in values) {
-                    if (values.hasOwnProperty(property)) {
+                    if (values.hasOwnProperty(property) && property !== 'widget') {
                         if (values[property] === null || values[property] === '') {
                             values[property] = '';
                         } else {
@@ -143,33 +115,58 @@ export const getVerifyValuesFunction = (widgetType) => {
                         }
                     }
                 }
+                notEmptyValues.forEach((notEmptyValue) => {
+                    if (!tagList.some(tag => tag.tagId.toLowerCase() === notEmptyValue.toLowerCase())) {
+                        invalidTagsFlag = true;
+                    }
+                });
+                if (invalidTagsFlag) {
+                    return {global: "Make sure you provide valid tags"};
+                }
+                if ((new Set(notEmptyValues)).size !== notEmptyValues.length) {
+                    return {global: 'Tags should be different'};
+                }
+                if (notEmptyValues.length === 0) {
+                    return {global: 'Choose at least one tag'};
+                }
+                return null;
             };
         }
-        case 'Middle Gauge': {
-            return verifyGauges;
-        }
-        case 'Right Gauge': {
-            return verifyGauges;
-        }
+        case 'Middle Gauge':
+        case 'Right Gauge':
         case 'Left Gauge': {
-            return verifyGauges;
+            return (values) => {
+                const numericValues = [];
+                for (let property in values) {
+                    if (values.hasOwnProperty(property)) {
+                        if (!isNaN(values[property])) {
+                            numericValues.push(+values[property]);
+                        } else {
+                            if (!tagList.some(tag => tag.tagId.toLowerCase() === values[property].toLowerCase())) {
+                                return {global: "Make sure you provide valid tags"};
+                            }
+                        }
+                    }
+                }
+                let correctOrder = true;
+                for (let i = 0; i < numericValues.length - 1; i++) {
+                    if (numericValues[i] > numericValues[i + 1]) {
+                        correctOrder = false;
+                        break;
+                    }
+                }
+
+                if (!correctOrder) {
+                    return {global: "Make sure that LL Value < L Value < H Value < HH Value"};
+                }
+                return null;
+            };
         }
         case 'Seeq': {
             return () => null;
         }
     }
 };
-
-function gaugeValidationScheme() {
-    const validationSchema = {
-        measuredTag: Yup.string().required('Please select tag to measure'),
-        lL: Yup.string().required('Please select LL Value or Tag'),
-        l: Yup.string().required('Please select L Value or Tag'),
-        h: Yup.string().required('Please select H Value or Tag'),
-        hH: Yup.string().required('Please select HH Value or Tag'),
-    };
-    return validationSchema;
-}
 
 export const getFormValidationSchemaObject = (widgetType) => {
     switch (widgetType) {
@@ -192,14 +189,17 @@ export const getFormValidationSchemaObject = (widgetType) => {
                 tag3Id: Yup.string().nullable(),
             };
         }
-        case 'Middle Gauge': {
-            return gaugeValidationScheme();
-        }
-        case 'Right Gauge': {
-            return gaugeValidationScheme();
-        }
+        case 'Middle Gauge':
+        case 'Right Gauge':
         case 'Left Gauge': {
-            return gaugeValidationScheme();
+            const validationSchema = {
+                measuredTag: Yup.string().required('Please select tag to measure'),
+                lL: Yup.string().required('Please select LL Value or Tag'),
+                l: Yup.string().required('Please select L Value or Tag'),
+                h: Yup.string().required('Please select H Value or Tag'),
+                hH: Yup.string().required('Please select HH Value or Tag'),
+            };
+            return validationSchema;
         }
         case 'Seeq': {
             const validationSchema = {

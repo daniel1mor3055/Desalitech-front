@@ -55,6 +55,15 @@ class Tag extends Component {
         return validationSchema;
     };
 
+    verifyFormValues = (values) => {
+        const {tagList} = this.props
+        const {tagId} = values
+        if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase())) {
+            return {global: "Make sure you provide a valid tag"};
+        }
+        return null;
+    };
+
     render() {
         const {chooseTagsFormOpen} = this.state;
         const {tagId, tagName, tagValue, tagUnits} = this.props;
@@ -70,7 +79,7 @@ class Tag extends Component {
                     />
                     <ChooseTagsForm
                         labels={['Tag ID']}
-                        verifyValues={() => null}
+                        verifyValues={this.verifyFormValues}
                         validationSchemaObject={this.getFormValidationSchemaObject()}
                         formTitle={'Choose tag to display'}
                         initialValues={initialFormValues}
@@ -92,10 +101,17 @@ Tag.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
+const mapStateToProps = ({tags}) => {
+    return {
+        tagList: tags.tags,
+    };
+};
+
+
 const mapDispatchedToProps = dispatch => {
     return {
         onTagChange: (tag) => dispatch(tagChange(tag)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(Tag));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(Tag));
