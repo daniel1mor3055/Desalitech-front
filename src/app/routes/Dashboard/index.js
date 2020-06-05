@@ -14,8 +14,68 @@ import TimeSeries from './TimeSeries';
 import Tag from './Tag';
 import Trigger from "./Trigger";
 import Seeq from './Seeq';
+import Widget from "app/components/Widget";
+import ChooseTagsForm from "./ChooseTagsForm";
+import * as Yup from "yup";
 
 class Dashboard extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            addWidgetFormOpen: false,
+            chosenWidgetToAddFormOpen: false,
+        };
+    }
+
+    handleOpenChooseAddWidgetForm = (event) => {
+        event.preventDefault();
+        this.setState({addWidgetFormOpen: true});
+    };
+
+    handleCloseChooseAddWidgetForm = () => {
+        this.setState({addWidgetFormOpen: false});
+    };
+
+    handleCloseChosenWidgetToAddForm = () => {
+        this.setState({chosenWidgetToAddFormOpen: false});
+    };
+
+    getFormValidationSchemaObject = () => {
+        const validationSchema = {
+            widget: Yup.string().required('required'),
+        };
+        return validationSchema;
+    };
+
+    getFormValidationSchemaForAddedWidget = () => {
+        const validationSchema = {
+            tag: Yup.string().required('required'),
+        };
+        return validationSchema;
+    };
+
+    handleAddWidgetFormSubmit = (values) => {
+        const {widget} = values;
+        this.setState({chosenWidgetToAddFormOpen: true});
+    };
+
+    handleChosenAddedWidgetFormSubmit = (values) => {
+        const {tag} = values;
+        console.log('TAG',tag)
+    };
+
+    verifyAddWidgetFormValues = (values) => {
+        const availableWidgets = ['Tag', 'Trigger', 'Time Series', 'Middle Gauge', 'Right Gauge',
+            'Left Gauge', 'Seeq'];
+        const {widget} = values;
+
+        if (!availableWidgets.some(availableWidget => availableWidget === widget)) {
+            return {global: "Make sure to choose a valid widget type"};
+        }
+        return null;
+    };
 
     componentDidMount() {
         this.props.onFetchDashboard();
@@ -40,35 +100,35 @@ class Dashboard extends Component {
             const {placement} = leftGauge;
             renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
-            </div>
+            </div>;
         });
 
         rightGauges.forEach((rightGauge) => {
             const {placement} = rightGauge;
             renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
-            </div>
+            </div>;
         });
 
         tags.forEach((tag) => {
             const {tagId, tagName, tagValue, tagUnits, placement} = tag;
             renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>
-            </div>
+            </div>;
         });
 
         triggers.forEach((trigger) => {
             const {controllerTag, tag, placement} = trigger;
             renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>
-            </div>
+            </div>;
         });
 
         seeqs.forEach((seeq) => {
             const {url, placement} = seeq;
             renderedArray[placement] = <div className="dashboard animated slideInUpTiny animation-duration-3">
                 <Seeq url={url} placement={placement}/>
-            </div>
+            </div>;
         });
 
         timeSeries.forEach((timeSeries) => {
@@ -86,11 +146,34 @@ class Dashboard extends Component {
                     </div>
                 </div>;
         });
-
+        const {addWidgetFormOpen, chosenWidgetToAddFormOpen} = this.state;
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
+                <Widget onClick={this.handleOpenChooseAddWidgetForm}>
+                    <>
+                        <ChooseTagsForm
+                            labels={['Widget Type']}
+                            verifyValues={this.verifyAddWidgetFormValues}
+                            validationSchemaObject={this.getFormValidationSchemaObject()}
+                            formTitle={'Choose A Widget to Add'}
+                            initialValues={{widget: ''}}
+                            handleClose={this.handleCloseChooseAddWidgetForm}
+                            handleSubmit={this.handleAddWidgetFormSubmit}
+                            open={addWidgetFormOpen}
+                            addWidgetFlag={'addWidgetFlag'}/>
+                        <ChooseTagsForm
+                            labels={['Tag ID']}
+                            verifyValues={() => null}
+                            validationSchemaObject={this.getFormValidationSchemaForAddedWidget()}
+                            formTitle={'Choose tag to add'}
+                            initialValues={{tag: ''}}
+                            handleClose={this.handleCloseChosenWidgetToAddForm}
+                            handleSubmit={this.handleChosenAddedWidgetFormSubmit}
+                            open={chosenWidgetToAddFormOpen}/>
 
+                    </>
+                </Widget>
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
                     : renderedArray}

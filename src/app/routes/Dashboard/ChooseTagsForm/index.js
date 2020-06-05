@@ -18,7 +18,7 @@ const styles = {};
 
 const ChooseTagsForm = ({
                             open, handleClose, handleSubmit, tags, fetching, error, initialValues,
-                            validationSchemaObject, verifyValues, formTitle, labels,
+                            validationSchemaObject, verifyValues, formTitle, labels, addWidgetFlag
                         }) => {
 
     const chooseTagsFormJSX = (
@@ -52,6 +52,10 @@ const ChooseTagsForm = ({
                     handleSubmit,
                     handleReset,
                 } = props;
+
+                const options = addWidgetFlag === 'addWidgetFlag' ?
+                    ['Tag', 'Trigger', 'Time Series', 'Middle Gauge', 'Right Gauge', 'Left Gauge', 'Seeq'] :
+                    tags.map((tag) => (tag.tagId)).sort()
                 return (
                     <form onSubmit={handleSubmit}>
                         {errors.global && <Typography variant={'subtitle1'} color={'error'} align={'center'}>
@@ -62,7 +66,7 @@ const ChooseTagsForm = ({
                                    name={key}
                                    index={index}
                                    key={key}
-                                   options={tags.map((tag) => (tag.tagId)).sort()}
+                                   options={options}
                                    textFieldProps={{
                                        fullWidth: true,
                                        margin: 'normal',
