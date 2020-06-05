@@ -250,3 +250,29 @@ export const getFormTitle = (widgetType) => {
         }
     }
 };
+
+export const getHandleFormSubmit = (widgetType) => {
+    switch (widgetType) {
+        case 'Tag': {
+            return () => console.log('Tag Submitted')
+        }
+        case 'Trigger': {
+            return () => console.log('Trigger Submitted')
+        }
+        case 'Time Series': {
+            return () => console.log('Time Series Submitted')
+        }
+        case 'Middle Gauge': {
+            return () => console.log('Middle Gauge Submitted')
+        }
+        case 'Right Gauge': {
+            return () => console.log('Right Gauge Submitted')
+        }
+        case 'Left Gauge': {
+            return () => console.log('Left Gauge Submitted')
+        }
+        case 'Seeq': {
+            return () => console.log('Seeq Submitted')
+        }
+    }
+};

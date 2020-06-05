@@ -64,42 +64,6 @@ class Dashboard extends Component {
         this.setState({chosenWidgetToAddFormOpen: true, chosenWidgetToAdd: widget});
     };
 
-    getHandleFormSubmit = (widgetType) => {
-        switch (widgetType) {
-            case 'AddWidget': {
-                return
-            }
-            case 'Tag': {
-                console.log('Tag Submitted')
-                return
-            }
-            case 'Trigger': {
-                console.log('Trigger Submitted')
-                return
-            }
-            case 'Time Series': {
-                console.log('Time Series Submitted')
-                return
-            }
-            case 'Middle Gauge': {
-                console.log('Middle Gauge Submitted')
-                return
-            }
-            case 'Right Gauge': {
-                console.log('Right Gauge Submitted')
-                return
-            }
-            case 'Left Gauge': {
-                console.log('Left Gauge Submitted')
-                return
-            }
-            case 'Seeq': {
-                console.log('Seeq Submitted')
-                return
-            }
-        }
-    };
-
     verifyAddWidgetFormValues = (values) => {
         const availableWidgets = ['Tag', 'Trigger', 'Time Series', 'Middle Gauge', 'Right Gauge',
             'Left Gauge', 'Seeq'];
