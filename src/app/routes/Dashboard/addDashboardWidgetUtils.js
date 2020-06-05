@@ -2,9 +2,6 @@ import * as Yup from "yup";
 
 export const getInitialValue = (widgetType) => {
     switch (widgetType) {
-        case 'AddWidget': {
-            return {widget: ''}
-        }
         case 'Tag': {
             return {
                 tagId: ''
@@ -60,9 +57,6 @@ export const getInitialValue = (widgetType) => {
 
 export const getLabels = (widgetType) => {
     switch (widgetType) {
-        case 'AddWidget': {
-            return ['Widget Type']
-        }
         case 'Tag': {
             return ['Tag ID'];
         }
@@ -124,7 +118,7 @@ export const getVerifyValuesFunction = (widgetType) => {
                     return {global: "Make sure to choose a valid widget type"};
                 }
                 return null;
-            }
+            };
         }
         case 'Tag': {
             return () => null;
@@ -179,12 +173,6 @@ function gaugeValidationScheme() {
 
 export const getFormValidationSchemaObject = (widgetType) => {
     switch (widgetType) {
-        case 'AddWidget': {
-            const validationSchema = {
-                widget: Yup.string().required('required'),
-            };
-            return validationSchema;
-        }
         case 'Tag': {
             const validationSchema = {
                 tagId: Yup.string().required('required'),
@@ -224,29 +212,26 @@ export const getFormValidationSchemaObject = (widgetType) => {
 
 export const getFormTitle = (widgetType) => {
     switch (widgetType) {
-        case 'AddWidget': {
-            return 'Choose a Widget to Add'
-        }
         case 'Tag': {
-            return 'Choose the ID of the Trigger You Wish to Add'
+            return 'Choose the ID of the Trigger You Wish to Add';
         }
         case 'Trigger': {
-            return 'Choose the Values for the Trigger You Wish to Add'
+            return 'Choose the Values for the Trigger You Wish to Add';
         }
         case 'Time Series': {
-            return 'Choose the Values for the Time Series You Wish to Add'
+            return 'Choose the Values for the Time Series You Wish to Add';
         }
         case 'Middle Gauge': {
-            return 'Choose the Values of the Middle Gauge You Wish to Add'
+            return 'Choose the Values of the Middle Gauge You Wish to Add';
         }
         case 'Right Gauge': {
-            return 'Choose the Values of the Right Gauge You Wish to Add'
+            return 'Choose the Values of the Right Gauge You Wish to Add';
         }
         case 'Left Gauge': {
-            return 'Choose the Values of the Left Gauge You Wish to Add'
+            return 'Choose the Values of the Left Gauge You Wish to Add';
         }
         case 'Seeq': {
-            return 'Enter the Seeq URL You Wish to Display'
+            return 'Enter the Seeq URL You Wish to Display';
         }
     }
 };
@@ -254,25 +239,25 @@ export const getFormTitle = (widgetType) => {
 export const getHandleFormSubmit = (widgetType) => {
     switch (widgetType) {
         case 'Tag': {
-            return () => console.log('Tag Submitted')
+            return () => console.log('Tag Submitted');
         }
         case 'Trigger': {
-            return () => console.log('Trigger Submitted')
+            return () => console.log('Trigger Submitted');
         }
         case 'Time Series': {
-            return () => console.log('Time Series Submitted')
+            return () => console.log('Time Series Submitted');
         }
         case 'Middle Gauge': {
-            return () => console.log('Middle Gauge Submitted')
+            return () => console.log('Middle Gauge Submitted');
         }
         case 'Right Gauge': {
-            return () => console.log('Right Gauge Submitted')
+            return () => console.log('Right Gauge Submitted');
         }
         case 'Left Gauge': {
-            return () => console.log('Left Gauge Submitted')
+            return () => console.log('Left Gauge Submitted');
         }
         case 'Seeq': {
-            return () => console.log('Seeq Submitted')
+            return () => console.log('Seeq Submitted');
         }
     }
 };

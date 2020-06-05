@@ -150,7 +150,15 @@ class Dashboard extends Component {
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
                 <Widget onClick={this.handleOpenChooseAddWidgetForm}>
                     <>
-                        <ChooseTagsForm
+                        {chosenWidgetToAddFormOpen && !addWidgetFormOpen ? <ChooseTagsForm
+                            labels={getLabels(chosenWidgetToAdd)}
+                            verifyValues={getVerifyValuesFunction(chosenWidgetToAdd)}
+                            validationSchemaObject={getFormValidationSchemaObject(chosenWidgetToAdd)}
+                            formTitle={getFormTitle(chosenWidgetToAdd)}
+                            initialValues={getInitialValue(chosenWidgetToAdd)}
+                            handleClose={this.handleCloseChosenWidgetToAddForm}
+                            handleSubmit={getHandleFormSubmit(chosenWidgetToAdd)}
+                            open={chosenWidgetToAddFormOpen}/> : <ChooseTagsForm
                             labels={['Widget Type']}
                             verifyValues={this.verifyAddWidgetFormValues}
                             validationSchemaObject={this.getAddWidgetFormValidationSchemaObject()}
@@ -160,17 +168,7 @@ class Dashboard extends Component {
                             handleSubmit={this.handleAddWidgetFormSubmit}
                             open={addWidgetFormOpen}
                             addWidgetFlag={'addWidgetFlag'}
-                            asyncFlag={false}/>
-                        <ChooseTagsForm
-                            labels={getLabels(chosenWidgetToAdd)}
-                            verifyValues={getVerifyValuesFunction(chosenWidgetToAdd)}
-                            validationSchemaObject={getFormValidationSchemaObject(chosenWidgetToAdd)}
-                            formTitle={getFormTitle(chosenWidgetToAdd)}
-                            initialValues={getInitialValue(chosenWidgetToAdd)}
-                            handleClose={this.handleCloseChosenWidgetToAddForm}
-                            handleSubmit={getHandleFormSubmit(chosenWidgetToAdd)}
-                            open={chosenWidgetToAddFormOpen}/>
-
+                            asyncFlag={false}/>}
                     </>
                 </Widget>
                 {fetching ?
