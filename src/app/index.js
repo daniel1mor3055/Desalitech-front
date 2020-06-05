@@ -34,7 +34,7 @@ class App extends Component {
             () => {
                 this.props.onFetchPolling();
             },
-            5000);
+            30000);
         this.setState({dataPolling});
     }
 

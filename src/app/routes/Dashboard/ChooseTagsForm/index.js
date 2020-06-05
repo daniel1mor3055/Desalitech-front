@@ -18,28 +18,43 @@ const styles = {};
 
 const ChooseTagsForm = ({
                             open, handleClose, handleSubmit, tags, fetching, error, initialValues,
-                            validationSchemaObject, verifyValues, formTitle, labels, addWidgetFlag
+                            validationSchemaObject, verifyValues, formTitle, labels, addWidgetFlag, asyncFlag
                         }) => {
-
+    const onSubmitForFormik = asyncFlag ? async (values, {setSubmitting, setErrors}) => {
+        setErrors({});
+        const globalError = verifyValues(values);
+        if (globalError !== null) {
+            setErrors(globalError);
+        } else {
+            setSubmitting(true);
+            try {
+                await handleSubmit(values);
+                handleClose();
+            } catch (error) {
+                setErrors({global: error.message});
+            }
+        }
+        setSubmitting(false);
+    } : (values, {setSubmitting, setErrors}) => {
+        setErrors({});
+        const globalError = verifyValues(values);
+        if (globalError !== null) {
+            setErrors(globalError);
+        } else {
+            setSubmitting(true);
+            try {
+                handleSubmit(values);
+                handleClose();
+            } catch (error) {
+                setErrors({global: error.message});
+            }
+        }
+        setSubmitting(false);
+    };
     const chooseTagsFormJSX = (
         <Formik
             initialValues={initialValues}
-            onSubmit={async (values, {setSubmitting, setErrors}) => {
-                setErrors({});
-                const globalError = verifyValues(values);
-                if (globalError !== null) {
-                    setErrors(globalError);
-                } else {
-                    setSubmitting(true);
-                    try {
-                        await handleSubmit(values);
-                        handleClose();
-                    } catch (error) {
-                        setErrors({global: error.message});
-                    }
-                }
-                setSubmitting(false);
-            }}
+            onSubmit={onSubmitForFormik}
 
             validationSchema={Yup.object().shape(validationSchemaObject)}
         >
@@ -55,7 +70,7 @@ const ChooseTagsForm = ({
 
                 const options = addWidgetFlag === 'addWidgetFlag' ?
                     ['Tag', 'Trigger', 'Time Series', 'Middle Gauge', 'Right Gauge', 'Left Gauge', 'Seeq'] :
-                    tags.map((tag) => (tag.tagId)).sort()
+                    tags.map((tag) => (tag.tagId)).sort();
                 return (
                     <form onSubmit={handleSubmit}>
                         {errors.global && <Typography variant={'subtitle1'} color={'error'} align={'center'}>
@@ -63,17 +78,17 @@ const ChooseTagsForm = ({
                         </Typography>}
                         {Object.keys(initialValues).map((key, index) => (
                             <FormikAutocomplete
-                                   name={key}
-                                   index={index}
-                                   key={key}
-                                   options={options}
-                                   textFieldProps={{
-                                       fullWidth: true,
-                                       margin: 'normal',
-                                       variant: 'outlined',
-                                       label: labels[index],
-                                       // onChange: handleChange,
-                                   }}
+                                name={key}
+                                index={index}
+                                key={key}
+                                options={options}
+                                textFieldProps={{
+                                    fullWidth: true,
+                                    margin: 'normal',
+                                    variant: 'outlined',
+                                    label: labels[index],
+                                    // onChange: handleChange,
+                                }}
                             />
                         ))}
                         <DialogActions>

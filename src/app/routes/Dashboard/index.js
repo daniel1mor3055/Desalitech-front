@@ -17,6 +17,15 @@ import Seeq from './Seeq';
 import Widget from "app/components/Widget";
 import ChooseTagsForm from "./ChooseTagsForm";
 import * as Yup from "yup";
+import {
+    getFormTitle,
+    getFormValidationSchemaObject,
+    getHandleFormSubmit,
+    getInitialValue,
+    getLabels,
+    getVerifyValuesFunction,
+} from './addDashboardWidgetUtils';
+
 
 class Dashboard extends Component {
 
@@ -26,6 +35,7 @@ class Dashboard extends Component {
         this.state = {
             addWidgetFormOpen: false,
             chosenWidgetToAddFormOpen: false,
+            chosenWidgetToAdd: ''
         };
     }
 
@@ -39,31 +49,55 @@ class Dashboard extends Component {
     };
 
     handleCloseChosenWidgetToAddForm = () => {
-        this.setState({chosenWidgetToAddFormOpen: false});
+        this.setState({chosenWidgetToAddFormOpen: false, chosenWidgetToAdd: ''});
     };
 
-    getFormValidationSchemaObject = () => {
+    getAddWidgetFormValidationSchemaObject = () => {
         const validationSchema = {
             widget: Yup.string().required('required'),
         };
         return validationSchema;
     };
 
-    getFormValidationSchemaForAddedWidget = () => {
-        const validationSchema = {
-            tag: Yup.string().required('required'),
-        };
-        return validationSchema;
-    };
-
     handleAddWidgetFormSubmit = (values) => {
         const {widget} = values;
-        this.setState({chosenWidgetToAddFormOpen: true});
+        this.setState({chosenWidgetToAddFormOpen: true, chosenWidgetToAdd: widget});
     };
 
-    handleChosenAddedWidgetFormSubmit = (values) => {
-        const {tag} = values;
-        console.log('TAG',tag)
+    getHandleFormSubmit = (widgetType) => {
+        switch (widgetType) {
+            case 'AddWidget': {
+                return
+            }
+            case 'Tag': {
+                console.log('Tag Submitted')
+                return
+            }
+            case 'Trigger': {
+                console.log('Trigger Submitted')
+                return
+            }
+            case 'Time Series': {
+                console.log('Time Series Submitted')
+                return
+            }
+            case 'Middle Gauge': {
+                console.log('Middle Gauge Submitted')
+                return
+            }
+            case 'Right Gauge': {
+                console.log('Right Gauge Submitted')
+                return
+            }
+            case 'Left Gauge': {
+                console.log('Left Gauge Submitted')
+                return
+            }
+            case 'Seeq': {
+                console.log('Seeq Submitted')
+                return
+            }
+        }
     };
 
     verifyAddWidgetFormValues = (values) => {
@@ -146,7 +180,7 @@ class Dashboard extends Component {
                     </div>
                 </div>;
         });
-        const {addWidgetFormOpen, chosenWidgetToAddFormOpen} = this.state;
+        const {addWidgetFormOpen, chosenWidgetToAddFormOpen, chosenWidgetToAdd} = this.state;
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
@@ -155,21 +189,22 @@ class Dashboard extends Component {
                         <ChooseTagsForm
                             labels={['Widget Type']}
                             verifyValues={this.verifyAddWidgetFormValues}
-                            validationSchemaObject={this.getFormValidationSchemaObject()}
-                            formTitle={'Choose A Widget to Add'}
+                            validationSchemaObject={this.getAddWidgetFormValidationSchemaObject()}
+                            formTitle={'Choose a Widget to Add'}
                             initialValues={{widget: ''}}
                             handleClose={this.handleCloseChooseAddWidgetForm}
                             handleSubmit={this.handleAddWidgetFormSubmit}
                             open={addWidgetFormOpen}
-                            addWidgetFlag={'addWidgetFlag'}/>
+                            addWidgetFlag={'addWidgetFlag'}
+                            asyncFlag={false}/>
                         <ChooseTagsForm
-                            labels={['Tag ID']}
-                            verifyValues={() => null}
-                            validationSchemaObject={this.getFormValidationSchemaForAddedWidget()}
-                            formTitle={'Choose tag to add'}
-                            initialValues={{tag: ''}}
+                            labels={getLabels(chosenWidgetToAdd)}
+                            verifyValues={getVerifyValuesFunction(chosenWidgetToAdd)}
+                            validationSchemaObject={getFormValidationSchemaObject(chosenWidgetToAdd)}
+                            formTitle={getFormTitle(chosenWidgetToAdd)}
+                            initialValues={getInitialValue(chosenWidgetToAdd)}
                             handleClose={this.handleCloseChosenWidgetToAddForm}
-                            handleSubmit={this.handleChosenAddedWidgetFormSubmit}
+                            handleSubmit={getHandleFormSubmit(chosenWidgetToAdd)}
                             open={chosenWidgetToAddFormOpen}/>
 
                     </>
