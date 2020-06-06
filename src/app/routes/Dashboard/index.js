@@ -25,6 +25,7 @@ import {
     getLabels,
     getVerifyValuesFunction,
 } from './addDashboardWidgetUtils';
+import IconButton from "@material-ui/core/IconButton";
 
 
 class Dashboard extends Component {
@@ -148,6 +149,11 @@ class Dashboard extends Component {
         return (
             <div className="app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
+                <div className="add-widget-option">
+                    <IconButton onClick={this.handleOpenChooseAddWidgetForm}>
+                        <i className="zmdi zmdi-plus-circle-o text-white"/>
+                    </IconButton>
+                </div>
                 <Widget onClick={this.handleOpenChooseAddWidgetForm}>
                     <>
                         {chosenWidgetToAddFormOpen && !addWidgetFormOpen ?

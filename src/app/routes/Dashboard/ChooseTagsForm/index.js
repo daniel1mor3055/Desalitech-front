@@ -102,7 +102,7 @@ const ChooseTagsForm = ({
                                 Reset
                             </Button>
                             <Button type={"submit"} color={'primary'} disabled={isSubmitting || !dirty}>
-                                Save
+                                {addWidgetFlag === 'addWidgetFlag' ? 'Continue' : 'Save'}
                             </Button>
                         </DialogActions>
                     </form>

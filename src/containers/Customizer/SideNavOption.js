@@ -16,7 +16,7 @@ import {
   VERTICAL_NAVIGATION
 } from 'store/actionTypes'
 
-import {changeNavigationStyle, setDrawerType, setHorizontalMenuPosition} from 'store/actions';
+import {changeNavigationStyle, setDrawerType, setHorizontalMenuPosition} from 'store/actions/Setting';
 
 import {Button, ButtonGroup} from 'reactstrap';
 
