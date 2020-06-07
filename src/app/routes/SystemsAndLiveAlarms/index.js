@@ -18,6 +18,8 @@ import {fetchPolling} from "store/thunk/polling";
 import {setSystemName} from 'store/actions/header';
 import DataTable from 'app/components/DataTable';
 import CardBox from "app/components/CardBox";
+import './index.scss';
+import StatusIndicator from "../../components/StatusIndicator";
 
 class SystemsAndLiveAlarms extends React.Component {
     constructor(props) {
@@ -107,23 +109,13 @@ class SystemsAndLiveAlarms extends React.Component {
 
     prepareSystemsStatus() {
         const {systemsStatus} = this.props;
-        let systemsStatusIcons = {};
-        let systemsStatusBorders = {};
+        const systemsStatusIcons = {};
         for (let i = 0; i < systemsStatus.length; i++) {
-            if (systemsStatus[i].status === 1) {
-                systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i>;
-                systemsStatusBorders[systemsStatus[i].sysId] = 'GreenBorder';
-            }
-            if (systemsStatus[i].status === 2) {
-                systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
-                systemsStatusBorders[systemsStatus[i].sysId] = 'RedBorder';
-            }
+            systemsStatusIcons[systemsStatus[i].sysId] =
+                <StatusIndicator systemStatus={systemsStatus[i].status}/>;
         }
         return {
-            systemsStatusIcons: systemsStatusIcons,
-            systemsStatusBorders: systemsStatusBorders
+            systemsStatusIcons,
         };
     }
 
@@ -158,64 +150,61 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
-            const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
+            const {systemsStatusIcons} = this.prepareSystemsStatus();
             systemsCards =
-                <div className="d-sm-inline-block">
-                    <div className='d-flex'>
-                        {systems.map(system => {
-                            const {sysId, recovery, production, conductivity, systemName} = system;
-                            return (
-                                <BasicCard
-                                    key={sysId}
-                                    image={require('./assets/large_no_background_top.svg')}
-                                    title={systemName}
-                                    recovery={recovery + '%'}
-                                    production={production + ' gpm'}
-                                    conductivity={conductivity + ' us/cm'}
-                                    systemStatusIcon={systemsStatusIcons[sysId]}
-                                    systemStatusBorder={systemsStatusBorders[sysId]}
-                                    onClick={() => {
-                                        history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
-                                        this.props.onSetSystemName(systemName);
-                                    }}
-                                />
-                            );
-                        })}
-                    </div>
+                <div className='d-flex justify-content-center'>
+                    {systems.map(system => {
+                        const {sysId, recovery, production, conductivity, systemName} = system;
+                        return (
+                            <BasicCard
+                                key={sysId}
+                                image={require('./assets/large_no_background_top.svg')}
+                                title={systemName}
+                                recovery={recovery + '%'}
+                                production={production + ' gpm'}
+                                conductivity={conductivity + ' us/cm'}
+                                systemStatusIcon={systemsStatusIcons[sysId]}
+                                onClick={() => {
+                                    history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
+                                    this.props.onSetSystemName(systemName);
+                                }}
+                            />
+                        );
+                    })}
                 </div>;
             const {filteredSystems, badSearch} = this.getFilterData(systems, systemsStatusIcons);
             const columnsIds = ['sysId', 'systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
             const columnsLabels = ['System ID', 'System Name', 'Recovery', 'Production', 'Conductivity', 'Status'];
             systemsTable =
-                <div className="d-sm-inline-block">
-                    <SearchBox
-                        showClear={true}
-                        styleName="d-none d-lg-block"
-                        placeholder="Filter by System ID"
-                        onChange={(event) => this.updateSearchText(event, 'SYSTEM_ID')}
-                        value={this.state.systemIdSearchText} badSearch={badSearch}
-                        handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_ID')}/>
-                    <SearchBox
-                        showClear={true}
-                        styleName="d-none d-lg-block"
-                        placeholder="Filter by System Name"
-                        onChange={(event) => this.updateSearchText(event, 'SYSTEM_NAME')}
-                        value={this.state.systemNameSearchText} badSearch={badSearch}
-                        handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_NAME')}/>
-                    <div className="d-flex justify-content-center">
-                        <div className="col-12">
-                            <div className="jr-card">
-                                <DataTable data={filteredSystems}
-                                           columnsIds={columnsIds}
-                                           columnsLabels={columnsLabels}
-                                           initialOrderBy={'sysId'}
-                                           cellIdentifier={'sysId'}
-                                           onRowClick={this.handleClickOnSystemRow}
-                                />
-                            </div>
+                <>
+                    <div className='SystemsAndLiveAlarms-searchBoxes row'>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by System ID"
+                                onChange={(event) => this.updateSearchText(event, 'SYSTEM_ID')}
+                                value={this.state.systemIdSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_ID')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by System Name"
+                                onChange={(event) => this.updateSearchText(event, 'SYSTEM_NAME')}
+                                value={this.state.systemNameSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_NAME')}/>
                         </div>
                     </div>
-                </div>;
+                    <DataTable data={filteredSystems}
+                               columnsIds={columnsIds}
+                               columnsLabels={columnsLabels}
+                               initialOrderBy={'sysId'}
+                               cellIdentifier={'sysId'}
+                               onRowClick={this.handleClickOnSystemRow}
+                    />
+                </>;
         }
 
         const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
@@ -271,7 +260,7 @@ class SystemsAndLiveAlarms extends React.Component {
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 
         return (
-            <div className={`app-container collapsible-drawer`}>
+            <div className={`SystemsAndLiveAlarms app-container collapsible-drawer`}>
                 <Tour/>
                 <div className="app-main-container">
                     <div

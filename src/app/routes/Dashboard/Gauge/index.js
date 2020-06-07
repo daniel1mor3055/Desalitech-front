@@ -127,7 +127,7 @@ class Gauge extends Component {
         const initialFormValues = this.getFormInitialValues(gaugeData);
 
         return (
-            <Widget heading={gaugeTitle} cardStyle={'col-xl-3 col-md-4 col-sm-6 col-12 order-xl-4'}
+            <Widget heading={gaugeTitle}
                     onClick={this.handleOpenChooseTagsForm}>
                 <ResponsiveContainer width="100%">
                     <div className="d-flex justify-content-center" style={{width: "100%", height: "150px"}}>

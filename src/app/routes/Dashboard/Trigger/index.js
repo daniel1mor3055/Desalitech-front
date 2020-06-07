@@ -11,6 +11,7 @@ import {triggerChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
 import SolidCard from "app/components/SolidCards/SolidCards";
+import './index.scss';
 
 class Trigger extends Component {
     constructor(props) {
@@ -69,7 +70,7 @@ class Trigger extends Component {
         const initialFormValues = this.getFormInitialValues(tag, controllerTag);
 
         return (
-            <Widget onClick={this.handleOpenChooseTagsForm}>
+            <Widget onClick={this.handleOpenChooseTagsForm} cardName='Trigger'>
                 <>
                     <SolidCard
                         tagName={(controllerTag.tagName !== '' && controllerTag.tagName != null) ?

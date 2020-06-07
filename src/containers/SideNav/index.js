@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
@@ -22,17 +23,6 @@ class SideNav extends React.PureComponent {
     }
 
 
-    prepareSystemsStatus() {
-        const {systemsStatus} = this.props;
-        let systemsStatusIcon = null;
-        if (systemsStatus.length) {
-            const {status} = systemsStatus[0];
-            systemsStatusIcon = status ? <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i> :
-                <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
-        }
-        return systemsStatusIcon;
-    }
-
     render() {
         const {navCollapsed, drawerType, width, navigationStyle} = this.props;
         let drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-xl-flex' : drawerType.includes(COLLAPSED_DRAWER) ? '' : 'd-flex';
@@ -45,7 +35,7 @@ class SideNav extends React.PureComponent {
             drawerStyle = '';
             type = 'temporary';
         }
-        const systemsStatusIcon = this.prepareSystemsStatus();
+
         return (
             <div className={`app-sidebar d-none ${drawerStyle}`}>
                 <Drawer className="app-sidebar-content"
@@ -57,17 +47,16 @@ class SideNav extends React.PureComponent {
                         }}
                 >
                     <UserInfo/>
-                    <SidenavContent>{systemsStatusIcon}</SidenavContent>
+                    <SidenavContent/>
                 </Drawer>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({settings, poll}) => {
+const mapStateToProps = ({settings}) => {
     const {navCollapsed, drawerType, width, navigationStyle} = settings;
-    const {systemsStatus} = poll;
-    return {navCollapsed, drawerType, width, navigationStyle, systemsStatus};
+    return {navCollapsed, drawerType, width, navigationStyle};
 };
 
 export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, updateWindowWidth})(SideNav));

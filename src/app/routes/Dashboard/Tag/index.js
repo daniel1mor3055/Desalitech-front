@@ -11,6 +11,7 @@ import TitleCard from "app/components/TitleCard";
 import {tagChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
+import './index.scss';
 
 class Tag extends Component {
     constructor(props) {
@@ -61,7 +62,7 @@ class Tag extends Component {
         const initialFormValues = this.getFormInitialValues(tagId);
 
         return (
-            <Widget onClick={this.handleOpenChooseTagsForm}>
+            <Widget onClick={this.handleOpenChooseTagsForm} cardName='Tag'>
                 <>
                     <TitleCard
                         tagName={(tagName !== '' && tagName != null) ? tagName : tagId}

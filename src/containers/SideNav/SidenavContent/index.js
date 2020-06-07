@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
 
 import CustomScrollbars from 'util/CustomScrollbars';
 import SidenavList from '../SidenavItems';
 import SidenavItem from '../SidenavItems/SidenavItem';
+import {connect} from "react-redux";
+import {withRouter} from 'react-router-dom';
+import './index.scss';
+import StatusIndicator from "../../../app/components/StatusIndicator";
 
 
 class SidenavContent extends Component {
@@ -92,30 +95,46 @@ class SidenavContent extends Component {
         return null;
     }
 
+    prepareSystemsStatus() {
+        const {systemsStatus} = this.props;
+
+        if (systemsStatus.length) {
+            return systemsStatus[0].status;
+        }
+    }
+
     render() {
-        const {location, children} = this.props;
+        const {location} = this.props;
         const queryParams = new URLSearchParams(location.search);
         const encodedSysId = queryParams.get('sysId');
+        const systemStatus = this.prepareSystemsStatus();
         return (
-            <CustomScrollbars className=" scrollbar">
-                <SidenavList>
-                    <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"}
-                                 icon={"zmdi-time-countdown"}/>
-                    <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"}
-                                 icon={"zmdi-chart"}/>
-                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"}
-                                 icon={"zmdi-notifications-active"}/>
-                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"}
-                                 icon={"zmdi-tag"}/>
-                    <SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}
-                                 icon={"zmdi-file-text"}/>
-                    <SidenavItem relativePath={`documentation?sysId=${encodedSysId}`} id={"pages.documentationPage"}
-                                 icon={"zmdi-folder"}/>
-                    {children}
-                </SidenavList>
+            <CustomScrollbars className="scrollbar">
+                <div className='SidenavContent-content'>
+                    <SidenavList>
+                        <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"}
+                                     icon={"zmdi-time-countdown"}/>
+                        <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"}
+                                     icon={"zmdi-chart"}/>
+                        <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"}
+                                     icon={"zmdi-notifications-active"}/>
+                        <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"}
+                                     icon={"zmdi-tag"}/>
+                        <SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}
+                                     icon={"zmdi-file-text"}/>
+                        <SidenavItem relativePath={`documentation?sysId=${encodedSysId}`} id={"pages.documentationPage"}
+                                     icon={"zmdi-folder"}/>
+                    </SidenavList>
+                    <StatusIndicator systemStatus={systemStatus}/>
+                </div>
             </CustomScrollbars>
         );
     }
 }
 
-export default withRouter(SidenavContent);
+const mapStateToProps = ({poll}) => {
+    const {systemsStatus} = poll;
+    return {systemsStatus};
+};
+
+export default withRouter(connect(mapStateToProps, null)(SidenavContent));

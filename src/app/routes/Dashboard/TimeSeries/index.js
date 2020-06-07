@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import moment from "moment";
 import momentPropTypes from 'react-moment-proptypes';
-
-import 'react-dates/initialize';
-import 'bootstrap/dist/css/bootstrap-grid.min.css';
-import 'react-dates/lib/css/_datepicker.css';
 import * as Yup from 'yup';
-import {DateRangePicker} from 'react-dates';
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
@@ -15,6 +10,7 @@ import {withRouter} from "react-router";
 import {timeSeriesChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
+import DesDateRangePicker from "./DesDateRangePicker";
 
 class TimeSeries extends Component {
     constructor(props) {
@@ -140,7 +136,7 @@ class TimeSeries extends Component {
         const initialFormValues = this.getFormInitialValues(tags);
 
         return (
-            <Widget childrenStyle={'col-12'} styleName={'col-12'} onClick={this.handleOpenChooseTagsForm}>
+            <Widget childrenStyle={'col-12'} onClick={this.handleOpenChooseTagsForm}>
                 <>
                     <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'years')}>1 Year</Button>
@@ -152,17 +148,15 @@ class TimeSeries extends Component {
                             onClick={() => this.handleFromTodayPick(1, 'weeks')}>1 Week</Button>
                     <Button className="jr-btn" color="primary"
                             onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
-                    <DateRangePicker
-                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                        startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
-                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                        endDateId={'endDate' + placement.toString()} // PropTypes.string.isRequired,
-                        onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
-                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                        onFocusChange={focusedInput => this.setState({focusedInput})} // PropTypes.func.isRequired,
-                        numberOfMonths={1}
-                        isOutsideRange={() => false}
-                    />
+                    <DesDateRangePicker startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                                        startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
+                                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                                        endDateId={'endDate' + placement.toString()} // PropTypes.string.isRequired,
+                                        onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
+                                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                                        onFocusChange={(focusedInput) => this.setState({focusedInput})} // PropTypes.func.isRequired,
+                                        numberOfMonths={1}
+                                        isOutsideRange={() => false} />
                 </>
                 <>
                     <ChooseTagsForm
