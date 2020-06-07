@@ -17,7 +17,6 @@ import {fetchSystems} from "store/thunk/systemSelect";
 import {fetchPolling} from "store/thunk/polling";
 import {setSystemName} from 'store/actions/header';
 import DataTable from 'app/components/DataTable';
-import CardBox from "app/components/CardBox";
 import './index.scss';
 import StatusIndicator from "../../components/StatusIndicator";
 
@@ -224,38 +223,44 @@ class SystemsAndLiveAlarms extends React.Component {
         let alarmsJSX = <CircularIndeterminate/>;
         if (!errorPoll && !(fetchingPoll && activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
             alarmsJSX =
-                <div className="row animated slideInUpTiny animation-duration-3">
-                    <SearchBox
-                        showClear={true}
-                        styleName="d-none d-lg-block"
-                        placeholder="Filter by System ID"
-                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
-                        value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}
-                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_SYSTEM_ID')}/>
-                    <SearchBox
-                        showClear={true}
-                        styleName="d-none d-lg-block"
-                        placeholder="Filter by Alarm ID"
-                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
-                        value={this.state.activeAlarmIdSearchText} badSearch={badSearch}
-                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_ID')}/>
-                    <SearchBox
-                        showClear={true}
-                        styleName="d-none d-lg-block"
-                        placeholder="Filter by Description"
-                        onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
-                        value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}
-                        handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_DESCRIPTION')}/>
-                    <CardBox styleName="col-12" cardStyle=" p-0">
-                        <DataTable data={filteredActiveAlarms}
-                                   columnsIds={columnsIds}
-                                   columnsLabels={columnsLabels}
-                                   initialOrderBy={'sysId'}
-                                   cellIdentifier={'id'}
-                                   onRowClick={this.handleClickOnAlarmRow}
-                        />
-                    </CardBox>
-                </div>;
+                <>
+                    <div className='SystemsAndLiveAlarms-searchBoxes row'>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by System ID"
+                                onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_SYSTEM_ID')}
+                                value={this.state.activeAlarmSystemIdSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_SYSTEM_ID')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Alarm ID"
+                                onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_ID')}
+                                value={this.state.activeAlarmIdSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_ID')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Description"
+                                onChange={(event) => this.updateSearchText(event, 'ACTIVE_ALARM_DESCRIPTION')}
+                                value={this.state.activeAlarmDescriptionSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'ACTIVE_ALARM_DESCRIPTION')}/>
+                        </div>
+                    </div>
+                    <DataTable data={filteredActiveAlarms}
+                               columnsIds={columnsIds}
+                               columnsLabels={columnsLabels}
+                               initialOrderBy={'sysId'}
+                               cellIdentifier={'id'}
+                               onRowClick={this.handleClickOnAlarmRow}
+                    />
+                </>;
         }
 
         if (error) {

@@ -76,12 +76,10 @@ class App extends Component {
                                               component={asyncComponent(() => import('app/routes/AlarmList'))}/>
                                 <PrivateRoute path={`${match.url}/tag-list`}
                                               component={asyncComponent(() => import('app/routes/TagList'))}/>
-                                <PrivateRoute path={`${match.url}/documentation`}
-                                              component={asyncComponent(() => import('app/routes/Documentation'))}/>
                                 <PrivateRoute path={`${match.url}/charts`}
                                               component={asyncComponent(() => import('app/routes/Charts'))}/>
-                                <PrivateRoute path={`${match.url}/reports`}
-                                              component={asyncComponent(() => import('app/routes/Reports'))}/>
+                                {/*<PrivateRoute path={`${match.url}/reports`}*/}
+                                {/*              component={asyncComponent(() => import('app/routes/Reports'))}/>*/}
                                 <PrivateRoute component={asyncComponent(() => import('app/components/Error404'))}/>
                             </Switch>
                         </div>
