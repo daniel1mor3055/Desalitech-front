@@ -27,7 +27,7 @@ class SideNav extends React.PureComponent {
         let systemsStatusIcon = null;
         if (systemsStatus.length) {
             const {status} = systemsStatus[0];
-            systemsStatusIcon = status ? <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i> :
+            systemsStatusIcon = status === 1 ? <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i> :
                 <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
         }
         return systemsStatusIcon;
