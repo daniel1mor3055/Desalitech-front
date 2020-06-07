@@ -36,6 +36,13 @@ class MultiYChart extends Component {
                 },
                 xaxis: {
                     categories: [],
+                    labels: {
+                        show: true,
+                        rotate: -10,
+                        trim: true,
+                        rotateAlways: true,
+                        offsetX: 0,
+                    },
                 },
                 yaxis: [],
                 tooltip: {
@@ -85,7 +92,7 @@ class MultiYChart extends Component {
                         axisTicks: {
                             show: showYLabels
                         },
-                        axisBorders: {
+                        axisBorder: {
                             show: true,
                             color: colors[index]
                         },

@@ -10,6 +10,7 @@ import CardHeader from 'app/components/CardHeader';
 import DataTable from "app/components/DataTable";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import './index.scss';
 
 
 class AlarmList extends PureComponent {
@@ -74,9 +75,29 @@ class AlarmList extends PureComponent {
         const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
         const {filteredAlarms, badSearch} = this.getFilterData(alarms);
 
-        const alarmsList =
+        const alarmList =
             <div className="row animated slideInUpTiny animation-duration-3">
                 <div className="col-12">
+                    <div className='AlarmList-searchBoxes row'>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Alarm ID"
+                                onChange={(event) => this.updateSearchText(event, 'ID')}
+                                value={alarmIdSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Description"
+                                onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
+                                value={alarmDescriptionSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
+                        </div>
+                    </div>
                     <div className="jr-card jr-full-card">
                         <CardHeader>
                             <FormControlLabel
@@ -91,20 +112,6 @@ class AlarmList extends PureComponent {
                                 label="E-mail Notification"
                             />
                         </CardHeader>
-                        <SearchBox
-                            showClear={true}
-                            styleName="d-none d-lg-block"
-                            placeholder="Filter by Alarm ID"
-                            onChange={(event) => this.updateSearchText(event, 'ID')}
-                            value={alarmIdSearchText} badSearch={badSearch}
-                            handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
-                        <SearchBox
-                            showClear={true}
-                            styleName="d-none d-lg-block"
-                            placeholder="Filter by Alarm Description"
-                            onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
-                            value={alarmDescriptionSearchText} badSearch={badSearch}
-                            handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
                         <DataTable data={filteredAlarms}
                                    columnsIds={columnsIds}
                                    columnsLabels={columnsLabels}
@@ -115,11 +122,13 @@ class AlarmList extends PureComponent {
             </div>;
 
         return (
-            <div className="app-wrapper">
+            <div className="AlarmList app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.alarmListPage"/>}/>
+
                 {fetching ?
                     error ? <p>{"Coudn't fetch alarms"}</p> : <CircularIndeterminate/>
-                    : alarmsList}
+                    : alarmList}
+
             </div>
         );
     }

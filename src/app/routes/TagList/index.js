@@ -5,11 +5,11 @@ import ContainerHeader from 'app/components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
 import {fetchTags, postTag} from 'store/thunk/tagsList';
-import CardBox from 'app/components/CardBox';
 import SearchBox from 'app/components/SearchBox';
 import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
 import IconButton from "@material-ui/core/IconButton";
+import './index.scss';
 
 class TagList extends PureComponent {
     constructor(props) {
@@ -95,30 +95,38 @@ class TagList extends PureComponent {
         const columnsLabels = ['Tag ID', 'Tag Name', 'Description', 'Units'];
         const {filteredTags, badSearch} = this.getFilterData(tags);
 
-        const tagsList =
+        const tagList =
             <div className="row animated slideInUpTiny animation-duration-3">
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by Tag ID"
-                    onChange={(event) => this.updateSearchText(event, 'ID')}
-                    value={tagIdSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by Tag Name"
-                    onChange={(event) => this.updateSearchText(event, 'NAME')}
-                    value={tagNameSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'NAME')}/>
-                <SearchBox
-                    showClear={true}
-                    styleName="d-none d-lg-block"
-                    placeholder="Filter by Description"
-                    onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
-                    value={tagDescriptionSearchText} badSearch={badSearch}
-                    handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
-                <CardBox styleName="col-12" cardStyle=" p-0">
+                <div className={'col-12'}>
+                    <div className='TagList-searchBoxes row'>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Tag ID"
+                                onChange={(event) => this.updateSearchText(event, 'ID')}
+                                value={tagIdSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'ID')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Tag Name"
+                                onChange={(event) => this.updateSearchText(event, 'NAME')}
+                                value={tagNameSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'NAME')}/>
+                        </div>
+                        <div className='col-2'>
+                            <SearchBox
+                                showClear={true}
+                                styleName="d-none d-lg-block"
+                                placeholder="Filter by Description"
+                                onChange={(event) => this.updateSearchText(event, 'DESCRIPTION')}
+                                value={tagDescriptionSearchText} badSearch={badSearch}
+                                handleClear={(event) => this.handleSearchClear(event, 'DESCRIPTION')}/>
+                        </div>
+                    </div>
                     <DataTable data={filteredTags}
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
@@ -134,25 +142,27 @@ class TagList extends PureComponent {
                                        </IconButton>),
                                }]}
                                handleEditClick={this.handleEditClick}/>
-                </CardBox>
-                {openEditModal ?
-                    <EditTagForm
-                        open={openEditModal}
-                        handleClose={this.handleClose}
-                        handleSubmit={this.handleSubmit}
-                        tagId={tagId}
-                        tagName={tagName}
-                        description={description}
-                        units={units}/>
-                    : null}
+                    {openEditModal ?
+                        <EditTagForm
+                            open={openEditModal}
+                            handleClose={this.handleClose}
+                            handleSubmit={this.handleSubmit}
+                            tagId={tagId}
+                            tagName={tagName}
+                            description={description}
+                            units={units}/>
+                        : null}
+                </div>
             </div>;
 
         return (
-            <div className="app-wrapper">
+            <div className="TagList app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.tagListPage"/>}/>
+
                 {fetching ?
                     error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
-                    : tagsList}
+                    : tagList}
+
             </div>
         );
     }

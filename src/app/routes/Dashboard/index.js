@@ -49,7 +49,7 @@ class Dashboard extends Component {
                                         placement={placement}
                                         key={placement}/>);
                             })}
-                            <div className="Dashboard-spaceBetween d-flex">
+                            <div className="Dashboard-spaceAround d-flex">
                                 {middleGauges.map((middleGauge) => (
                                     <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
                                 ))}

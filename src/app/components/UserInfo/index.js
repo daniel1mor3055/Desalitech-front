@@ -1,18 +1,24 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IntlMessages from 'util/IntlMessages';
 import {Auth0Context} from "Auth0Provider";
 import config from 'auth_config';
+import {withRouter} from "react-router-dom";
+import {connect} from "react-redux";
 
 class UserInfo extends Component {
     static contextType = Auth0Context;
 
-    state = {
-        anchorEl: null,
-        open: false,
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            anchorEl: null,
+            open: false,
+        };
+    }
 
     openMenuHandler = event => {
         this.setState({open: true, anchorEl: event.currentTarget});
@@ -29,6 +35,7 @@ class UserInfo extends Component {
     };
 
     render() {
+        const {admin, fetching} = this.props;
         const {user} = this.context;
         const {nickname, picture} = user;
 
@@ -43,6 +50,8 @@ class UserInfo extends Component {
                     <h4 className="user-name" onClick={this.openMenuHandler}>{nickname} <i
                         className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
                     </h4>
+                    {fetching ?
+                        null : admin ? 'Admin' : null}
                 </div>
                 <Menu className="user-info"
                       id="simple-menu"
@@ -75,6 +84,13 @@ class UserInfo extends Component {
     }
 }
 
-export default UserInfo;
+const mapStateToProps = ({header}) => {
+    return {
+        admin: header.admin,
+        fetching: header.fetching,
+    };
+};
+
+export default withRouter(connect(mapStateToProps)(UserInfo));
 
 

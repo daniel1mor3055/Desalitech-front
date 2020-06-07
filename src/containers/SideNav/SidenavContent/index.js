@@ -109,25 +109,21 @@ class SidenavContent extends Component {
         const encodedSysId = queryParams.get('sysId');
         const systemStatus = this.prepareSystemsStatus();
         return (
-            <CustomScrollbars className="scrollbar">
-                <div className='SidenavContent-content'>
-                    <SidenavList>
-                        <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"}
-                                     icon={"zmdi-time-countdown"}/>
-                        <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"}
-                                     icon={"zmdi-chart"}/>
-                        <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"}
-                                     icon={"zmdi-notifications-active"}/>
-                        <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"}
-                                     icon={"zmdi-tag"}/>
-                        <SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}
-                                     icon={"zmdi-file-text"}/>
-                        <SidenavItem relativePath={`documentation?sysId=${encodedSysId}`} id={"pages.documentationPage"}
-                                     icon={"zmdi-folder"}/>
-                    </SidenavList>
-                    <StatusIndicator systemStatus={systemStatus}/>
-                </div>
-            </CustomScrollbars>
+            <div className='SidenavContent-content'>
+                <SidenavList>
+                    <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"}
+                                 icon={"zmdi-time-countdown"}/>
+                    <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"}
+                                 icon={"zmdi-chart"}/>
+                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"}
+                                 icon={"zmdi-notifications-active"}/>
+                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"}
+                                 icon={"zmdi-tag"}/>
+                    {/*<SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}*/}
+                    {/*             icon={"zmdi-file-text"}/>*/}
+                </SidenavList>
+                <StatusIndicator systemStatus={systemStatus}/>
+            </div>
         );
     }
 }
@@ -137,4 +133,4 @@ const mapStateToProps = ({poll}) => {
     return {systemsStatus};
 };
 
-export default withRouter(connect(mapStateToProps, null)(SidenavContent));
+export default withRouter(connect(mapStateToProps)(SidenavContent));

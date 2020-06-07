@@ -18,11 +18,10 @@ import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
 import CardHeader from 'app/components/CardHeader';
 import {toggleCollapsedNav} from 'store/actions/Setting';
 import {fetchSystemName} from 'store/thunk/header';
-import IntlMessages from 'util/IntlMessages';
 import Menu from 'app/components/TopNav/Menu';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
-import CircularIndeterminate from "../Progress/CircularIndeterminate";
+import './index.scss';
 
 
 class Header extends Component {
@@ -99,19 +98,18 @@ class Header extends Component {
     };
 
     render() {
-        const {drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon,
-            admin, systemName, fetching, error, activeAlarms} = this.props;
+        const {
+            drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon,
+            systemName, fetching, error, activeAlarms
+        } = this.props;
         this.activeAlarmsLocalStorageSync();
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const notificationsIconToShow = this.notificationsIconToShow();
-        const sidebarIcon = showSidebarIcon ?
-            <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
-                        onClick={this.onToggleCollapsedNav}>
-                <span className="menu-icon"/>
-            </IconButton> : null;
+
+
         return (
             <AppBar
-                className={`app-main-header ${(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) ? 'app-main-header-top' : ''}`}>
+                className={`Header app-main-header ${(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) ? 'app-main-header-top' : ''}`}>
                 <Toolbar className="app-toolbar" disableGutters={false}>
                     {navigationStyle === HORIZONTAL_NAVIGATION ?
                         <div className="d-block d-md-none pointer mr-3" onClick={this.onToggleCollapsedNav}>
@@ -119,77 +117,77 @@ class Header extends Component {
                               <span className="menu-icon"/>
                             </span>
                         </div>
-                        :
-                        sidebarIcon
+                        : showSidebarIcon ?
+                            <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
+                                        onClick={this.onToggleCollapsedNav}>
+                                <span className="menu-icon"/>
+                            </IconButton> : null
                     }
 
-                    <Link className="app-logo mr-2 d-none d-sm-block" to="/">
-                        <img src={require("assets/images/desalitech-logo.png")} alt="desalitech" title="desalitech"/>
-                    </Link>
-                    <Typography variant={'h4'} color={'inherit'} align={'center'}>
-                        {window.location.pathname.includes('/app/system-select') ? null
-                            : fetching ?
-                                error ? <p>{"Coudn't fetch system name"}</p> : <CircularIndeterminate/>
-                                : systemName}
-                    </Typography>
+                    <div className="Header-spaceBetween d-flex">
+                        <Link className="app-logo mr-auto d-none d-sm-block" to="/">
+                            <img src={require("assets/images/desalitech-logo.png")} alt="desalitech"
+                                 title="desalitech"/>
+                        </Link>
 
-                    {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
-                    <Menu/>}
+                        <Typography variant={'h4'} color={'inherit'} align={'center'}>
+                            {window.location.pathname.includes('/app/system-select') ?
+                                null : fetching ?
+                                    null : systemName}
+                        </Typography>
 
-                    <ul className="header-notifications list-inline ml-auto">
+                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
+                        <Menu/>}
 
-                        <li className="list-inline-item app-tour">
-                            <Typography variant={'h4'} color={'inherit'}>
-                                {admin ? 'Admin' : null}
-                            </Typography>
-                        </li>
+                        <ul className="header-notifications list-inline ml-auto">
 
-                        <li className="list-inline-item app-tour">
-                            <Dropdown
-                                className="quick-menu"
-                                isOpen={this.state.appNotification}
-                                toggle={this.onAppNotificationSelect.bind(this)}>
-                                <DropdownToggle
-                                    className="d-inline-block"
-                                    tag="span"
-                                    data-toggle="dropdown">
-                                    <IconButton className="icon-btn">
-                                        <i className={`zmdi zmdi-notifications-none ${notificationsIconToShow}`}/>
-                                    </IconButton>
-                                </DropdownToggle>
-                                <DropdownMenu right>
-                                    <CardHeader styleName="align-items-center"
-                                                heading={"Active Alarms"}/>
-                                    <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </li>
+                            <li className="list-inline-item app-tour">
+                                <Dropdown
+                                    className="quick-menu"
+                                    isOpen={this.state.appNotification}
+                                    toggle={this.onAppNotificationSelect.bind(this)}>
+                                    <DropdownToggle
+                                        className="d-inline-block"
+                                        tag="span"
+                                        data-toggle="dropdown">
+                                        <IconButton className="icon-btn">
+                                            <i className={`zmdi zmdi-notifications-none ${notificationsIconToShow}`}/>
+                                        </IconButton>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <CardHeader styleName="align-items-center"
+                                                    heading={"Active Alarms"}/>
+                                        <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </li>
 
-                        {navigationStyle === HORIZONTAL_NAVIGATION &&
-                        <li className="list-inline-item user-nav">
-                            <Dropdown
-                                className="quick-menu"
-                                isOpen={this.state.userInfo}
-                                toggle={this.onUserInfoSelect.bind(this)}>
-                                <DropdownToggle
-                                    className="d-inline-block"
-                                    tag="span"
-                                    data-toggle="dropdown">
-                                    <IconButton className="icon-btn size-30">
-                                        <Avatar
-                                            alt='...'
-                                            src={'https://via.placeholder.com/150x150'}
-                                            className="size-30"
-                                        />
-                                    </IconButton>
-                                </DropdownToggle>
-                                <DropdownMenu right>
-                                    <UserInfoPopup/>
-                                </DropdownMenu>
-                            </Dropdown>
-                        </li>
-                        }
-                    </ul>
+                            {navigationStyle === HORIZONTAL_NAVIGATION &&
+                            <li className="list-inline-item user-nav">
+                                <Dropdown
+                                    className="quick-menu"
+                                    isOpen={this.state.userInfo}
+                                    toggle={this.onUserInfoSelect.bind(this)}>
+                                    <DropdownToggle
+                                        className="d-inline-block"
+                                        tag="span"
+                                        data-toggle="dropdown">
+                                        <IconButton className="icon-btn size-30">
+                                            <Avatar
+                                                alt='...'
+                                                src={'https://via.placeholder.com/150x150'}
+                                                className="size-30"
+                                            />
+                                        </IconButton>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <UserInfoPopup/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </li>
+                            }
+                        </ul>
+                    </div>
                 </Toolbar>
             </AppBar>
         );
@@ -210,7 +208,6 @@ const mapStateToProps = ({header, settings, poll}) => {
         locale: settings.locale,
         navigationStyle: settings.navigationStyle,
         horizontalNavPosition: settings.horizontalNavPosition,
-        admin: header.admin,
         systemName: header.systemName,
         fetching: header.fetching,
         activeAlarms: poll.activeAlarms,
