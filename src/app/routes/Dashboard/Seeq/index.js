@@ -10,6 +10,7 @@ import {withRouter} from "react-router";
 import {seeqChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
+import './index.scss';
 
 class Seeq extends Component {
     constructor(props) {
@@ -60,9 +61,10 @@ class Seeq extends Component {
         const initialFormValues = this.getFormInitialValues(url);
 
         return (
-            <Widget onClick={this.handleOpenChooseTagsForm}>
+            <Widget onClick={this.handleOpenChooseTagsForm} cardName='Seeq'>
                 <>
                     <iframe
+                        className='Seeq-iframe'
                         src={url}
                         title="SEEQ data">
                     </iframe>

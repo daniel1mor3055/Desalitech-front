@@ -1,0 +1,13 @@
+.StatusIndicator {
+  &.StatusIndicator-iconWrapper {
+    justify-content: center;
+    display: flex;
+    margin: 8px;
+    align-items: center;
+  }
+
+  .StatusIndicator-icon {
+    margin-right: 4px;
+    line-height: 21px;
+  }
+}

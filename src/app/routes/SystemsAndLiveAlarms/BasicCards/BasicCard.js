@@ -10,12 +10,13 @@ const BasicCard = ({image, title, recovery, production, conductivity,
                        onClick, systemStatusIcon, systemStatusBorder}) => {
     return (
         <div className='BasicCard' onClick={onClick}>
-            <Card className="shadow border-0" style={{margin: '20px'}}>
+            <Card className="shadow border-0 m-0">
                 <CardBody>
                     <div className={classnames('BasicCard-TitleClass', systemStatusBorder)}>
                         <CardImg className='BasicCard-ImgSize' src={image} alt="system"/>
-                        <h3><strong>
-                            System<br/>{title}</strong></h3></div>
+                        <h3>System</h3>
+                        <h3>{title}</h3>
+                            </div>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
                         <img className='BasicCard-IconClass' src={require('../assets/recovery.svg')}
                              alt="system"/>

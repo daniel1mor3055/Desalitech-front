@@ -9,11 +9,12 @@ import ContainerHeader from 'app/components/ContainerHeader';
 import IntlMessages from 'util/IntlMessages';
 import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
-import Gauge from "./Gauges";
+import Gauge from "./Gauge";
 import TimeSeries from './TimeSeries';
 import Tag from './Tag';
 import Trigger from "./Trigger";
 import Seeq from './Seeq';
+import './index.scss';
 
 class Dashboard extends Component {
 
@@ -27,78 +28,56 @@ class Dashboard extends Component {
             match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
-        const middleGaugesJSX = middleGauges.map((middleGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
-                </div>
-            )
-        );
-        const leftGaugesJSX = leftGauges.map((leftGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
-                </div>
-            )
-        );
-        const rightGaugesJSX = rightGauges.map((rightGauge) => (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
-                </div>
-            )
-        );
-        const tagsJSX = tags.map((tag) => {
-            const {tagId, tagName, tagValue, tagUnits, placement} = tag;
-            return (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits} placement={placement}/>
-                </div>);
-        });
-        const triggersJSX = triggers.map((trigger) => {
-            const {controllerTag, tag, placement} = trigger;
-            return (
-                <div className="dashboard animated slideInUpTiny animation-duration-3">
-                    <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>
-                </div>);
-        });
-
-        const seeqJSX = seeqs.map((seeq) => {
-                const {url, placement} = seeq;
-                return (
-                    <div className="dashboard animated slideInUpTiny animation-duration-3">
-                        <Seeq url={url} placement={placement}/>
-                    </div>);
-            }
-        );
-
-        const timeSeriesJSX =
-            <div className="dashboard animated slideInUpTiny animation-duration-3">
-                <div className="pr-xl-5 pt-xl-2" style={{marginBottom: '10px'}}>
-                    {timeSeries.map((timeSeries) => {
-                        const {startDate, endDate, times, tags, placement} = timeSeries;
-                        return (
-                            <TimeSeries
-                                startDate={startDate}
-                                endDate={endDate}
-                                tags={tags}
-                                times={times}
-                                placement={placement}
-                                key={placement}/>);
-                    })}
-                </div>
-            </div>;
 
         return (
-            <div className="app-wrapper">
+            <div className="Dashboard app-wrapper">
                 <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
-                    : [timeSeriesJSX,
-                        middleGaugesJSX,
-                        leftGaugesJSX,
-                        rightGaugesJSX,
-                        tagsJSX,
-                        triggersJSX,
-                        seeqJSX]}
+                    :
+                    <>
+                        <div className="dashboard animated slideInUpTiny animation-duration-3">
+                            {timeSeries.map((timeSeries) => {
+                                const {startDate, endDate, times, tags, placement} = timeSeries;
+                                return (
+                                    <TimeSeries
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        tags={tags}
+                                        times={times}
+                                        placement={placement}
+                                        key={placement}/>);
+                            })}
+                            <div className="Dashboard-spaceBetween d-flex">
+                                {middleGauges.map((middleGauge) => (
+                                    <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
+                                ))}
+                                {leftGauges.map((leftGauge) => (
+                                    <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
+                                ))}
+                                {rightGauges.map((rightGauge) => (
+                                    <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
+                                ))}
+                            </div>
+                            <div className="Dashboard-spaceBetween d-flex">
+                                {tags.map((tag) => {
+                                    const {tagId, tagName, tagValue, tagUnits, placement} = tag;
+                                    return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits}
+                                                placement={placement}/>;
+                                })}
+                                {triggers.map((trigger) => {
+                                    const {controllerTag, tag, placement} = trigger;
+                                    return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>;
+                                })}
+                            </div>
+                            {seeqs.map((seeq) => {
+                                    const {url, placement} = seeq;
+                                    return <Seeq url={url} placement={placement}/>;
+                                }
+                            )}
+                        </div>
+                    </>}
             </div>
         );
     }
