@@ -21,6 +21,11 @@ class TimeSeries extends Component {
             endDate: null,
             focusedInput: null,
             chooseTagsFormOpen: false,
+            yearColor: '',
+            halfYearColor: '',
+            monthColor: '',
+            weekColor: '',
+            dayColor: 'primary',
         };
     }
 
@@ -42,6 +47,17 @@ class TimeSeries extends Component {
         }
     };
 
+    handlePushedButtonColor = (color) => {
+        const styleObject = {
+            yearColor: '',
+            halfYearColor: '',
+            monthColor: '',
+            weekColor: '',
+            dayColor: '',
+        };
+        styleObject[color] = 'primary';
+        this.setState({...styleObject})
+    };
 
     handleFromTodayPick = (delta, scale) => {
         const endDate = moment();
@@ -54,6 +70,7 @@ class TimeSeries extends Component {
         this.dateTimeSeriesChange(startDate, endDate);
     };
 
+
     dateTimeSeriesChange = (startDate, endDate) => {
         const {tags, placement} = this.props;
         const timeSeries = {
@@ -62,7 +79,6 @@ class TimeSeries extends Component {
             tags,
             placement
         };
-
         this.props.onTimeSeriesChange(timeSeries);
     };
 
@@ -140,23 +156,38 @@ class TimeSeries extends Component {
     };
 
     render() {
-        const {chooseTagsFormOpen} = this.state;
+        const {chooseTagsFormOpen, yearColor, halfYearColor, monthColor, weekColor, dayColor} = this.state;
         const {tags, times, placement} = this.props;
         const initialFormValues = this.getFormInitialValues(tags);
 
         return (
             <Widget childrenStyle={'col-12'} onClick={this.handleOpenChooseTagsForm}>
                 <>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'years')}>1 Year</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(6, 'months')}>6 Months</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'months')}>1 Month</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'weeks')}>1 Week</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
+                    <Button className="jr-btn" color={`${yearColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('yearColor')
+                                this.handleFromTodayPick(1, 'years')
+                            }}>1 Year</Button>
+                    <Button className="jr-btn" color={`${halfYearColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('halfYearColor')
+                                this.handleFromTodayPick(6, 'months')
+                            }}>6 Months</Button>
+                    <Button className="jr-btn" color={`${monthColor}`}
+                            onClick={() =>{
+                                this.handlePushedButtonColor('monthColor')
+                                this.handleFromTodayPick(1, 'months')
+                            }}>1 Month</Button>
+                    <Button className="jr-btn" color={`${weekColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('weekColor')
+                                this.handleFromTodayPick(1, 'weeks')
+                            }}>1 Week</Button>
+                    <Button className="jr-btn" color={`${dayColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('dayColor')
+                                this.handleFromTodayPick(1, 'day')
+                            }}>1 Day</Button>
                     <DesDateRangePicker startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                         startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
                                         endDate={this.state.endDate} // momentPropTypes.momentObj or null,
