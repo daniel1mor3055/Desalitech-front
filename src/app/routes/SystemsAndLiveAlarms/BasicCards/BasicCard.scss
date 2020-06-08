@@ -40,19 +40,20 @@
     margin-bottom: 16px;
     border-radius: 25px;
 
+    &.GreenBorder {
+      border-color: green;
+    }
+
+    &.RedBorder {
+      border-color: red;
+    }
+
+    &.AmberBorder {
+      border-color: #FAA025;
+    }
+
   }
 
-  .GreenBorder {
-    border-color: green;
-  }
-
-  .RedBorder {
-    border-color: red;
-  }
-
-  .AmberBorder {
-    border-color: #FAA025;
-  }
 
   .BasicCard-IconClass {
     margin-right: 10px;

@@ -109,13 +109,23 @@ class SystemsAndLiveAlarms extends React.Component {
 
     prepareSystemsStatus() {
         const {systemsStatus} = this.props;
-        const systemsStatusIcons = {};
+        let systemsStatusIcons = {};
+        let systemsStatusBorders = {};
         for (let i = 0; i < systemsStatus.length; i++) {
-            systemsStatusIcons[systemsStatus[i].sysId] =
-                <StatusIndicator systemStatus={systemsStatus[i].status}/>;
+            if (systemsStatus[i].status === 1) {
+                systemsStatusIcons[systemsStatus[i].sysId] =
+                    <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i>;
+                systemsStatusBorders[systemsStatus[i].sysId] = 'GreenBorder';
+            }
+            if (systemsStatus[i].status === 2) {
+                systemsStatusIcons[systemsStatus[i].sysId] =
+                    <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
+                systemsStatusBorders[systemsStatus[i].sysId] = 'RedBorder';
+            }
         }
         return {
-            systemsStatusIcons,
+            systemsStatusIcons: systemsStatusIcons,
+            systemsStatusBorders: systemsStatusBorders
         };
     }
 
@@ -150,7 +160,7 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
-            const {systemsStatusIcons} = this.prepareSystemsStatus();
+            const {systemsStatusIcons,systemsStatusBorders} = this.prepareSystemsStatus();
             systemsCards =
                 <div className='d-flex justify-content-center'>
                     {systems.map(system => {
@@ -164,6 +174,7 @@ class SystemsAndLiveAlarms extends React.Component {
                                 production={production + ' gpm'}
                                 conductivity={conductivity + ' us/cm'}
                                 systemStatusIcon={systemsStatusIcons[sysId]}
+                                systemStatusBorder={systemsStatusBorders[sysId]}
                                 onClick={() => {
                                     history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
                                     this.props.onSetSystemName(systemName);
