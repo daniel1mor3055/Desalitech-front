@@ -4,11 +4,12 @@ import PropTypes from "prop-types";
 const CardHeader = ({heading, subHeading, styleName, children}) =>
     (
         <div className={`jr-card-header d-flex align-items-start p-0 ${styleName}`}>
-            <div className="mr-auto">
+            <div>
+                {children}
                 <h3 className="card-heading">{heading}</h3>
                 {subHeading && <p className="sub-heading">{subHeading}</p>}
             </div>
-            {children}
+
         </div>
     );
 

@@ -11,6 +11,7 @@ import {COLLAPSED_DRAWER, FIXED_DRAWER,} from 'store/actionTypes';
 import asyncComponent from 'util/asyncComponent';
 import PrivateRoute from 'app/components/PrivateRoute';
 import {fetchPolling} from "../store/thunk/polling";
+import {APP_POLLING_INTERVAL} from "constants/globalConstats";
 
 class App extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ class App extends Component {
             () => {
                 this.props.onFetchPolling();
             },
-            5000);
+            APP_POLLING_INTERVAL);
         this.setState({dataPolling});
     }
 

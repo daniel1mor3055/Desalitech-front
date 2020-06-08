@@ -6,9 +6,10 @@ import './BasicCard.scss';
 import PropTypes from 'prop-types';
 
 
-const BasicCard = ({image, title, recovery, production, conductivity,
-                       onClick, systemStatusIcon, systemStatusBorder}) => {
-    console.log(systemStatusBorder)
+const BasicCard = ({
+                       image, title, recovery, production, conductivity,
+                       onClick, systemStatusIcon, systemStatusBorder
+                   }) => {
     return (
         <div className='BasicCard' onClick={onClick}>
             <Card className="shadow border-0 m-0">
@@ -17,7 +18,7 @@ const BasicCard = ({image, title, recovery, production, conductivity,
                         <CardImg className='BasicCard-ImgSize' src={image} alt="system"/>
                         <h3>System</h3>
                         <h3>{title}</h3>
-                            </div>
+                    </div>
                     <CardSubtitle className='BasicCard-CardSubtitleClass'>
                         <img className='BasicCard-IconClass' src={require('../assets/recovery.svg')}
                              alt="system"/>

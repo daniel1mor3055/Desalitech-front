@@ -59,17 +59,17 @@ const ChooseTagsForm = ({
                         </Typography>}
                         {Object.keys(initialValues).map((key, index) => (
                             <FormikAutocomplete
-                                   name={key}
-                                   index={index}
-                                   key={key}
-                                   options={tags.map((tag) => (tag.tagId)).sort()}
-                                   textFieldProps={{
-                                       fullWidth: true,
-                                       margin: 'normal',
-                                       variant: 'outlined',
-                                       label: labels[index],
-                                       // onChange: handleChange,
-                                   }}
+                                name={key}
+                                index={index}
+                                key={key}
+                                options={tags.map((tag) => (tag.tagId)).sort()}
+                                textFieldProps={{
+                                    fullWidth: true,
+                                    margin: 'normal',
+                                    variant: 'outlined',
+                                    label: labels[index],
+                                    // onChange: handleChange,
+                                }}
                             />
                         ))}
                         <DialogActions>

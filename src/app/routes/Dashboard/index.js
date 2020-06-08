@@ -4,7 +4,8 @@ import {connect} from "react-redux";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
+
+import {fetchBackgroundTags, fetchDashboard, timeSeriesChange} from "store/thunk/dashboard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import Gauge from "./Gauge";
 import TimeSeries from './TimeSeries';
@@ -38,6 +39,7 @@ class Dashboard extends Component {
                                 const {startDate, endDate, times, tags, placement} = timeSeries;
                                 return (
                                     <TimeSeries
+                                        onTimeSeriesChange={this.props.onTimeSeriesChange}
                                         startDate={startDate}
                                         endDate={endDate}
                                         tags={tags}
@@ -99,8 +101,10 @@ const mapStateToProps = ({dashboard}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onFetchDashboard: () => dispatch(fetchDashboard()),
-        onFetchBackgroundTags: () => dispatch(fetchBackgroundTags())
+        onFetchBackgroundTags: () => dispatch(fetchBackgroundTags()),
+        onTimeSeriesChange: (timeSeries) => dispatch(timeSeriesChange(timeSeries))
     };
 };
+
 
 export default connect(mapStateToProps, mapDispatchedToProps)(Dashboard);

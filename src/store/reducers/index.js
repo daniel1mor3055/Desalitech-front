@@ -9,6 +9,7 @@ import auth from './auth';
 import poll from './polling';
 import dashboard from './dashboard';
 import header from './header';
+import charts from './charts';
 
 
 export default (history) => combineReducers({
@@ -21,4 +22,5 @@ export default (history) => combineReducers({
     poll: poll,
     dashboard: dashboard,
     header: header,
+    charts: charts,
 });
