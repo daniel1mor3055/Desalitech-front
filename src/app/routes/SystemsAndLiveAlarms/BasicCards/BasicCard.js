@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 const BasicCard = ({image, title, recovery, production, conductivity,
                        onClick, systemStatusIcon, systemStatusBorder}) => {
+    console.log(systemStatusBorder)
     return (
         <div className='BasicCard' onClick={onClick}>
             <Card className="shadow border-0 m-0">
