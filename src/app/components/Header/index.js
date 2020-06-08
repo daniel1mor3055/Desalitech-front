@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
+import 'fontsource-roboto';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -155,7 +156,7 @@ class Header extends Component {
                                         </IconButton>
                                     </DropdownToggle>
                                     <DropdownMenu right>
-                                        <CardHeader styleName="align-items-center"
+                                        <CardHeader styleName="justify-content-center"
                                                     heading={"Active Alarms"}/>
                                         <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
                                     </DropdownMenu>

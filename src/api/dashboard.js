@@ -200,7 +200,7 @@ function manipulateGauge(gaugeType, gauge, sysId) {
     };
 }
 
-function manipulateTimeSeries(timeSeries, sysId) {
+export function manipulateTimeSeries(timeSeries, sysId) {
     const {startDate, endDate, tags, placement} = timeSeries;
     let backTags = tags.map((tag) => (tag.tagId));
 
@@ -350,7 +350,7 @@ function extractTrigger(widget) {
     };
 }
 
-function extractTimeSeries(widget) {
+export function extractTimeSeries(widget) {
     const {placement, startDate, endDate, tags, influxData} = widget;
 
     const newTags = tags.map((tag, index) => {

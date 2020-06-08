@@ -116,6 +116,17 @@
   color: $white;
 }
 
+.add-charts-option {
+  position: fixed;
+  top: 30%;
+  right: 0;
+  z-index: 1500;
+  background-color: #2196F3;
+  @include border-left-radius($border-radius);
+  @include box-shadow(1px 1px 4px rgba($black, 0.5));
+  color: $white;
+}
+
 @media screen and (max-width: 499px) {
   .color-theme .jr-btn {
     padding: 10px 15px !important;

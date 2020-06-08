@@ -99,7 +99,7 @@ class AlarmList extends PureComponent {
                         </div>
                     </div>
                     <div className="jr-card jr-full-card">
-                        <CardHeader>
+                        <CardHeader styleName={'justify-content-end'}>
                             <FormControlLabel
                                 control={
                                     <Checkbox

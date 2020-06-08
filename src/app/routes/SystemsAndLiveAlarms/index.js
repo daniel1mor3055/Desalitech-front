@@ -19,6 +19,7 @@ import DataTable from 'app/components/DataTable';
 import './index.scss';
 import StatusIndicator from "app/components/StatusIndicator";
 import {STATUS_OFFLINE, STATUS_ONLINE} from 'constants/systemStatus';
+import {SYSTEMS_ALARMS_POLLING_INTERVAL} from "constants/globalConstats";
 
 class SystemsAndLiveAlarms extends React.Component {
     constructor(props) {
@@ -42,7 +43,7 @@ class SystemsAndLiveAlarms extends React.Component {
             () => {
                 this.props.onFetchPolling();
             },
-            30000);
+            SYSTEMS_ALARMS_POLLING_INTERVAL);
         this.setState({dataPolling});
     }
 

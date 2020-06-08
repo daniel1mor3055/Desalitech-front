@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import moment from "moment";
+import {connect} from 'react-redux';
 import momentPropTypes from 'react-moment-proptypes';
 import * as Yup from 'yup';
+
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
-import {timeSeriesChange} from 'store/thunk/dashboard';
 import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
 import DesDateRangePicker from "./DesDateRangePicker";
@@ -229,7 +228,9 @@ TimeSeries.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,
+    onTimeSeriesChange: PropTypes.func.isRequired
 };
+
 
 const mapStateToProps = ({tags}) => {
     return {
@@ -237,10 +238,6 @@ const mapStateToProps = ({tags}) => {
     };
 };
 
-const mapDispatchedToProps = dispatch => {
-    return {
-        onTimeSeriesChange: (timeSeries) => dispatch(timeSeriesChange(timeSeries)),
-    };
-};
 
-export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(TimeSeries));
+export default connect(mapStateToProps)(TimeSeries);
+

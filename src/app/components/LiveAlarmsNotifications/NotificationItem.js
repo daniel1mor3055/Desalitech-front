@@ -6,7 +6,7 @@ import {withRouter} from 'react-router-dom';
 const NotificationItem = ({notification, history}) => {
     const {alarmId, sysId, timeStamp} = notification;
     return (
-        <li className="media">
+        <li className="media" style={{cursor: 'pointer'}}>
             <div className="media-body align-self-center"
                  onClick={() => handleClickOnNotification(sysId, history)}>
                 <p className="sub-heading mb-0">System ID: {sysId}</p>
