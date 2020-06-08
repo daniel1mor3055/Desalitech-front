@@ -7,7 +7,9 @@
     font-size: 16px;
     margin-bottom: 4px;
   }
-
+  .BasicCard-CardBody{
+    padding: 24px 24px 4px 24px;
+  }
   .BasicCard-ImgSize {
     height: 180px;
     display: block;
@@ -26,11 +28,10 @@
 
 
   .BasicCard-TextToTheRight {
-    float: right
+    float: right;
   }
 
   .Indicator {
-    margin-right: 3px;
   }
 
   .BasicCard-TitleClass {
