@@ -146,10 +146,8 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     render() {
-        const {
-            systems, fetching, error, admin,
-            history, errorPoll, fetchingPoll, activeAlarms
-        } = this.props;
+        const {systems, fetching, error, admin, history, errorPoll, fetchingPoll, activeAlarms} = this.props;
+
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
         } else if (document.body.classList.contains('ios-mobile-view-height')) {
