@@ -70,7 +70,7 @@ class AlarmList extends PureComponent {
 
     render() {
         const {alarmIdSearchText, alarmDescriptionSearchText} = this.state;
-        const {match, alarms, fetching, error, emailNotification} = this.props;
+        const {alarms, fetching, error, emailNotification} = this.props;
         const columnsIds = ['alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
         const {filteredAlarms, badSearch} = this.getFilterData(alarms);
@@ -123,8 +123,6 @@ class AlarmList extends PureComponent {
 
         return (
             <div className="AlarmList app-wrapper">
-                <ContainerHeader match={match} title={<IntlMessages id="pages.alarmListPage"/>}/>
-
                 {fetching ?
                     error ? <p>{"Coudn't fetch alarms"}</p> : <CircularIndeterminate/>
                     : alarmList}

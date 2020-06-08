@@ -4,9 +4,6 @@ import {connect} from "react-redux";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-
-import ContainerHeader from 'app/components/ContainerHeader';
-import IntlMessages from 'util/IntlMessages';
 import {fetchBackgroundTags, fetchDashboard} from "store/thunk/dashboard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import Gauge from "./Gauge";
@@ -25,13 +22,12 @@ class Dashboard extends Component {
 
     render() {
         const {
-            match, triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
+            triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
 
         return (
             <div className="Dashboard app-wrapper">
-                <ContainerHeader match={match} title={<IntlMessages id="pages.dashboardPage"/>}/>
 
                 {fetching ?
                     error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>

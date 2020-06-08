@@ -21,6 +21,13 @@ class TimeSeries extends Component {
             endDate: null,
             focusedInput: null,
             chooseTagsFormOpen: false,
+            buttonsColor: {
+                yearColor: '',
+                halfYearColor: '',
+                monthColor: '',
+                weekColor: '',
+                dayColor: 'primary',
+            }
         };
     }
 
@@ -42,6 +49,17 @@ class TimeSeries extends Component {
         }
     };
 
+    handlePushedButtonColor = (propertyToColor) => {
+        const buttonsColor = {
+            yearColor: '',
+            halfYearColor: '',
+            monthColor: '',
+            weekColor: '',
+            dayColor: '',
+        };
+        buttonsColor[propertyToColor] = 'primary';
+        this.setState({buttonsColor: buttonsColor});
+    };
 
     handleFromTodayPick = (delta, scale) => {
         const endDate = moment();
@@ -54,6 +72,7 @@ class TimeSeries extends Component {
         this.dateTimeSeriesChange(startDate, endDate);
     };
 
+
     dateTimeSeriesChange = (startDate, endDate) => {
         const {tags, placement} = this.props;
         const timeSeries = {
@@ -62,7 +81,6 @@ class TimeSeries extends Component {
             tags,
             placement
         };
-
         this.props.onTimeSeriesChange(timeSeries);
     };
 
@@ -110,6 +128,8 @@ class TimeSeries extends Component {
     };
 
     verifyFormValues = (values) => {
+        const {tagList} = this.props;
+        let invalidTagsFlag = false;
         let notEmptyValues = [];
         for (let property in values) {
             if (values.hasOwnProperty(property)) {
@@ -120,7 +140,14 @@ class TimeSeries extends Component {
                 }
             }
         }
-
+        notEmptyValues.forEach((notEmptyValue) => {
+            if (!tagList.some(tag => tag.tagId.toLowerCase() === notEmptyValue.toLowerCase())) {
+                invalidTagsFlag = true;
+            }
+        });
+        if (invalidTagsFlag) {
+            return {global: "Make sure you provide valid tags"};
+        }
         if ((new Set(notEmptyValues)).size !== notEmptyValues.length) {
             return {global: 'Tags should be different'};
         }
@@ -131,23 +158,38 @@ class TimeSeries extends Component {
     };
 
     render() {
-        const {chooseTagsFormOpen} = this.state;
+        const {chooseTagsFormOpen, buttonsColor: {yearColor, halfYearColor, monthColor, weekColor, dayColor}} = this.state;
         const {tags, times, placement} = this.props;
         const initialFormValues = this.getFormInitialValues(tags);
 
         return (
             <Widget childrenStyle={'col-12'} onClick={this.handleOpenChooseTagsForm}>
                 <>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'years')}>1 Year</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(6, 'months')}>6 Months</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'months')}>1 Month</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'weeks')}>1 Week</Button>
-                    <Button className="jr-btn" color="primary"
-                            onClick={() => this.handleFromTodayPick(1, 'day')}>1 Day</Button>
+                    <Button className="jr-btn" color={`${yearColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('yearColor');
+                                this.handleFromTodayPick(1, 'years');
+                            }}>1 Year</Button>
+                    <Button className="jr-btn" color={`${halfYearColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('halfYearColor');
+                                this.handleFromTodayPick(6, 'months');
+                            }}>6 Months</Button>
+                    <Button className="jr-btn" color={`${monthColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('monthColor');
+                                this.handleFromTodayPick(1, 'months');
+                            }}>1 Month</Button>
+                    <Button className="jr-btn" color={`${weekColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('weekColor');
+                                this.handleFromTodayPick(1, 'weeks');
+                            }}>1 Week</Button>
+                    <Button className="jr-btn" color={`${dayColor}`}
+                            onClick={() => {
+                                this.handlePushedButtonColor('dayColor');
+                                this.handleFromTodayPick(1, 'day');
+                            }}>1 Day</Button>
                     <DesDateRangePicker startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                         startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
                                         endDate={this.state.endDate} // momentPropTypes.momentObj or null,
@@ -156,7 +198,7 @@ class TimeSeries extends Component {
                                         focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                                         onFocusChange={(focusedInput) => this.setState({focusedInput})} // PropTypes.func.isRequired,
                                         numberOfMonths={1}
-                                        isOutsideRange={() => false} />
+                                        isOutsideRange={() => false}/>
                 </>
                 <>
                     <ChooseTagsForm
@@ -189,10 +231,16 @@ TimeSeries.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
+const mapStateToProps = ({tags}) => {
+    return {
+        tagList: tags.tags,
+    };
+};
+
 const mapDispatchedToProps = dispatch => {
     return {
         onTimeSeriesChange: (timeSeries) => dispatch(timeSeriesChange(timeSeries)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(TimeSeries));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(TimeSeries));

@@ -57,8 +57,14 @@ class Trigger extends Component {
     };
 
     verifyFormValues = (values) => {
-        if (values.tagId === values.controllerTagId) {
+        const {tagList} = this.props;
+        const {tagId, controllerTagId} = values;
+        if (tagId === controllerTagId) {
             return {global: "Tag and its controller should be different"};
+        }
+        if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase()) ||
+            !tagList.some(tag => tag.tagId.toLowerCase() === controllerTagId.toLowerCase())) {
+            return {global: "Make sure you provide valid tags"};
         }
         return null;
     };
@@ -79,7 +85,7 @@ class Trigger extends Component {
                         colorIndicator={tag.tagValue}
                     />
                     <ChooseTagsForm
-                        labels={['Tag ID','Controller Tag ID']}
+                        labels={['Tag ID', 'Controller Tag ID']}
                         verifyValues={this.verifyFormValues}
                         validationSchemaObject={this.getFormValidationSchemaObject()}
                         formTitle={'Choose trigger settings'}
@@ -100,10 +106,16 @@ Trigger.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
+const mapStateToProps = ({tags}) => {
+    return {
+        tagList: tags.tags,
+    };
+};
+
 const mapDispatchedToProps = dispatch => {
     return {
         onTriggerChange: (trigger) => dispatch(triggerChange(trigger)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(Trigger));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(Trigger));

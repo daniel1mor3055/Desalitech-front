@@ -6,7 +6,6 @@ import {isIOS, isMobile} from 'react-device-detect';
 import Header from 'app/components/Header';
 import Footer from 'app/components/Footer';
 import Tour from 'app/components/Tour/index';
-import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/actionTypes';
 import TopNav from 'app/components/TopNav';
 import BasicCard from "./BasicCards/BasicCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
@@ -18,7 +17,8 @@ import {fetchPolling} from "store/thunk/polling";
 import {setSystemName} from 'store/actions/header';
 import DataTable from 'app/components/DataTable';
 import './index.scss';
-import StatusIndicator from "../../components/StatusIndicator";
+import StatusIndicator from "app/components/StatusIndicator";
+import {STATUS_OFFLINE, STATUS_ONLINE} from 'constants/systemStatus';
 
 class SystemsAndLiveAlarms extends React.Component {
     constructor(props) {
@@ -111,14 +111,14 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsStatusIcons = {};
         let systemsStatusBorders = {};
         for (let i = 0; i < systemsStatus.length; i++) {
-            if (systemsStatus[i].status === 1) {
+            if (systemsStatus[i].status === STATUS_ONLINE) {
                 systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i>;
+                    <StatusIndicator systemStatus={STATUS_ONLINE}/>;
                 systemsStatusBorders[systemsStatus[i].sysId] = 'GreenBorder';
             }
-            if (systemsStatus[i].status === 2) {
+            if (systemsStatus[i].status === STATUS_OFFLINE) {
                 systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
+                    <StatusIndicator systemStatus={STATUS_OFFLINE}/>;
                 systemsStatusBorders[systemsStatus[i].sysId] = 'RedBorder';
             }
         }
@@ -146,10 +146,8 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     render() {
-        const {
-            navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
-            history, errorPoll, fetchingPoll, activeAlarms
-        } = this.props;
+        const {systems, fetching, error, admin, history, errorPoll, fetchingPoll, activeAlarms} = this.props;
+
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
         } else if (document.body.classList.contains('ios-mobile-view-height')) {
@@ -159,7 +157,7 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
-            const {systemsStatusIcons,systemsStatusBorders} = this.prepareSystemsStatus();
+            const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
             systemsCards =
                 <div className='d-flex justify-content-center'>
                     {systems.map(system => {
@@ -280,12 +278,9 @@ class SystemsAndLiveAlarms extends React.Component {
                 <Tour/>
                 <div className="app-main-container">
                     <div
-                        className={`app-header ${navigationStyle === HORIZONTAL_NAVIGATION ? 'app-header-horizontal' : ''}`}>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === ABOVE_THE_HEADER) &&
+                        className={`app-header`}>
                         <TopNav styleName="app-top-header"/>}
                         <Header showSidebarIcon={false}/>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) &&
-                        <TopNav/>}
                     </div>
 
                     <main className="app-main-content-wrapper">
@@ -301,10 +296,8 @@ class SystemsAndLiveAlarms extends React.Component {
 }
 
 
-const mapStateToProps = ({settings, systems, header, poll}) => {
+const mapStateToProps = ({systems, header, poll}) => {
     return {
-        navigationStyle: settings.navigationStyle,
-        horizontalNavPosition: settings.horizontalNavPosition,
         systems: systems.systems,
         fetching: systems.fetching,
         error: systems.error,
