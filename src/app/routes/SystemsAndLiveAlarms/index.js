@@ -281,12 +281,9 @@ class SystemsAndLiveAlarms extends React.Component {
                 <Tour/>
                 <div className="app-main-container">
                     <div
-                        className={`app-header ${navigationStyle === HORIZONTAL_NAVIGATION ? 'app-header-horizontal' : ''}`}>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === ABOVE_THE_HEADER) &&
+                        className={`app-header`}>
                         <TopNav styleName="app-top-header"/>}
                         <Header showSidebarIcon={false}/>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) &&
-                        <TopNav/>}
                     </div>
 
                     <main className="app-main-content-wrapper">

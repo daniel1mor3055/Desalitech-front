@@ -59,12 +59,8 @@ class App extends Component {
                 <Sidebar/>
                 <div className="app-main-container">
                     <div
-                        className={`app-header ${navigationStyle === HORIZONTAL_NAVIGATION ? 'app-header-horizontal' : ''}`}>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === ABOVE_THE_HEADER) &&
-                        <TopNav styleName="app-top-header"/>}
+                        className={`app-header`}>
                         <Header/>
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) &&
-                        <TopNav/>}
                     </div>
 
                     <main className="app-main-content-wrapper">
