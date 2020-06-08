@@ -212,7 +212,7 @@ class TimeSeries extends Component {
                     <MultiYChart data={tags.map(tag => tag.tagTimeValues.map((timeValue) => timeValue.toFixed(2)))}
                                  xData={times}
                                  showYLabels={true}
-                                 yLabels={tags.map(tag => tag.tagId)}
+                                 yLabels={tags.map(tag => tag.tagId+' ('+tag.tagUnits+') ')}
                                  colors={['#2196f3', '#ff6e40', '#ff3a8c']}
                                  key={placement}/>
                 </>
