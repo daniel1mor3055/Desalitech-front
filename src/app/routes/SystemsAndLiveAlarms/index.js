@@ -18,7 +18,8 @@ import {fetchPolling} from "store/thunk/polling";
 import {setSystemName} from 'store/actions/header';
 import DataTable from 'app/components/DataTable';
 import './index.scss';
-import StatusIndicator from "../../components/StatusIndicator";
+import StatusIndicator from "app/components/StatusIndicator";
+import {STATUS_OFFLINE, STATUS_ONLINE} from 'constants/systemStatus';
 
 class SystemsAndLiveAlarms extends React.Component {
     constructor(props) {
@@ -111,14 +112,14 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsStatusIcons = {};
         let systemsStatusBorders = {};
         for (let i = 0; i < systemsStatus.length; i++) {
-            if (systemsStatus[i].status === 1) {
+            if (systemsStatus[i].status === STATUS_ONLINE) {
                 systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-green Indicator`}>Online</i>;
+                    <StatusIndicator systemStatus={STATUS_ONLINE}/>;
                 systemsStatusBorders[systemsStatus[i].sysId] = 'GreenBorder';
             }
-            if (systemsStatus[i].status === 2) {
+            if (systemsStatus[i].status === STATUS_OFFLINE) {
                 systemsStatusIcons[systemsStatus[i].sysId] =
-                    <i className={`zmdi zmdi-circle text-red Indicator`}>Offline</i>;
+                    <StatusIndicator systemStatus={STATUS_OFFLINE}/>;
                 systemsStatusBorders[systemsStatus[i].sysId] = 'RedBorder';
             }
         }
@@ -159,7 +160,7 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
-            const {systemsStatusIcons,systemsStatusBorders} = this.prepareSystemsStatus();
+            const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
             systemsCards =
                 <div className='d-flex justify-content-center'>
                     {systems.map(system => {

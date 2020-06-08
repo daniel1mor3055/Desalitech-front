@@ -90,7 +90,7 @@ class TagList extends PureComponent {
             openEditModal, tagId, tagName, description, units,
             tagIdSearchText, tagNameSearchText, tagDescriptionSearchText
         } = this.state;
-        const {match, tags, fetching, error} = this.props;
+        const {tags, fetching, error} = this.props;
         const columnsIds = ['tagId', 'tagName', 'description', 'units'];
         const columnsLabels = ['Tag ID', 'Tag Name', 'Description', 'Units'];
         const {filteredTags, badSearch} = this.getFilterData(tags);
@@ -157,8 +157,6 @@ class TagList extends PureComponent {
 
         return (
             <div className="TagList app-wrapper">
-                <ContainerHeader match={match} title={<IntlMessages id="pages.tagListPage"/>}/>
-
                 {fetching ?
                     error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
                     : tagList}

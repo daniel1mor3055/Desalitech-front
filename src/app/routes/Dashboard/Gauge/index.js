@@ -53,10 +53,10 @@ class Gauge extends Component {
         const {lL, l, h, hH, tags} = gaugeData;
         const initialValues = {
             measuredTag: tags[0].tagId,
-            lL: lL.value,
-            l: l.value,
-            h: h.value,
-            hH: hH.value,
+            lL: lL.tagId == null || lL.tagId === '' ? lL.value : lL.tagId,
+            l: l.tagId == null || l.tagId === '' ? l.value : l.tagId,
+            h: h.tagId == null || h.tagId === '' ? h.value : h.tagId,
+            hH: hH.tagId == null || hH.tagId === '' ? hH.value : hH.tagId,
         };
         return initialValues;
     };
@@ -73,11 +73,16 @@ class Gauge extends Component {
     };
 
     verifyFormValues = (values) => {
+        const {tagList} = this.props;
         const numericValues = [];
         for (let property in values) {
             if (values.hasOwnProperty(property)) {
                 if (!isNaN(values[property])) {
                     numericValues.push(+values[property]);
+                } else {
+                    if (!tagList.some(tag => tag.tagId.toLowerCase() === values[property].toLowerCase())) {
+                        return {global: "Make sure you provide valid tags"};
+                    }
                 }
             }
         }
@@ -104,7 +109,7 @@ class Gauge extends Component {
             l: l,
             h: h,
             hH: hH,
-            shouldForceRender: state.lL==null ||
+            shouldForceRender: state.lL == null ||
                 (lL.value !== state.lL.value || l.value !== state.l.value ||
                     h.value !== state.h.value || hH.value !== state.hH.value),
         };
@@ -170,10 +175,16 @@ Gauge.propTypes = {
 };
 
 
+const mapStateToProps = ({tags}) => {
+    return {
+        tagList: tags.tags,
+    };
+};
+
 const mapDispatchedToProps = dispatch => {
     return {
         onGaugeChange: (gaugeType, gauge) => dispatch(gaugeChange(gaugeType, gauge)),
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(Gauge));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(Gauge));

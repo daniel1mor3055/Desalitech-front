@@ -12,7 +12,7 @@ const BasicCard = ({image, title, recovery, production, conductivity,
     return (
         <div className='BasicCard' onClick={onClick}>
             <Card className="shadow border-0 m-0">
-                <CardBody>
+                <CardBody className={'BasicCard-CardBody'}>
                     <div className={classnames('BasicCard-TitleClass', systemStatusBorder)}>
                         <CardImg className='BasicCard-ImgSize' src={image} alt="system"/>
                         <h3>System</h3>
@@ -33,9 +33,9 @@ const BasicCard = ({image, title, recovery, production, conductivity,
                              alt="system"/>
                         <strong>Conductivity:</strong>
                         <span className='BasicCard-TextToTheRight'>{conductivity}</span></CardSubtitle>
-                    <CardSubtitle className='BasicCard-CardSubtitleClass'>
-                    <span className='BasicCard-TextToTheRight'>{systemStatusIcon}
-                    </span></CardSubtitle>
+                    <div className={'d-flex justify-content-end'}>
+                        {systemStatusIcon}
+                    </div>
                 </CardBody>
             </Card>
         </div>
