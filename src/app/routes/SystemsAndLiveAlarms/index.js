@@ -6,7 +6,6 @@ import {isIOS, isMobile} from 'react-device-detect';
 import Header from 'app/components/Header';
 import Footer from 'app/components/Footer';
 import Tour from 'app/components/Tour/index';
-import {ABOVE_THE_HEADER, BELOW_THE_HEADER, HORIZONTAL_NAVIGATION,} from 'store/actionTypes';
 import TopNav from 'app/components/TopNav';
 import BasicCard from "./BasicCards/BasicCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
@@ -148,7 +147,7 @@ class SystemsAndLiveAlarms extends React.Component {
 
     render() {
         const {
-            navigationStyle, horizontalNavPosition, systems, fetching, error, admin,
+            systems, fetching, error, admin,
             history, errorPoll, fetchingPoll, activeAlarms
         } = this.props;
         if (isIOS && isMobile) {
@@ -299,10 +298,8 @@ class SystemsAndLiveAlarms extends React.Component {
 }
 
 
-const mapStateToProps = ({settings, systems, header, poll}) => {
+const mapStateToProps = ({systems, header, poll}) => {
     return {
-        navigationStyle: settings.navigationStyle,
-        horizontalNavPosition: settings.horizontalNavPosition,
         systems: systems.systems,
         fetching: systems.fetching,
         error: systems.error,

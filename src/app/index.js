@@ -7,15 +7,8 @@ import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
 import Footer from 'app/components/Footer';
 import Tour from 'app/components/Tour';
-import {
-    ABOVE_THE_HEADER,
-    BELOW_THE_HEADER,
-    COLLAPSED_DRAWER,
-    FIXED_DRAWER,
-    HORIZONTAL_NAVIGATION,
-} from 'store/actionTypes';
+import {COLLAPSED_DRAWER, FIXED_DRAWER,} from 'store/actionTypes';
 import asyncComponent from 'util/asyncComponent';
-import TopNav from 'app/components/TopNav';
 import PrivateRoute from 'app/components/PrivateRoute';
 import {fetchPolling} from "../store/thunk/polling";
 
@@ -43,7 +36,7 @@ class App extends Component {
     }
 
     render() {
-        const {match, drawerType, navigationStyle, horizontalNavPosition} = this.props;
+        const {match, drawerType} = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
 
         if (isIOS && isMobile) {
@@ -88,11 +81,9 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({settings, poll}) => {
+const mapStateToProps = ({settings}) => {
     return {
         drawerType: settings.drawerType,
-        navigationStyle: settings.navigationStyle,
-        horizontalNavPosition: settings.horizontalNavPosition,
     };
 };
 
