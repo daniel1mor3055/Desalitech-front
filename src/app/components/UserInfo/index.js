@@ -36,8 +36,7 @@ class UserInfo extends Component {
 
     render() {
         const {admin, fetching} = this.props;
-        const {user} = this.context;
-        const {nickname, picture} = user;
+        const {user: {nickname, picture}} = this.context;
 
         return (
             <div className="user-profile d-flex flex-row align-items-center">
@@ -51,7 +50,7 @@ class UserInfo extends Component {
                         className="zmdi zmdi-caret-down zmdi-hc-fw align-middle"/>
                     </h4>
                     {fetching ?
-                        null : admin ? 'Admin' : null}
+                        null : admin ? <small>Administrator</small> : null}
                 </div>
                 <Menu className="user-info"
                       id="simple-menu"
@@ -75,7 +74,6 @@ class UserInfo extends Component {
                     </MenuItem>
                     <MenuItem onClick={this.logoutHandler}>
                         <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-2"/>
-
                         <IntlMessages id="popup.logout"/>
                     </MenuItem>
                 </Menu>

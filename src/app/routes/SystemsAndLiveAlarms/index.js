@@ -281,7 +281,7 @@ class SystemsAndLiveAlarms extends React.Component {
                     <div
                         className={`app-header`}>
                         <TopNav styleName="app-top-header"/>
-                        <Header showSidebarIcon={false}/>
+                        <Header showSidebarIcon={false} userInfoInHeader={true}/>
                     </div>
 
                     <main className="app-main-content-wrapper">
