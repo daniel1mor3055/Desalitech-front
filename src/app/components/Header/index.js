@@ -36,10 +36,7 @@ class Header extends Component {
     }
 
     componentDidMount() {
-        const {systemName} = this.props;
-        if (systemName === '') {
-            this.props.onFetchSystemName();
-        }
+        this.props.onFetchSystemName();
     }
 
     onAppNotificationSelect = () => {
