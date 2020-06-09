@@ -100,7 +100,7 @@ class Header extends Component {
 
     render() {
         const {
-            drawerType, navigationStyle, horizontalNavPosition, showSidebarIcon,
+            drawerType, showSidebarIcon,
             systemName, fetching, error, activeAlarms
         } = this.props;
         this.activeAlarmsLocalStorageSync();
@@ -110,15 +110,9 @@ class Header extends Component {
 
         return (
             <AppBar
-                className={`Header app-main-header ${(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === BELOW_THE_HEADER) ? 'app-main-header-top' : ''}`}>
+                className={`Header app-main-header`}>
                 <Toolbar className="app-toolbar" disableGutters={false}>
-                    {navigationStyle === HORIZONTAL_NAVIGATION ?
-                        <div className="d-block d-md-none pointer mr-3" onClick={this.onToggleCollapsedNav}>
-                            <span className="jr-menu-icon">
-                              <span className="menu-icon"/>
-                            </span>
-                        </div>
-                        : showSidebarIcon ?
+                    {showSidebarIcon ?
                             <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
                                         onClick={this.onToggleCollapsedNav}>
                                 <span className="menu-icon"/>
@@ -136,9 +130,6 @@ class Header extends Component {
                                 null : fetching ?
                                     null : systemName}
                         </Typography>
-
-                        {(navigationStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER) &&
-                        <Menu/>}
 
                         <ul className="header-notifications list-inline ml-auto">
 
@@ -162,31 +153,6 @@ class Header extends Component {
                                     </DropdownMenu>
                                 </Dropdown>
                             </li>
-
-                            {navigationStyle === HORIZONTAL_NAVIGATION &&
-                            <li className="list-inline-item user-nav">
-                                <Dropdown
-                                    className="quick-menu"
-                                    isOpen={this.state.userInfo}
-                                    toggle={this.onUserInfoSelect.bind(this)}>
-                                    <DropdownToggle
-                                        className="d-inline-block"
-                                        tag="span"
-                                        data-toggle="dropdown">
-                                        <IconButton className="icon-btn size-30">
-                                            <Avatar
-                                                alt='...'
-                                                src={'https://via.placeholder.com/150x150'}
-                                                className="size-30"
-                                            />
-                                        </IconButton>
-                                    </DropdownToggle>
-                                    <DropdownMenu right>
-                                        <UserInfoPopup/>
-                                    </DropdownMenu>
-                                </Dropdown>
-                            </li>
-                            }
                         </ul>
                     </div>
                 </Toolbar>
@@ -207,8 +173,6 @@ const mapStateToProps = ({header, settings, poll}) => {
     return {
         drawerType: settings.drawerType,
         locale: settings.locale,
-        navigationStyle: settings.navigationStyle,
-        horizontalNavPosition: settings.horizontalNavPosition,
         systemName: header.systemName,
         fetching: header.fetching,
         activeAlarms: poll.activeAlarms,
