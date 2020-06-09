@@ -124,9 +124,9 @@ class Gauge extends Component {
         const gaugeTitle = (tagName !== '' && tagName != null) ? tagName : tagId;
 
         const segmentColorsOptions = {
-            'MIDDLE': ["firebrick", "limegreen", "firebrick"],
-            'LEFT': ["firebrick", "gold", "limegreen"],
-            'RIGHT': ["limegreen", "gold", "firebrick"],
+            MIDDLE: ["firebrick", "limegreen", "firebrick"],
+            LEFT: ["firebrick", "gold", "limegreen"],
+            RIGHT: ["limegreen", "gold", "firebrick"],
         };
 
         const initialFormValues = this.getFormInitialValues(gaugeData);
@@ -141,12 +141,13 @@ class Gauge extends Component {
                             needleHeightRatio={0.7}
                             needleTransitionDuration={3000}
                             maxSegmentLabels={3}
-                            minValue={gaugeType === 'RIGHT' ? hH.value : lL.value}
-                            maxValue={gaugeType === 'RIGHT' ? lL.value : hH.value}
+                            minValue={gaugeType === 'RIGHT' ? +hH.value : +lL.value}
+                            maxValue={gaugeType === 'RIGHT' ? +lL.value : +hH.value}
                             segments={3}
                             ringWidth={40}
                             needleTransition="easeElastic"
-                            customSegmentStops={gaugeType === 'RIGHT' ? [hH.value, h.value, l.value, lL.value] : [lL.value, l.value, h.value, hH.value]}
+                            customSegmentStops={gaugeType === 'RIGHT' ?
+                                [+hH.value, +h.value, +l.value, +lL.value] : [+lL.value, +l.value, +h.value, +hH.value]}
                             segmentColors={segmentColorsOptions[gaugeType]}
                             value={tagValue}
                             textColor={"#AAA"}

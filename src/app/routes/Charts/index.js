@@ -97,7 +97,7 @@ class Charts extends Component {
 
     render() {
         const {addTimeSeriesFormOpen} = this.state;
-        const {timeSeries, error} = this.props;
+        const {timeSeries, error, tagList} = this.props;
 
 
         return (
@@ -123,12 +123,17 @@ class Charts extends Component {
                         <div className="animated slideInUpTiny animation-duration-3">
                             {timeSeries.map((timeSeries) => {
                                 const {startDate, endDate, times, tags, placement} = timeSeries;
+                                const tagsToDisplay = tags.map((tag) => ({
+                                    ...tag,
+                                    tagUnits: tagList.find(o => o.tagId === tag.tagId).units,
+                                }));
+
                                 return (
                                     <TimeSeries
                                         onTimeSeriesChange={this.props.onTimeSeriesChange}
                                         startDate={startDate}
                                         endDate={endDate}
-                                        tags={tags}
+                                        tags={tagsToDisplay}
                                         times={times}
                                         placement={placement}
                                         key={placement}/>);

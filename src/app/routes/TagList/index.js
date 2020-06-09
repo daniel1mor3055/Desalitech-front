@@ -1,8 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
-import ContainerHeader from 'app/components/ContainerHeader';
-import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
 import {fetchTags, postTag} from 'store/thunk/tagsList';
 import SearchBox from 'app/components/SearchBox';

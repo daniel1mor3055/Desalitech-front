@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-
-import CustomScrollbars from 'util/CustomScrollbars';
 import SidenavList from '../SidenavItems';
 import SidenavItem from '../SidenavItems/SidenavItem';
 import {connect} from "react-redux";
@@ -111,13 +109,13 @@ class SidenavContent extends Component {
         return (
             <div className='SidenavContent-content'>
                 <SidenavList>
-                    <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"pages.dashboardPage"}
+                    <SidenavItem relativePath={`dashboard?sysId=${encodedSysId}`} id={"Dashboard"}
                                  icon={"zmdi-time-countdown"}/>
-                    <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"pages.chartsPage"}
+                    <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"Charts"}
                                  icon={"zmdi-chart"}/>
-                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"pages.alarmListPage"}
+                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"Alarm List"}
                                  icon={"zmdi-notifications-active"}/>
-                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"pages.tagListPage"}
+                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"Tag List"}
                                  icon={"zmdi-tag"}/>
                     {/*<SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}*/}
                     {/*             icon={"zmdi-file-text"}/>*/}

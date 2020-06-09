@@ -48,30 +48,33 @@ class Dashboard extends Component {
                                         key={placement}/>);
                             })}
                             <div className="Dashboard-spaceAround d-flex">
-                                {middleGauges.map((middleGauge) => (
-                                    <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge}/>
-                                ))}
-                                {leftGauges.map((leftGauge) => (
-                                    <Gauge gaugeType={'LEFT'} gaugeData={leftGauge}/>
-                                ))}
-                                {rightGauges.map((rightGauge) => (
-                                    <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge}/>
-                                ))}
+                                {middleGauges.map((middleGauge) => {
+                                    const {placement} = middleGauge;
+                                    return <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge} key={placement}/>;
+                                })}
+                                {leftGauges.map((leftGauge) => {
+                                    const {placement} = leftGauge;
+                                    return <Gauge gaugeType={'LEFT'} gaugeData={leftGauge} key={placement}/>
+                                })}
+                                {rightGauges.map((rightGauge) => {
+                                    const {placement} = rightGauge;
+                                    return <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge} key={placement}/>
+                                })}
                             </div>
                             <div className="Dashboard-spaceBetween d-flex">
                                 {tags.map((tag) => {
                                     const {tagId, tagName, tagValue, tagUnits, placement} = tag;
                                     return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnit={tagUnits}
-                                                placement={placement}/>;
+                                                placement={placement} key={placement}/>;
                                 })}
                                 {triggers.map((trigger) => {
                                     const {controllerTag, tag, placement} = trigger;
-                                    return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}/>;
+                                    return <Trigger controllerTag={controllerTag} tag={tag} placement={placement} key={placement}/>;
                                 })}
                             </div>
                             {seeqs.map((seeq) => {
                                     const {url, placement} = seeq;
-                                    return <Seeq url={url} placement={placement}/>;
+                                    return <Seeq url={url} placement={placement} key={placement}/>;
                                 }
                             )}
                         </div>

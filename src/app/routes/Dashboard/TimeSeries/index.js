@@ -21,10 +21,10 @@ class TimeSeries extends Component {
             focusedInput: null,
             chooseTagsFormOpen: false,
             buttonsColor: {
-                yearColor: '',
-                halfYearColor: '',
-                monthColor: '',
-                weekColor: '',
+                yearColor: 'default',
+                halfYearColor: 'default',
+                monthColor: 'default',
+                weekColor: 'default',
                 dayColor: 'primary',
             }
         };
@@ -50,11 +50,11 @@ class TimeSeries extends Component {
 
     handlePushedButtonColor = (propertyToColor) => {
         const buttonsColor = {
-            yearColor: '',
-            halfYearColor: '',
-            monthColor: '',
-            weekColor: '',
-            dayColor: '',
+            yearColor: 'default',
+            halfYearColor: 'default',
+            monthColor: 'default',
+            weekColor: 'default',
+            dayColor: 'default',
         };
         buttonsColor[propertyToColor] = 'primary';
         this.setState({buttonsColor: buttonsColor});

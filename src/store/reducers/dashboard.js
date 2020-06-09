@@ -181,9 +181,9 @@ function tagChangeStart(state, action) {
 
 function gaugeChangeSuccess(state, action) {
     const gaugeArrayOptions = {
-        'MIDDLE': 'middleGauges',
-        'LEFT': 'leftGauges',
-        'RIGHT': 'rightGauges',
+        MIDDLE: 'middleGauges',
+        LEFT: 'leftGauges',
+        RIGHT: 'rightGauges',
     };
 
     const newGauge = state[gaugeArrayOptions[action.payload.gaugeType]].map((gauge) => {

@@ -35,7 +35,7 @@ Widget.propTypes = {
         PropTypes.node,
         PropTypes.arrayOf(PropTypes.node),
     ]),
-    heading: PropTypes.object, // Actually its string, but if one wishes to use <intl> its also possible
+    heading: PropTypes.string,
     subHeading: PropTypes.string,
     cardName: PropTypes.string
 };
