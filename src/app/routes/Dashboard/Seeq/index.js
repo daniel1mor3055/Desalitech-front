@@ -76,7 +76,8 @@ class Seeq extends Component {
                         initialValues={initialFormValues}
                         handleClose={this.handleCloseChooseTagsForm}
                         handleSubmit={this.handleFormSubmit}
-                        open={chooseTagsFormOpen}/>
+                        open={chooseTagsFormOpen}
+                        optionsFlag={'seeq'}/>
                 </>
             </Widget>
         );

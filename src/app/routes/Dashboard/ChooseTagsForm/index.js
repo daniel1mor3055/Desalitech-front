@@ -18,7 +18,7 @@ const styles = {};
 
 const ChooseTagsForm = ({
                             open, handleClose, handleSubmit, tags, fetching, error, initialValues,
-                            validationSchemaObject, verifyValues, formTitle, labels,
+                            validationSchemaObject, verifyValues, formTitle, labels, optionsFlag
                         }) => {
 
     const chooseTagsFormJSX = (
@@ -62,7 +62,7 @@ const ChooseTagsForm = ({
                                 name={key}
                                 index={index}
                                 key={key}
-                                options={tags.map((tag) => (tag.tagId)).sort()}
+                                options={optionsFlag === 'seeq' ? [] : tags.map((tag) => (tag.tagId)).sort()}
                                 textFieldProps={{
                                     fullWidth: true,
                                     margin: 'normal',
