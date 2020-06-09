@@ -1,37 +1,57 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import IntlMessages from 'util/IntlMessages';
+import {Auth0Context} from "Auth0Provider";
+import {connect} from "react-redux";
+import {withRouter} from "react-router-dom";
+import config from "auth_config.json";
 
 class UserInfoPopup extends Component {
-  render() {
-    return (
-      <div>
-        <div className="user-profile">
-          <img className="user-avatar border-0 size-40 rounded-circle"
-               src="https://via.placeholder.com/150x150"
-               alt="User"/>
-          <div className="user-detail ml-2">
-            <h4 className="user-name mb-0">Chris Harris</h4>
-            <small>Administrator</small>
-          </div>
-        </div>
-        <span className="jr-link dropdown-item text-muted">
+    static contextType = Auth0Context;
+
+
+    logoutHandler = (e) => {
+        e.preventDefault();
+        const redirectPath = encodeURIComponent('http://localhost:3000/');
+        window.location.assign('https://' + config.domain + '/v2/logout?returnTo=' + redirectPath);
+    };
+
+    render() {
+        const {user: {nickname, picture}} = this.context;
+        const {admin, fetching} = this.props;
+        return (
+            <div>
+                <div className="user-profile">
+                    <img className="user-avatar border-0 size-40 rounded-circle"
+                         src={picture}
+                         alt="User"/>
+                    <div className="user-detail ml-2">
+                        <h4 className="user-name mb-0">{nickname}</h4>
+                        {fetching ?
+                            null : admin ? <small>Administrator</small> : null}
+                    </div>
+                </div>
+                <span className="jr-link dropdown-item text-muted">
           <i className="zmdi zmdi-face zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.profile"/>
         </span>
-        <span className="jr-link dropdown-item text-muted">
+                <span className="jr-link dropdown-item text-muted">
           <i className="zmdi zmdi-settings zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.setting"/>
         </span>
-        <span className="jr-link dropdown-item text-muted" onClick={() => console.log("Try to logoput")
-        }>
+                <span className="jr-link dropdown-item text-muted" onClick={this.logoutHandler}>
           <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
           <IntlMessages id="popup.logout"/>
         </span>
-      </div>
-    );
-  }
+            </div>
+        );
+    }
 }
 
-export default UserInfoPopup;
+const mapStateToProps = ({header}) => {
+    return {
+        admin: header.admin,
+        fetching: header.fetching,
+    };
+};
 
-
+export default withRouter(connect(mapStateToProps)(UserInfoPopup));

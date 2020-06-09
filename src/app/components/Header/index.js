@@ -8,24 +8,19 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {
-    BELOW_THE_HEADER,
-    COLLAPSED_DRAWER,
-    FIXED_DRAWER,
-    HORIZONTAL_NAVIGATION,
-    INSIDE_THE_HEADER
-} from 'store/actionTypes';
+import {COLLAPSED_DRAWER, FIXED_DRAWER} from 'store/actionTypes';
 import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
 import CardHeader from 'app/components/CardHeader';
 import {toggleCollapsedNav} from 'store/actions/Setting';
 import {fetchSystemName} from 'store/thunk/header';
-import Menu from 'app/components/TopNav/Menu';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
 import './index.scss';
+import {Auth0Context} from "Auth0Provider";
 
 
 class Header extends Component {
+    static contextType = Auth0Context;
     constructor() {
         super();
         this.state = {
@@ -100,9 +95,10 @@ class Header extends Component {
 
     render() {
         const {
-            drawerType, showSidebarIcon,
+            drawerType, showSidebarIcon, userInfoInHeader,
             systemName, fetching, error, activeAlarms
         } = this.props;
+        const {user: {picture}} = this.context
         this.activeAlarmsLocalStorageSync();
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const notificationsIconToShow = this.notificationsIconToShow();
@@ -113,10 +109,10 @@ class Header extends Component {
                 className={`Header app-main-header`}>
                 <Toolbar className="app-toolbar" disableGutters={false}>
                     {showSidebarIcon ?
-                            <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
-                                        onClick={this.onToggleCollapsedNav}>
-                                <span className="menu-icon"/>
-                            </IconButton> : null
+                        <IconButton className={`jr-menu-icon mr-3 ${drawerStyle}`} aria-label="Menu"
+                                    onClick={this.onToggleCollapsedNav}>
+                            <span className="menu-icon"/>
+                        </IconButton> : null
                     }
 
                     <div className="Header-spaceBetween d-flex">
@@ -153,6 +149,30 @@ class Header extends Component {
                                     </DropdownMenu>
                                 </Dropdown>
                             </li>
+                            {userInfoInHeader &&
+                            <li className="list-inline-item user-nav">
+                                <Dropdown
+                                    className="quick-menu"
+                                    isOpen={this.state.userInfo}
+                                    toggle={this.onUserInfoSelect.bind(this)}>
+                                    <DropdownToggle
+                                        className="d-inline-block"
+                                        tag="span"
+                                        data-toggle="dropdown">
+                                        <IconButton className="icon-btn size-30">
+                                            <Avatar
+                                                alt='...'
+                                                src={picture}
+                                                className="size-30"
+                                            />
+                                        </IconButton>
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <UserInfoPopup/>
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </li>
+                            }
                         </ul>
                     </div>
                 </Toolbar>
@@ -162,11 +182,13 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-    showSidebarIcon: PropTypes.bool
+    showSidebarIcon: PropTypes.bool,
+    userInfoInHeader: PropTypes.bool,
 };
 
 Header.defaultProps = {
-    showSidebarIcon: true
+    showSidebarIcon: true,
+    userInfoInHeader: false,
 };
 
 const mapStateToProps = ({header, settings, poll}) => {
