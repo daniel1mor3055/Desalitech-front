@@ -48,9 +48,9 @@ class MultiYChart extends Component {
                 tooltip: {
                     fixed: {
                         enabled: true,
-                        position: 'bottomLeft',
-                        offsetY: -90,
-                        offsetX: 0,
+                        position: 'topRight',
+                        offsetY: -105,
+                        offsetX: -150,
                     },
                 },
                 legend: {
@@ -88,7 +88,7 @@ class MultiYChart extends Component {
                 yaxis: yLabels.map((yLabel, index) => {
                     return {
                         seriesName: yLabel,
-                        opposite: true,
+                        opposite: false,
                         axisTicks: {
                             show: showYLabels
                         },
