@@ -21,6 +21,7 @@ import {Auth0Context} from "Auth0Provider";
 
 class Header extends Component {
     static contextType = Auth0Context;
+
     constructor() {
         super();
         this.state = {
@@ -98,7 +99,7 @@ class Header extends Component {
             drawerType, showSidebarIcon, userInfoInHeader,
             systemName, fetching, error, activeAlarms
         } = this.props;
-        const {user: {picture}} = this.context
+        const {user: {picture}} = this.context;
         this.activeAlarmsLocalStorageSync();
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const notificationsIconToShow = this.notificationsIconToShow();
@@ -164,7 +165,7 @@ class Header extends Component {
                                             <Avatar
                                                 alt='...'
                                                 src={picture}
-                                                className="size-30"
+                                                className="size-30 position-absolute"
                                             />
                                         </IconButton>
                                     </DropdownToggle>
