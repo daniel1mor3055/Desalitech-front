@@ -141,13 +141,12 @@ class Gauge extends Component {
                             needleHeightRatio={0.7}
                             needleTransitionDuration={3000}
                             maxSegmentLabels={3}
-                            minValue={gaugeType === 'RIGHT' ? +hH.value : +lL.value}
-                            maxValue={gaugeType === 'RIGHT' ? +lL.value : +hH.value}
+                            minValue={+lL.value}
+                            maxValue={+hH.value}
                             segments={3}
                             ringWidth={40}
                             needleTransition="easeElastic"
-                            customSegmentStops={gaugeType === 'RIGHT' ?
-                                [+hH.value, +h.value, +l.value, +lL.value] : [+lL.value, +l.value, +h.value, +hH.value]}
+                            customSegmentStops={[+lL.value, +l.value, +h.value, +hH.value]}
                             segmentColors={segmentColorsOptions[gaugeType]}
                             value={tagValue}
                             textColor={"#AAA"}
