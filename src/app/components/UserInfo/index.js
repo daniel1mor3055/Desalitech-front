@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import IntlMessages from 'util/IntlMessages';
 import {Auth0Context} from "Auth0Provider";
 import config from 'auth_config';
 import {withRouter} from "react-router-dom";
@@ -66,15 +65,15 @@ class UserInfo extends Component {
                       }}>
                     <MenuItem onClick={this.closeMenuHandler}>
                         <i className="zmdi zmdi-account zmdi-hc-fw mr-2"/>
-                        <IntlMessages id="popup.profile"/>
+                        <span>Profile</span>
                     </MenuItem>
                     <MenuItem onClick={this.closeMenuHandler}>
                         <i className="zmdi zmdi-settings zmdi-hc-fw mr-2"/>
-                        <IntlMessages id="popup.setting"/>
+                        <span>Setting</span>
                     </MenuItem>
                     <MenuItem onClick={this.logoutHandler}>
                         <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-2"/>
-                        <IntlMessages id="popup.logout"/>
+                        <span>Logout</span>
                     </MenuItem>
                 </Menu>
             </div>

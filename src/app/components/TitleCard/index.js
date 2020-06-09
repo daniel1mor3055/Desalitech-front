@@ -1,7 +1,6 @@
 import React from 'react';
 import {Card, CardBody, CardSubtitle} from 'reactstrap';
 import PropTypes from "prop-types";
-import Gauge from "../../routes/Dashboard/Gauge";
 
 const TitleCard = ({tagName, tagValue, tagUnits}) =>
     (
@@ -15,9 +14,9 @@ const TitleCard = ({tagName, tagValue, tagUnits}) =>
 
 
 TitleCard.propTypes = {
-    tagName: PropTypes.string.isRequired,
-    tagUnits: PropTypes.number.isRequired,
-    tagValue: PropTypes.string.isRequired,
+    tagName: PropTypes.string,
+    tagUnits: PropTypes.string,
+    tagValue: PropTypes.number,
 };
 
 export default TitleCard;

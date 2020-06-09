@@ -11,11 +11,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const FormikAutocomplete = props => {
-    const {handleKeyPress, index, name, options, textFieldProps} = props;
+    const {index, name, options, textFieldProps} = props;
     const classes = useStyles();
     const {isSubmitting} = useFormikContext();
     const fieldProps = useField(name);
-    const [field, meta, helpers] = fieldProps;
+    const field = fieldProps[0];
+    const helpers = fieldProps[2];
 
     return (
         <Autocomplete
@@ -29,7 +30,7 @@ const FormikAutocomplete = props => {
             {...field}
             onChange={(event, value) => {
                 helpers.setValue(value);
-                helpers.setTouched(true)
+                helpers.setTouched(true);
             }}
             onBlur={() => helpers.setTouched(true)}
             renderInput={params => (
@@ -42,11 +43,8 @@ const FormikAutocomplete = props => {
                     onChange={event => {
                         const value = event.target.value;
                         helpers.setValue(value);
-                        helpers.setTouched(true)
+                        helpers.setTouched(true);
                     }}
-                    // onKeyPress={event => {
-                    //     handleKeyPress(event);
-                    // }}
                 />
             )}
         />

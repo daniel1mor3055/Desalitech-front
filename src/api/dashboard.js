@@ -1,6 +1,6 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
 import moment from "moment";
+import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -20,7 +20,6 @@ export const fetchDashboardApi = async () => {
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        console.log({triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs});
         return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
     } catch (err) {
         console.log(err);
@@ -97,7 +96,6 @@ export const triggerChangeApi = async (trigger) => {
 export const seeqChangeApi = async (seeq) => {
     const sysId = extractSystemId();
     const dataToPost = manipulateSeeq(seeq, sysId);
-    console.log(dataToPost);
     capitalizeJson(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
@@ -177,9 +175,9 @@ function manipulateTag(tag, sysId) {
 function manipulateGauge(gaugeType, gauge, sysId) {
     const {measuredTag, placement, lL, l, h, hH} = gauge;
     const gaugesTypesOptions = {
-        'MIDDLE': 'MiddleGauge',
-        'RIGHT': 'RightGauge',
-        'LEFT': 'LeftGauge',
+        MIDDLE: 'MiddleGauge',
+        RIGHT: 'RightGauge',
+        LEFT: 'LeftGauge',
     };
 
     return {
@@ -402,9 +400,15 @@ function extractTag(widget) {
 
 function interpolateData(array) {
     const arrayAfterNullsRemove = removeNulls(array);
-    const interpolatedArray = interpolateArray(arrayAfterNullsRemove, array.length);
-    for (let i = 0; i < array.length; i++) {
-        array[i] = interpolatedArray[i];
+    if (arrayAfterNullsRemove.length === 0) {
+        for (let i = 0; i < array.length; i++) {
+            array[i] = 0;
+        }
+    } else {
+        const interpolatedArray = interpolateArray(arrayAfterNullsRemove, array.length);
+        for (let i = 0; i < array.length; i++) {
+            array[i] = interpolatedArray[i];
+        }
     }
 }
 

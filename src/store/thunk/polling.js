@@ -1,6 +1,6 @@
 import {fetchPollingApi} from 'api/polling';
 import {fetchPollingSuccess, fetchPollingFail, fetchPollingStart} from "../actions/polling";
-import {fetchDashboardPollingSuccess, fetchDashboardStart} from '../actions/dashboard';
+import {fetchDashboardPollingSuccess} from '../actions/dashboard';
 import {getWidgetsByType} from "api/dashboard";
 import {setAdminStatus} from "../actions/header";
 

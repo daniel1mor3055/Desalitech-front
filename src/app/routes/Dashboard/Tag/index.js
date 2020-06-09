@@ -96,8 +96,8 @@ class Tag extends Component {
 Tag.propTypes = {
     tagId: PropTypes.string.isRequired,
     tagName: PropTypes.string.isRequired,
-    tagValue: PropTypes.string.isRequired,
-    tagUnits: PropTypes.string.isRequired,
+    tagValue: PropTypes.number,
+    tagUnits: PropTypes.string,
     placement: PropTypes.number.isRequired,
 };
 

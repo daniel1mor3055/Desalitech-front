@@ -17,10 +17,6 @@ export default function asyncComponent(importComponent) {
       };
     }
 
-    // componentWillMount() {
-    //   Nprogress.start();
-    // }
-
     componentWillUnmount() {
       this.mounted = false;
     }

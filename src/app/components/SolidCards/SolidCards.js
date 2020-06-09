@@ -16,9 +16,9 @@ const SolidCard = ({tagName, tagValue, tagUnits, colorIndicator}) => {
 };
 
 SolidCard.propTypes = {
-    tagName: PropTypes.string.isRequired,
-    tagUnits: PropTypes.number.isRequired,
-    tagValue: PropTypes.string.isRequired,
+    tagName: PropTypes.string,
+    tagUnits: PropTypes.string,
+    tagValue: PropTypes.number,
     colorIndicator: PropTypes.number.isRequired,
 };
 

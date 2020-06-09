@@ -57,7 +57,7 @@ class Seeq extends Component {
 
     render() {
         const {chooseTagsFormOpen} = this.state;
-        const {url, placement} = this.props;
+        const {url} = this.props;
         const initialFormValues = this.getFormInitialValues(url);
 
         return (

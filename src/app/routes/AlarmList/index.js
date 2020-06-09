@@ -1,10 +1,8 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
 
-import IntlMessages from 'util/IntlMessages';
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
 import {fetchAlarms, setEmailNotification} from 'store/thunk/alarmsList';
-import ContainerHeader from 'app/components/ContainerHeader';
 import SearchBox from "app/components/SearchBox";
 import CardHeader from 'app/components/CardHeader';
 import DataTable from "app/components/DataTable";

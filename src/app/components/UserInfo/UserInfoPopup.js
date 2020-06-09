@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import IntlMessages from 'util/IntlMessages';
+
 import {Auth0Context} from "Auth0Provider";
 import {connect} from "react-redux";
 import {withRouter} from "react-router-dom";
@@ -31,17 +31,17 @@ class UserInfoPopup extends Component {
                     </div>
                 </div>
                 <span className="jr-link dropdown-item text-muted">
-          <i className="zmdi zmdi-face zmdi-hc-fw mr-1"/>
-          <IntlMessages id="popup.profile"/>
-        </span>
+                     <i className="zmdi zmdi-face zmdi-hc-fw mr-1"/>
+                     <span>Profile</span>
+                </span>
                 <span className="jr-link dropdown-item text-muted">
-          <i className="zmdi zmdi-settings zmdi-hc-fw mr-1"/>
-          <IntlMessages id="popup.setting"/>
-        </span>
+                    <i className="zmdi zmdi-settings zmdi-hc-fw mr-1"/>
+                  <span>Setting</span>
+                </span>
                 <span className="jr-link dropdown-item text-muted" onClick={this.logoutHandler}>
-          <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
-          <IntlMessages id="popup.logout"/>
-        </span>
+                    <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
+                    <span>Logout</span>
+                </span>
             </div>
         );
     }

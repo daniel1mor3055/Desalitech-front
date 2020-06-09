@@ -124,7 +124,8 @@ class Header extends Component {
                         <Typography variant={'h4'} color={'inherit'} align={'center'}>
                             {window.location.pathname.includes('/app/system-select') ?
                                 null : fetching ?
-                                    null : systemName}
+                                    null : error ?
+                                        <p>{"Couldn't fetch system name"}</p> : systemName}
                         </Typography>
 
                         <ul className="header-notifications list-inline ml-auto">

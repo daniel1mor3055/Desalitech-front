@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, Formik} from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
@@ -48,7 +48,6 @@ const ChooseTagsForm = ({
                     errors,
                     dirty,
                     isSubmitting,
-                    handleChange,
                     handleSubmit,
                     handleReset,
                 } = props;
@@ -116,7 +115,7 @@ ChooseTagsForm.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.arrayOf(PropTypes.object).isRequired,
+    initialValues: PropTypes.object.isRequired,
     validationSchemaObject: PropTypes.object.isRequired,
     verifyValues: PropTypes.func.isRequired,
 };
