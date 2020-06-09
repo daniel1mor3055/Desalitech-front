@@ -280,7 +280,7 @@ class SystemsAndLiveAlarms extends React.Component {
                 <div className="app-main-container">
                     <div
                         className={`app-header`}>
-                        <TopNav styleName="app-top-header"/>}
+                        <TopNav styleName="app-top-header"/>
                         <Header showSidebarIcon={false}/>
                     </div>
 
