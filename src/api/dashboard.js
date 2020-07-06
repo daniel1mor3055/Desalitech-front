@@ -10,7 +10,6 @@ const MIDDLE_GAUGE = 'MiddleGauge';
 const RIGHT_GAUGE = 'RightGauge';
 const LEFT_GAUGE = 'LeftGauge';
 const SEEQ = 'Seeq';
-
 const DATE_FORMAT = 'DD-MM HH:mm';
 
 export const fetchDashboardApi = async () => {
@@ -20,13 +19,41 @@ export const fetchDashboardApi = async () => {
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
-        return {admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs};
+        const currentPlacement = calcCurrentPlacement(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs);
+        return {
+            admin,
+            triggers,
+            tags,
+            gauges,
+            timeSeries,
+            middleGauges,
+            rightGauges,
+            leftGauges,
+            seeqs,
+            currentPlacement
+        };
     } catch (err) {
         console.log(err);
         throw err;
     }
 };
 
+
+export const timeSeriesAddApi = async (timeSeries) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTimeSeries(timeSeries, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTimeSeries = extractTimeSeries(widgets[0]);
+        return {admin, responseTimeSeries};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 export const timeSeriesChangeApi = async (timeSeries) => {
     const sysId = extractSystemId();
@@ -44,12 +71,54 @@ export const timeSeriesChangeApi = async (timeSeries) => {
     }
 };
 
+export const timeSeriesDeleteApi = async (timeSeries) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTimeSeries(timeSeries, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
 export const gaugeChangeApi = async (gaugeType, gauge) => {
     const sysId = extractSystemId();
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseGauge = extractGauge(widgets[0]);
+        return {admin, responseGauge};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const gaugeDeleteApi = async (gaugeType, gauge) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const gaugeAddApi = async (gaugeType, gauge) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const responseGauge = extractGauge(widgets[0]);
@@ -76,6 +145,35 @@ export const tagChangeApi = async (tag) => {
     }
 };
 
+export const tagDeleteApi = async (tag) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTag(tag, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const tagAddApi = async (tag) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTag(tag, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTag = extractTag(widgets[0]);
+        return {admin, responseTag};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
 export const triggerChangeApi = async (trigger) => {
     const sysId = extractSystemId();
     const dataToPost = manipulateTrigger(trigger, sysId);
@@ -92,6 +190,34 @@ export const triggerChangeApi = async (trigger) => {
     }
 };
 
+export const triggerDeleteApi = async (trigger) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTrigger(trigger, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const triggerAddApi = async (trigger) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateTrigger(trigger, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseTrigger = extractTrigger(widgets[0]);
+        return {admin, responseTrigger};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
 
 export const seeqChangeApi = async (seeq) => {
     const sysId = extractSystemId();
@@ -99,6 +225,35 @@ export const seeqChangeApi = async (seeq) => {
     capitalizeJson(dataToPost);
     try {
         const response = await axios.post('/system/dashboard', dataToPost);
+        camelizeJson(response.data);
+        const {admin, widgets} = response.data;
+        const responseSeeq = extractSeeq(widgets[0]);
+        return {admin, responseSeeq};
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const seeqDeleteApi = async (seeq) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateSeeq(seeq, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        return response;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+};
+
+export const seeqAddApi = async (seeq) => {
+    const sysId = extractSystemId();
+    const dataToPost = manipulateSeeq(seeq, sysId);
+    capitalizeJson(dataToPost);
+    try {
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
         camelizeJson(response.data);
         const {admin, widgets} = response.data;
         const responseSeeq = extractSeeq(widgets[0]);
@@ -199,7 +354,7 @@ function manipulateGauge(gaugeType, gauge, sysId) {
 }
 
 export function manipulateTimeSeries(timeSeries, sysId) {
-    const {startDate, endDate, tags, placement} = timeSeries;
+    const {startDate, endDate, tags, placement, detail1} = timeSeries;
     let backTags = tags.map((tag) => (tag.tagId));
 
     for (let i = tags.length; i < 3; i++) {
@@ -211,7 +366,7 @@ export function manipulateTimeSeries(timeSeries, sysId) {
         tag1: backTags[0],
         tag2: backTags[1],
         tag3: backTags[2],
-        detail1: '',
+        detail1: detail1 == null ? '' : detail1,
         detail2: '',
         detail3: '',
         detail4: '',
@@ -349,7 +504,7 @@ function extractTrigger(widget) {
 }
 
 export function extractTimeSeries(widget) {
-    const {placement, startDate, endDate, tags, influxData} = widget;
+    const {placement, startDate, endDate, tags, influxData, extraData} = widget;
 
     const newTags = tags.map((tag, index) => {
         return {
@@ -381,6 +536,7 @@ export function extractTimeSeries(widget) {
         times,
         startDate: moment.utc(moment.unix(startDate)).local(), // Dates are being saved as moment object local time
         endDate: moment.utc(moment.unix(endDate)).local(), // Dates are being saved as moment object local time
+        currentPickedRange: extraData,
     };
 }
 
@@ -433,4 +589,16 @@ function interpolateArray(data, fitCount) {
     }
     newData[fitCount - 1] = data[data.length - 1]; // for new allocation
     return newData;
+}
+
+function calcCurrentPlacement(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs) {
+    let currentPlacement = 0;
+    const arrayOfArrays = [triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs];
+    arrayOfArrays.forEach(array => {
+        array.forEach(widget => {
+            currentPlacement = Math.max(currentPlacement, widget.placement);
+        });
+    });
+
+    return currentPlacement + 1;
 }

@@ -24,7 +24,7 @@ export const setEmailNotificationApi = async (emailNotification) => {
     try {
         const dataToPass = {
             sysId,
-            emailNotification: emailNotification ? 'true' : 'false',
+            emailNotification: emailNotification,
         };
         capitalizeJson(dataToPass);
         const response = await axios.post(`/system/alarm-list`, dataToPass);

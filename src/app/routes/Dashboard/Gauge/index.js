@@ -7,15 +7,17 @@ import {withRouter} from "react-router";
 import {connect} from "react-redux";
 
 import Widget from "app/components/Widget";
-import ChooseTagsForm from "app/routes/Dashboard/ChooseTagsForm";
-import {gaugeChange} from 'store/thunk/dashboard';
+import {gaugeChange, gaugeDelete} from 'store/thunk/dashboard';
+import FormGauge from "../FormGauge";
+import FormDelete from "../FormDelete";
 
 class Gauge extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            chooseTagsFormOpen: false,
+            editFormOpen: false,
+            deleteFormOpen: false,
             lL: null,
             l: null,
             h: null,
@@ -24,26 +26,32 @@ class Gauge extends Component {
         };
     }
 
-    handleOpenChooseTagsForm = (event) => {
+    handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({chooseTagsFormOpen: true});
+        this.setState({editFormOpen: true});
     };
 
-    handleCloseChooseTagsForm = () => {
-        this.setState({chooseTagsFormOpen: false});
+    handleCloseForm = () => {
+        this.setState({
+            editFormOpen: false,
+            deleteFormOpen: false,
+        });
     };
 
     handleFormSubmit = (values) => {
         const {lL, l, h, hH, measuredTag} = values;
-        const {gaugeType, gaugeData: {placement}} = this.props;
-
+        const {gaugeType, gaugeData: {placement}, tagList} = this.props;
+        const newLl = tagList.find(o => o.tagName === lL);
+        const newL = tagList.find(o => o.tagName === l);
+        const newH = tagList.find(o => o.tagName === h);
+        const newHh = tagList.find(o => o.tagName === hH);
         const gauge = {
-            measuredTag,
+            measuredTag: tagList.find(o => o.tagName === measuredTag).tagId,
             placement,
-            lL,
-            l,
-            h,
-            hH
+            lL: newLl == null ? lL : newLl.tagId,
+            l: newL == null ? l : newL.tagId,
+            h: newH == null ? h : newH.tagId,
+            hH: newHh == null ? hH : newHh.tagId,
         };
 
         this.props.onGaugeChange(gaugeType, gauge);
@@ -52,55 +60,41 @@ class Gauge extends Component {
     getFormInitialValues = (gaugeData) => {
         const {lL, l, h, hH, tags} = gaugeData;
         const initialValues = {
+            measuredTag: tags[0].tagName,
+            lLFromOptionsCheckBox: !(lL.tagName == null || lL.tagName === ''),
+            lLFromOptions: lL.tagName == null || lL.tagName === '' ? '' : lL.tagName,
+            lL: lL.tagName == null || lL.tagName === '' ? lL.value : '',
+            lFromOptionsCheckBox: !(l.tagName == null || l.tagName === ''),
+            lFromOptions: l.tagName == null || l.tagName === '' ? '' : l.tagName,
+            l: l.tagName == null || l.tagName === '' ? l.value : '',
+            hFromOptionsCheckBox: !(h.tagName == null || h.tagName === ''),
+            hFromOptions: h.tagName == null || h.tagName === '' ? '' : h.tagName,
+            h: h.tagName == null || h.tagName === '' ? h.value : '',
+            hHFromOptionsCheckBox: !(hH.tagName == null || hH.tagName === ''),
+            hHFromOptions: hH.tagName == null || hH.tagName === '' ? '' : hH.tagName,
+            hH: hH.tagName == null || hH.tagName === '' ? hH.value : '',
+        };
+        return initialValues;
+    };
+
+    handleOpenDeleteForm = () => {
+        this.setState({deleteFormOpen: true});
+    };
+
+    handleDeleteWidget = () => {
+        const {gaugeData: {lL, l, h, hH, tags, placement}, gaugeType} = this.props;
+
+        const gauge = {
             measuredTag: tags[0].tagId,
+            placement,
             lL: lL.tagId == null || lL.tagId === '' ? lL.value : lL.tagId,
             l: l.tagId == null || l.tagId === '' ? l.value : l.tagId,
             h: h.tagId == null || h.tagId === '' ? h.value : h.tagId,
             hH: hH.tagId == null || hH.tagId === '' ? hH.value : hH.tagId,
         };
-        return initialValues;
+
+        this.props.onGaugeDelete(gaugeType, gauge);
     };
-
-    getFormValidationSchemaObject = () => {
-        const validationSchema = {
-            measuredTag: Yup.string().required('Please select tag to measure'),
-            lL: Yup.string().required('Please select LL Value or Tag'),
-            l: Yup.string().required('Please select L Value or Tag'),
-            h: Yup.string().required('Please select H Value or Tag'),
-            hH: Yup.string().required('Please select HH Value or Tag'),
-        };
-        return validationSchema;
-    };
-
-    verifyFormValues = (values) => {
-        const {tagList} = this.props;
-        const numericValues = [];
-        for (let property in values) {
-            if (values.hasOwnProperty(property)) {
-                if (!isNaN(values[property])) {
-                    numericValues.push(+values[property]);
-                } else {
-                    if (!tagList.some(tag => tag.tagId.toLowerCase() === values[property].toLowerCase())) {
-                        return {global: "Make sure you provide valid tags"};
-                    }
-                }
-            }
-        }
-
-        let correctOrder = true;
-        for (let i = 0; i < numericValues.length - 1; i++) {
-            if (numericValues[i] > numericValues[i + 1]) {
-                correctOrder = false;
-                break;
-            }
-        }
-
-        if (!correctOrder) {
-            return {global: "Make sure that LL Value < L Value < H Value < HH Value"};
-        }
-        return null;
-    };
-
     static getDerivedStateFromProps = (props, state) => {
         const {gaugeData: {lL, l, h, hH}} = props;
         return {
@@ -116,7 +110,7 @@ class Gauge extends Component {
     };
 
     render() {
-        const {chooseTagsFormOpen, lL, l, h, hH, shouldForceRender} = this.state;
+        const {editFormOpen, deleteFormOpen, lL, l, h, hH, shouldForceRender} = this.state;
         const {gaugeType, gaugeData} = this.props;
         const {tags} = gaugeData;
 
@@ -133,7 +127,8 @@ class Gauge extends Component {
 
         return (
             <Widget heading={gaugeTitle}
-                    onClick={this.handleOpenChooseTagsForm}>
+                    onEditClick={this.handleOpenEditForm}
+                    onDeleteClick={this.handleOpenDeleteForm}>
                 <ResponsiveContainer width="100%">
                     <div className="d-flex justify-content-center" style={{width: "100%", height: "150px"}}>
                         <ReactSpeedometer
@@ -155,15 +150,18 @@ class Gauge extends Component {
                         />
                     </div>
                 </ResponsiveContainer>
-                <ChooseTagsForm
-                    formTitle={'Choose gauge settings - numerical values or tag IDs'}
-                    verifyValues={this.verifyFormValues}
-                    validationSchemaObject={this.getFormValidationSchemaObject(initialFormValues)}
-                    labels={['Tag ID', 'LL Value', 'L Value', 'H Value', 'HH Value']}
-                    initialValues={initialFormValues}
-                    handleClose={this.handleCloseChooseTagsForm}
-                    handleSubmit={this.handleFormSubmit}
-                    open={chooseTagsFormOpen}/>
+                <>
+                    <FormDelete
+                        handleClose={this.handleCloseForm}
+                        handleSubmit={this.handleDeleteWidget}
+                        open={deleteFormOpen}
+                    />
+                    <FormGauge
+                        initialValues={initialFormValues}
+                        handleClose={this.handleCloseForm}
+                        handleSubmit={this.handleFormSubmit}
+                        open={editFormOpen}/>
+                </>
             </Widget>
         );
     }
@@ -184,6 +182,7 @@ const mapStateToProps = ({tags}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onGaugeChange: (gaugeType, gauge) => dispatch(gaugeChange(gaugeType, gauge)),
+        onGaugeDelete: (gaugeType, gauge) => dispatch(gaugeDelete(gaugeType, gauge)),
     };
 };
 

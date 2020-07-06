@@ -9,6 +9,9 @@ import {
     timeSeriesAddFail,
     timeSeriesAddStart,
     timeSeriesAddSuccess,
+    timeSeriesDeleteSuccess,
+    timeSeriesDeleteStart,
+    timeSeriesDeleteFail
 } from '../actions/charts';
 import {setAdminStatus} from "../actions/header";
 
@@ -23,6 +26,17 @@ export const timeSeriesChange = (timeSeries) => (
             dispatch(timeSeriesChangeSuccess(responseTimeSeries));
         } catch (err) {
             dispatch(timeSeriesChangeFail(err));
+        }
+    });
+
+export const timeSeriesDelete = (timeSeries) => (
+    async (dispatch) => {
+        dispatch(timeSeriesDeleteStart());
+        try {
+            await timeSeriesChangeApi(timeSeries);
+            dispatch(timeSeriesDeleteSuccess(timeSeries));
+        } catch (err) {
+            dispatch(timeSeriesDeleteFail(err));
         }
     });
 

@@ -83,10 +83,10 @@ class DataTable extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        const {data, initialOrderBy} = props;
+        const {data, initialOrderBy, order} = props;
 
         this.state = {
-            order: 'asc',
+            order: order == null ? 'asc' : 'desc',
             orderBy: initialOrderBy,
             data: data,
             page: 0,
@@ -163,7 +163,8 @@ class DataTable extends React.Component {
                                             ))}
                                             {actions ?
                                                 actions.map(action => (
-                                                    <TableCell style={{width: cellWidth}} align={'center'} key={action.id}>
+                                                    <TableCell style={{width: cellWidth}} align={'center'}
+                                                               key={action.id}>
                                                         {action.cell(dataObject)}
                                                     </TableCell>))
                                                 : null}

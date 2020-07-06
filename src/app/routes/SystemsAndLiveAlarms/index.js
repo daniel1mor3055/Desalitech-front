@@ -255,7 +255,8 @@ class SystemsAndLiveAlarms extends React.Component {
                     <DataTable data={filteredActiveAlarms}
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
-                               initialOrderBy={'sysId'}
+                               initialOrderBy={'timeStamp'}
+                               order={'desc'}
                                cellIdentifier={'id'}
                                onRowClick={this.handleClickOnAlarmRow}
                     />

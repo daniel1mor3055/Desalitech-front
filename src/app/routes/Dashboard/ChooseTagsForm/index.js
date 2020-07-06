@@ -61,7 +61,7 @@ const ChooseTagsForm = ({
                                 name={key}
                                 index={index}
                                 key={key}
-                                options={optionsFlag === 'seeq' ? [] : tags.map((tag) => (tag.tagId)).sort()}
+                                options={optionsFlag === 'seeq' ? [] : tags.map((tag) => (tag.tagName)).sort()}
                                 textFieldProps={{
                                     fullWidth: true,
                                     margin: 'normal',

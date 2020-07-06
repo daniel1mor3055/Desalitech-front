@@ -10,7 +10,6 @@ import IconButton from '@material-ui/core/IconButton';
 import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
 import {COLLAPSED_DRAWER, FIXED_DRAWER} from 'store/actionTypes';
 import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
-import CardHeader from 'app/components/CardHeader';
 import {toggleCollapsedNav} from 'store/actions/Setting';
 import {fetchSystemName} from 'store/thunk/header';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
@@ -142,8 +141,10 @@ class Header extends Component {
                                         </IconButton>
                                     </DropdownToggle>
                                     <DropdownMenu right>
-                                        <CardHeader styleName="justify-content-center"
-                                                    heading={"Active Alarms"}/>
+                                        <div className="jr-card-header d-flex align-items-start align-items-center">
+                                            <div className="mr-auto"><h3 className="card-heading">Active Alarms</h3>
+                                            </div>
+                                        </div>
                                         <LiveAlarmsNotifications activeAlarms={activeAlarms}/>
                                     </DropdownMenu>
                                 </Dropdown>
