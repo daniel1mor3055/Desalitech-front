@@ -2,41 +2,46 @@ import React, {Component} from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import * as Yup from 'yup';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
-import {triggerChange} from 'store/thunk/dashboard';
-import ChooseTagsForm from '../ChooseTagsForm';
+import {triggerChange, triggerDelete} from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
 import SolidCard from "app/components/SolidCards/SolidCards";
+import './index.scss';
+import FormTrigger from "../FormTrigger";
+import FormDelete from "../FormDelete";
 
 class Trigger extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            chooseTagsFormOpen: false,
+            editFormOpen: false,
+            deleteFormOpen: false,
         };
     }
 
-    handleOpenChooseTagsForm = (event) => {
+    handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({chooseTagsFormOpen: true});
+        this.setState({editFormOpen: true});
     };
 
-    handleCloseChooseTagsForm = () => {
-        this.setState({chooseTagsFormOpen: false});
+    handleCloseForm = () => {
+        this.setState({
+            editFormOpen: false,
+            deleteFormOpen: false,
+        });
     };
 
     handleFormSubmit = (values) => {
-        const {tagId, controllerTagId} = values;
-        const {placement} = this.props;
+        const {tagName, controllerTagName} = values;
+        const {placement, tagList} = this.props;
 
         const trigger = {
-            tagId,
-            controllerTagId,
+            tagId: tagList.find(o => o.tagName === tagName).tagId,
+            controllerTagId: tagList.find(o => o.tagName === controllerTagName).tagId,
             placement
         };
         this.props.onTriggerChange(trigger);
@@ -44,55 +49,53 @@ class Trigger extends Component {
 
     getFormInitialValues = (tag, controllerTag) => {
         return {
+            tagName: tag.tagName,
+            controllerTagName: controllerTag.tagName,
+        };
+    };
+
+    handleOpenDeleteForm = () => {
+        this.setState({deleteFormOpen: true});
+    };
+
+    handleDeleteWidget = () => {
+        const {placement, tag, controllerTag} = this.props;
+
+        const trigger = {
             tagId: tag.tagId,
             controllerTagId: controllerTag.tagId,
+            placement,
         };
-    };
-
-    getFormValidationSchemaObject = () => {
-        return {
-            tagId: Yup.string().required('required'),
-            controllerTagId: Yup.string().required('required'),
-        };
-    };
-
-    verifyFormValues = (values) => {
-        const {tagList} = this.props;
-        const {tagId, controllerTagId} = values;
-        if (tagId === controllerTagId) {
-            return {global: "Tag and its controller should be different"};
-        }
-        if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase()) ||
-            !tagList.some(tag => tag.tagId.toLowerCase() === controllerTagId.toLowerCase())) {
-            return {global: "Make sure you provide valid tags"};
-        }
-        return null;
+        this.props.onTriggerDelete(trigger);
     };
 
     render() {
-        const {chooseTagsFormOpen} = this.state;
+        const {editFormOpen, deleteFormOpen} = this.state;
         const {tag, controllerTag} = this.props;
         const initialFormValues = this.getFormInitialValues(tag, controllerTag);
 
         return (
-            <Widget onClick={this.handleOpenChooseTagsForm} cardName='col-2'>
+            <Widget onEditClick={this.handleOpenEditForm} onDeleteClick={this.handleOpenDeleteForm}
+                    cardName='Trigger-widget'>
                 <>
                     <SolidCard
-                        tagName={(controllerTag.tagName !== '' && controllerTag.tagName != null) ?
-                            controllerTag.tagName : controllerTag.tagId}
-                        tagValue={controllerTag.tagValue}
-                        tagUnits={controllerTag.tagUnits}
-                        colorIndicator={tag.tagValue}
+                        tagName={(tag.tagName !== '' && tag.tagName != null) ?
+                            tag.tagName : tag.tagId}
+                        tagValue={tag.tagValue}
+                        tagUnits={tag.tagUnits}
+                        colorIndicator={controllerTag.tagValue}
                     />
-                    <ChooseTagsForm
-                        labels={['Tag ID', 'Controller Tag ID']}
-                        verifyValues={this.verifyFormValues}
-                        validationSchemaObject={this.getFormValidationSchemaObject()}
-                        formTitle={'Choose trigger settings'}
+                    <FormTrigger
                         initialValues={initialFormValues}
-                        handleClose={this.handleCloseChooseTagsForm}
+                        handleClose={this.handleCloseForm}
                         handleSubmit={this.handleFormSubmit}
-                        open={chooseTagsFormOpen}/>
+                        open={editFormOpen}/>
+
+                    <FormDelete
+                        handleClose={this.handleCloseForm}
+                        handleSubmit={this.handleDeleteWidget}
+                        open={deleteFormOpen}
+                    />
                 </>
             </Widget>
         );
@@ -115,6 +118,7 @@ const mapStateToProps = ({tags}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onTriggerChange: (trigger) => dispatch(triggerChange(trigger)),
+        onTriggerDelete: (trigger) => dispatch(triggerDelete(trigger)),
     };
 };
 

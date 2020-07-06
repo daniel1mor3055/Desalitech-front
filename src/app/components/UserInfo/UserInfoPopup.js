@@ -31,7 +31,7 @@ class UserInfoPopup extends Component {
                     </div>
                 </div>
                 <span className="jr-link dropdown-item text-muted">
-                     <i className="zmdi zmdi-face zmdi-hc-fw mr-1"/>
+                     <i className="zmdi zmdi-account zmdi-hc-fw mr-1"/>
                      <span>Profile</span>
                 </span>
                 <span className="jr-link dropdown-item text-muted">

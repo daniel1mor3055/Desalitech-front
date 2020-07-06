@@ -6,6 +6,9 @@ import {
     TIME_SERIES_ADD_SUCCESS,
     TIME_SERIES_ADD_START,
     TIME_SERIES_ADD_FAIL,
+    TIME_SERIES_DELETE_FAIL,
+    TIME_SERIES_DELETE_START,
+    TIME_SERIES_DELETE_SUCCESS
 } from '../actionTypes/charts';
 
 
@@ -13,7 +16,7 @@ const initialState = {
     timeSeries: [{
         times: [],
         tags: [],
-        startDate: moment().subtract(1,'days'),
+        startDate: moment().subtract(1, 'days'),
         endDate: moment(),
         placement: 0,
     }],
@@ -36,6 +39,12 @@ const reducer = (state = initialState, action) => {
             return timeSeriesAddSuccess(state, action);
         case TIME_SERIES_ADD_FAIL:
             return timeSeriesAddFail(state, action);
+        case TIME_SERIES_DELETE_START:
+            return timeSeriesDeleteStart(state, action);
+        case TIME_SERIES_DELETE_SUCCESS:
+            return timeSeriesDeleteSuccess(state, action);
+        case TIME_SERIES_DELETE_FAIL:
+            return timeSeriesDeleteFail(state, action);
         default:
             return state;
     }
@@ -68,6 +77,34 @@ function timeSeriesChangeFail(state, action) {
 }
 
 function timeSeriesChangeStart(state, action) {
+    return {
+        ...state,
+        posting: true,
+        error: null,
+    };
+}
+
+function timeSeriesDeleteSuccess(state, action) {
+    const newTimeSeries = state.timeSeries.filter((timeSeries) => (
+        timeSeries.placement !== action.payload.responseTimeSeries.placement));
+
+    return {
+        ...state,
+        posting: false,
+        error: null,
+        timeSeries: newTimeSeries,
+    };
+}
+
+function timeSeriesDeleteFail(state, action) {
+    return {
+        ...state,
+        posting: false,
+        error: action.payload.error,
+    };
+}
+
+function timeSeriesDeleteStart(state, action) {
     return {
         ...state,
         posting: true,

@@ -63,6 +63,7 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
                         return (
                             <form onSubmit={handleSubmit}>
                                 <TextField
+                                    className='w-50 p-2'
                                     label="Tag ID"
                                     name="tagId"
                                     value={values.tagId}
@@ -75,6 +76,7 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
 
                                 <TextField
                                     error={errors.tagName && touched.tagName}
+                                    className='w-50 p-2'
                                     label="Tag Name"
                                     name="tagName"
                                     value={values.tagName}
@@ -86,6 +88,7 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
 
                                 <TextField
                                     error={errors.description && touched.description}
+                                    className='w-50 p-2'
                                     label="Tag Description"
                                     name="description"
                                     value={values.description}
@@ -97,6 +100,7 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
 
                                 <TextField
                                     error={errors.units && touched.units}
+                                    className='w-50 p-2'
                                     label="Tag Units"
                                     name="units"
                                     value={values.units}

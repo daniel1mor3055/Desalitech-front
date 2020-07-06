@@ -107,13 +107,14 @@ class AlarmList extends PureComponent {
                                         value="checkedEmail"
                                     />
                                 }
-                                label="E-mail Notification"
+                                label="E-mail Notifications"
                             />
                         </CardHeader>
                         <DataTable data={filteredAlarms}
                                    columnsIds={columnsIds}
                                    columnsLabels={columnsLabels}
-                                   initialOrderBy={'alarmId'}
+                                   initialOrderBy={'timeStamp'}
+                                   order={'desc'}
                                    cellIdentifier={'id'}/>
                     </div>
                 </div>

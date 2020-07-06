@@ -2,90 +2,96 @@ import React, {Component} from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import * as Yup from 'yup';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {withRouter} from "react-router";
 
 import TitleCard from "app/components/TitleCard";
-import {tagChange} from 'store/thunk/dashboard';
-import ChooseTagsForm from '../ChooseTagsForm';
+import {tagChange,tagDelete} from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
+import './index.scss';
+import FormTag from "../FormTag";
+import FormDelete from "../FormDelete";
 
 class Tag extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            chooseTagsFormOpen: false,
+            editFormOpen: false,
+            deleteFormOpen: false,
         };
     }
 
-    handleOpenChooseTagsForm = (event) => {
+    handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({chooseTagsFormOpen: true});
+        this.setState({editFormOpen: true});
     };
 
-    handleCloseChooseTagsForm = () => {
-        this.setState({chooseTagsFormOpen: false});
+    handleCloseForm = () => {
+        this.setState({
+            editFormOpen: false,
+            deleteFormOpen: false,
+        });
     };
 
     handleFormSubmit = (values) => {
-        const {tagId} = values;
-        const {placement} = this.props;
+        const {tagName} = values;
+        const {placement, tagList} = this.props;
 
         const tag = {
-            tagId,
-            placement
+            tagId: tagList.find(o => o.tagName === tagName).tagId,
+            placement,
         };
         this.props.onTagChange(tag);
     };
 
-    getFormInitialValues = (tagId) => {
+    getFormInitialValues = (tagName) => {
         const initialValues = {
-            tagId,
+            tagName,
         };
         return initialValues;
     };
 
-    getFormValidationSchemaObject = () => {
-        const validationSchema = {
-            tagId: Yup.string().required('required'),
-        };
-        return validationSchema;
+    handleOpenDeleteForm = () => {
+        this.setState({deleteFormOpen: true});
     };
 
-    verifyFormValues = (values) => {
-        const {tagList} = this.props
-        const {tagId} = values
-        if (!tagList.some(tag => tag.tagId.toLowerCase() === tagId.toLowerCase())) {
-            return {global: "Make sure you provide a valid tag"};
-        }
-        return null;
+    handleDeleteWidget = () => {
+        const {tagId, placement} = this.props;
+
+        const tag = {
+            tagId,
+            placement,
+        };
+        this.props.onTagDelete(tag);
     };
 
     render() {
-        const {chooseTagsFormOpen} = this.state;
+        const {editFormOpen, deleteFormOpen} = this.state;
         const {tagId, tagName, tagValue, tagUnits} = this.props;
-        const initialFormValues = this.getFormInitialValues(tagId);
+        const initialFormValues = this.getFormInitialValues(tagName);
 
         return (
-            <Widget onClick={this.handleOpenChooseTagsForm} cardName='col-2'>
+            <Widget onEditClick={this.handleOpenEditForm} onDeleteClick={this.handleOpenDeleteForm}
+                    cardName='Tag-widget'>
                 <>
                     <TitleCard
                         tagName={(tagName !== '' && tagName != null) ? tagName : tagId}
                         tagValue={tagValue === undefined || tagValue === null ? '' : tagValue}
-                        tagUnits={tagUnits === undefined || tagUnits === null ? '' : tagUnits}
+                        tagUnits={tagUnits == null ? '' : tagUnits}
                     />
-                    <ChooseTagsForm
-                        labels={['Tag ID']}
-                        verifyValues={this.verifyFormValues}
-                        validationSchemaObject={this.getFormValidationSchemaObject()}
-                        formTitle={'Choose tag to display'}
+                    <FormTag
                         initialValues={initialFormValues}
-                        handleClose={this.handleCloseChooseTagsForm}
+                        handleClose={this.handleCloseForm}
                         handleSubmit={this.handleFormSubmit}
-                        open={chooseTagsFormOpen}/>
+                        open={editFormOpen}/>
+
+                    <FormDelete
+                        handleClose={this.handleCloseForm}
+                        handleSubmit={this.handleDeleteWidget}
+                        open={deleteFormOpen}
+                    />
                 </>
             </Widget>
         );
@@ -110,6 +116,7 @@ const mapStateToProps = ({tags}) => {
 const mapDispatchedToProps = dispatch => {
     return {
         onTagChange: (tag) => dispatch(tagChange(tag)),
+        onTagDelete: (tag) => dispatch(tagDelete(tag)),
     };
 };
 

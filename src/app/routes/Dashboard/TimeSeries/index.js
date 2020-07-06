@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import moment from "moment";
 import {connect} from 'react-redux';
 import momentPropTypes from 'react-moment-proptypes';
-import * as Yup from 'yup';
 
 import MultiYChart from "./MultiYChart";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import ChooseTagsForm from '../ChooseTagsForm';
 import Widget from "app/components/Widget";
 import DesDateRangePicker from "./DesDateRangePicker";
+import FormTimeSeries from "../FormTimeSeries";
+import FormDelete from "../FormDelete";
 
 class TimeSeries extends Component {
     constructor(props) {
@@ -19,7 +19,8 @@ class TimeSeries extends Component {
             startDate: null,
             endDate: null,
             focusedInput: null,
-            chooseTagsFormOpen: false,
+            editFormOpen: false,
+            deleteFormOpen: false,
             buttonsColor: {
                 yearColor: 'default',
                 halfYearColor: 'default',
@@ -31,10 +32,19 @@ class TimeSeries extends Component {
     }
 
     componentDidMount = () => {
-        const {startDate, endDate} = this.props;
+        const {startDate, endDate, currentPickedRange} = this.props;
+        const newButtonColors = {
+            yearColor: currentPickedRange === 'Year' ? 'primary' : 'default',
+            halfYearColor: currentPickedRange === 'Six Month' ? 'primary' : 'default',
+            monthColor: currentPickedRange === 'Month' ? 'primary' : 'default',
+            weekColor: currentPickedRange === 'Week' ? 'primary' : 'default',
+            dayColor: (currentPickedRange === 'Day' || currentPickedRange == null) ? 'primary' : 'default',
+        };
+
         this.setState({
             startDate,
             endDate,
+            buttonsColor: newButtonColors,
         });
     };
 
@@ -43,8 +53,9 @@ class TimeSeries extends Component {
             this.setState({startDate});
             return null;
         } else {
+            this.handlePushedButtonColor('Custom');
             this.setState({startDate, endDate});
-            this.dateTimeSeriesChange(startDate, endDate);
+            this.dateTimeSeriesChange(startDate, endDate, 'Custom');
         }
     };
 
@@ -56,25 +67,27 @@ class TimeSeries extends Component {
             weekColor: 'default',
             dayColor: 'default',
         };
-        buttonsColor[propertyToColor] = 'primary';
+        if (propertyToColor !== 'Custom') {
+            buttonsColor[propertyToColor] = 'primary';
+        }
         this.setState({buttonsColor: buttonsColor});
     };
 
-    handleFromTodayPick = (delta, scale) => {
+    handleFromTodayPick = (delta, scale, code) => {
         const endDate = moment();
         const startDate = moment().subtract(delta, scale);
         this.setState({
             startDate,
             endDate
         });
-
-        this.dateTimeSeriesChange(startDate, endDate);
+        this.dateTimeSeriesChange(startDate, endDate, code);
     };
 
 
-    dateTimeSeriesChange = (startDate, endDate) => {
+    dateTimeSeriesChange = (startDate, endDate, code) => {
         const {tags, placement} = this.props;
         const timeSeries = {
+            detail1: code,
             startDate,
             endDate,
             tags,
@@ -83,25 +96,32 @@ class TimeSeries extends Component {
         this.props.onTimeSeriesChange(timeSeries);
     };
 
-    handleOpenChooseTagsForm = (event) => {
+    handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({chooseTagsFormOpen: true});
+        this.setState({editFormOpen: true});
     };
 
-    handleCloseChooseTagsForm = () => {
-        this.setState({chooseTagsFormOpen: false});
+    handleCloseForm = () => {
+        this.setState({
+            editFormOpen: false,
+            deleteFormOpen: false,
+        });
     };
 
     handleFormSubmit = (values) => {
-        const {startDate, endDate, placement} = this.props;
-        const tags = Object.keys(values).map((key) => ({
-            tagId: values[key],
-        }));
+        const {startDate, endDate, placement, currentPickedRange, tagList} = this.props;
+        const tags = Object.keys(values).map((key) => {
+            const newTag = tagList.find(o => o.tagName === values[key]);
+            return {
+                tagId: newTag == null ? '' : newTag.tagId,
+            };
+        });
         const timeSeries = {
             startDate,
             endDate,
             placement,
             tags,
+            detail1: currentPickedRange,
         };
         this.props.onTimeSeriesChange(timeSeries);
     };
@@ -110,84 +130,63 @@ class TimeSeries extends Component {
         let initialValues = {};
         for (let i = 0; i < 3; i++) {
             if (i < tags.length) {
-                initialValues[`tag${i + 1}Id`] = tags[i].tagId;
+                initialValues[`tag${i + 1}Name`] = tags[i].tagName;
             } else {
-                initialValues[`tag${i + 1}Id`] = '';
+                initialValues[`tag${i + 1}Name`] = '';
             }
         }
         return initialValues;
     };
 
-    getFormValidationSchemaObject = () => {
-        return {
-            tag1Id: Yup.string().nullable(),
-            tag2Id: Yup.string().nullable(),
-            tag3Id: Yup.string().nullable(),
-        };
+    handleOpenDeleteForm = () => {
+        this.setState({deleteFormOpen: true});
     };
 
-    verifyFormValues = (values) => {
-        const {tagList} = this.props;
-        let invalidTagsFlag = false;
-        let notEmptyValues = [];
-        for (let property in values) {
-            if (values.hasOwnProperty(property)) {
-                if (values[property] === null || values[property] === '') {
-                    values[property] = '';
-                } else {
-                    notEmptyValues.push(values[property]);
-                }
-            }
-        }
-        notEmptyValues.forEach((notEmptyValue) => {
-            if (!tagList.some(tag => tag.tagId.toLowerCase() === notEmptyValue.toLowerCase())) {
-                invalidTagsFlag = true;
-            }
-        });
-        if (invalidTagsFlag) {
-            return {global: "Make sure you provide valid tags"};
-        }
-        if ((new Set(notEmptyValues)).size !== notEmptyValues.length) {
-            return {global: 'Tags should be different'};
-        }
-        if (notEmptyValues.length === 0) {
-            return {global: 'Choose at least one tag'};
-        }
-        return null;
+    handleDeleteWidget = () => {
+        const {startDate, endDate, placement, currentPickedRange, tags} = this.props;
+
+        const timeSeries = {
+            startDate,
+            endDate,
+            placement,
+            tags,
+            detail1: currentPickedRange,
+        };
+        this.props.onTimeSeriesDelete(timeSeries);
     };
 
     render() {
-        const {chooseTagsFormOpen, buttonsColor: {yearColor, halfYearColor, monthColor, weekColor, dayColor}} = this.state;
+        const {editFormOpen,deleteFormOpen, buttonsColor: {yearColor, halfYearColor, monthColor, weekColor, dayColor}} = this.state;
         const {tags, times, placement} = this.props;
         const initialFormValues = this.getFormInitialValues(tags);
 
         return (
-            <Widget childrenStyle={'col-12'} onClick={this.handleOpenChooseTagsForm}>
+            <Widget childrenStyle={'col-12'} onDeleteClick={this.handleOpenDeleteForm} onEditClick={this.handleOpenEditForm}>
                 <>
                     <Button className="jr-btn" color={`${yearColor}`}
                             onClick={() => {
                                 this.handlePushedButtonColor('yearColor');
-                                this.handleFromTodayPick(1, 'years');
+                                this.handleFromTodayPick(1, 'years', 'Year');
                             }}>1 Year</Button>
                     <Button className="jr-btn" color={`${halfYearColor}`}
                             onClick={() => {
                                 this.handlePushedButtonColor('halfYearColor');
-                                this.handleFromTodayPick(6, 'months');
+                                this.handleFromTodayPick(6, 'months', 'Six Month');
                             }}>6 Months</Button>
                     <Button className="jr-btn" color={`${monthColor}`}
                             onClick={() => {
                                 this.handlePushedButtonColor('monthColor');
-                                this.handleFromTodayPick(1, 'months');
+                                this.handleFromTodayPick(1, 'months', 'Month');
                             }}>1 Month</Button>
                     <Button className="jr-btn" color={`${weekColor}`}
                             onClick={() => {
                                 this.handlePushedButtonColor('weekColor');
-                                this.handleFromTodayPick(1, 'weeks');
+                                this.handleFromTodayPick(1, 'weeks', 'Week');
                             }}>1 Week</Button>
                     <Button className="jr-btn" color={`${dayColor}`}
                             onClick={() => {
                                 this.handlePushedButtonColor('dayColor');
-                                this.handleFromTodayPick(1, 'day');
+                                this.handleFromTodayPick(1, 'days', 'Day');
                             }}>1 Day</Button>
                     <DesDateRangePicker startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                                         startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
@@ -200,19 +199,21 @@ class TimeSeries extends Component {
                                         isOutsideRange={() => false}/>
                 </>
                 <>
-                    <ChooseTagsForm
-                        labels={['Tag1 ID', 'Tag2 ID', 'Tag3 ID']}
-                        verifyValues={this.verifyFormValues}
-                        validationSchemaObject={this.getFormValidationSchemaObject()}
-                        formTitle={'Choose tags to display'}
-                        initialValues={initialFormValues}
-                        handleClose={this.handleCloseChooseTagsForm}
+                    <FormTimeSeries
                         handleSubmit={this.handleFormSubmit}
-                        open={chooseTagsFormOpen}/>
+                        handleClose={this.handleCloseForm}
+                        open={editFormOpen}
+                        initialValues={initialFormValues}
+                    />
+                    <FormDelete
+                        handleClose={this.handleCloseForm}
+                        handleSubmit={this.handleDeleteWidget}
+                        open={deleteFormOpen}
+                    />
                     <MultiYChart data={tags.map(tag => tag.tagTimeValues.map((timeValue) => timeValue.toFixed(2)))}
                                  xData={times}
                                  showYLabels={true}
-                                 yLabels={tags.map(tag => tag.tagId+' ('+tag.tagUnits+') ')}
+                                 yLabels={tags.map(tag => tag.tagName + ' (' + tag.tagUnits + ') ')}
                                  colors={['#2196f3', '#ff6e40', '#ff3a8c']}
                                  key={placement}/>
                 </>
@@ -228,7 +229,9 @@ TimeSeries.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,
-    onTimeSeriesChange: PropTypes.func.isRequired
+    onTimeSeriesChange: PropTypes.func.isRequired,
+    onTimeSeriesDelete: PropTypes.func.isRequired,
+    currentPickedRange: PropTypes.string,
 };
 
 
@@ -237,7 +240,6 @@ const mapStateToProps = ({tags}) => {
         tagList: tags.tags,
     };
 };
-
 
 export default connect(mapStateToProps)(TimeSeries);
 
