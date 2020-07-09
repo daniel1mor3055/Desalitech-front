@@ -123,7 +123,10 @@ class DataTable extends React.Component {
     };
 
     handleChangeRowsPerPage = event => {
-        this.setState({rowsPerPage: event.target.value});
+        this.setState({
+            rowsPerPage: event.target.value,
+            page: 0,
+        });
     };
 
 
