@@ -274,7 +274,7 @@ function verifyValues(values) {
 
     const numericValues = [];
 
-    for (let i = 0; i < CheckboxesArray.length - 1; i++) {
+    for (let i = 0; i < CheckboxesArray.length; i++) {
         if (!CheckboxesArray[i]) {
             numericValues.push(+thresholdValues[i]);
         }
