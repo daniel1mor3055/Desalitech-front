@@ -14,7 +14,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_SYSTEMS_START:
-            return fetchSystemsStart(state, action);
+            return fetchSystemsStart(state);
         case FETCH_SYSTEMS_SUCCESS:
             return fetchSystemsSuccess(state, action);
         case FETCH_SYSTEMS_FAIL:
@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-function fetchSystemsStart(state, action) {
+function fetchSystemsStart(state) {
     return {
         ...state,
         fetching: true,

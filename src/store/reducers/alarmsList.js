@@ -18,13 +18,13 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_ALARMS_START:
-            return fetchAlarmsStart(state, action);
+            return fetchAlarmsStart(state);
         case FETCH_ALARMS_SUCCESS:
             return fetchAlarmsSuccess(state, action);
         case FETCH_ALARMS_FAIL:
             return fetchAlarmsFail(state, action);
         case SET_EMAIL_NOTIFICATION_START:
-            return setEmailNotificationStart(state, action);
+            return setEmailNotificationStart(state);
         case SET_EMAIL_NOTIFICATION_SUCCESS:
             return setEmailNotificationSuccess(state, action);
         case SET_EMAIL_NOTIFICATION_FAIL:
@@ -34,7 +34,7 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-function fetchAlarmsStart(state, action) {
+function fetchAlarmsStart(state) {
     return {
         ...state,
         fetching: true,
@@ -60,7 +60,7 @@ function fetchAlarmsFail(state, action) {
     };
 }
 
-function setEmailNotificationStart(state, action) {
+function setEmailNotificationStart(state) {
     return {
         ...state,
         posting: true,

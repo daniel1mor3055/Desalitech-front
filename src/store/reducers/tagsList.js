@@ -35,7 +35,7 @@ const reducer = (state = initialState, action) => {
 };
 
 
-function postTagStart(state, action) {
+function postTagStart(state) {
     return {
         ...state,
         posting: true,
@@ -68,7 +68,7 @@ function postTagFail(state, action) {
     };
 }
 
-function fetchTagsStart(state, action) {
+function fetchTagsStart(state) {
     return {
         ...state,
         fetching: true,

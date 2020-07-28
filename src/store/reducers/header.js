@@ -17,7 +17,7 @@ const reducer = (state = initialState, action) => {
         case SET_ADMIN_STATUS:
             return setAdminStatus(state, action);
         case FETCH_SYSTEM_NAME_START:
-            return fetchSystemNameStart(state, action);
+            return fetchSystemNameStart(state);
         case FETCH_SYSTEM_NAME_SUCCESS:
             return fetchSystemNameSuccess(state, action);
         case FETCH_SYSTEM_NAME_FAIL:
@@ -29,7 +29,7 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-function fetchSystemNameStart(state, action) {
+function fetchSystemNameStart(state) {
     return {
         ...state,
         fetching: true,

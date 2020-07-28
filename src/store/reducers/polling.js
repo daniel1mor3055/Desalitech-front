@@ -14,7 +14,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_POLLING_START:
-            return fetchPollingStart(state, action);
+            return fetchPollingStart(state);
         case FETCH_POLLING_FAIL:
             return fetchPollingFail(state, action);
         case FETCH_POLLING_SUCCESS:
@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
     }
 };
 
-function fetchPollingStart(state, action) {
+function fetchPollingStart(state) {
     return {
         ...state,
         fetching: true,
