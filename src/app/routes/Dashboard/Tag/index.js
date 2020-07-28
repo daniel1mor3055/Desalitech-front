@@ -1,13 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 import TitleCard from "app/components/TitleCard";
-import {tagChange,tagDelete} from 'store/thunk/dashboard';
+import { tagChange, tagDelete } from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
 import './index.scss';
 import FormTag from "../FormTag";
@@ -25,7 +25,7 @@ class Tag extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -36,8 +36,8 @@ class Tag extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {tagName} = values;
-        const {placement, tagsList} = this.props;
+        const { tagName } = values;
+        const { placement, tagsList } = this.props;
 
         const tag = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
@@ -54,11 +54,11 @@ class Tag extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
     handleDeleteWidget = () => {
-        const {tagId, placement} = this.props;
+        const { tagId, placement } = this.props;
 
         const tag = {
             tagId,
@@ -68,8 +68,8 @@ class Tag extends Component {
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen} = this.state;
-        const {tagId, tagName, tagValue, tagUnits} = this.props;
+        const { editFormOpen, deleteFormOpen } = this.state;
+        const { tagId, tagName, tagValue, tagUnits } = this.props;
         const initialFormValues = this.getFormInitialValues(tagName);
 
         return (
@@ -107,7 +107,7 @@ Tag.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
     };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardBody, CardImg, CardSubtitle} from 'reactstrap';
+import { Card, CardBody, CardImg, CardSubtitle } from 'reactstrap';
 import classnames from 'classnames';
 
 import './SystemCard.scss';
@@ -7,9 +7,9 @@ import PropTypes from 'prop-types';
 
 
 const SystemCard = ({
-                       image, title, recovery, production, conductivity,
-                       onClick, systemStatusIcon, systemStatusBorder
-                   }) => {
+                        image, title, recovery, production, conductivity,
+                        onClick, systemStatusIcon, systemStatusBorder
+                    }) => {
     return (
         <div className='SystemCard' onClick={onClick}>
             <Card className="shadow border-0 m-0">

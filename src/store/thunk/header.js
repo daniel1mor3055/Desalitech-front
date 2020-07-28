@@ -1,4 +1,4 @@
-import {fetchSystemNameApi} from 'api/header';
+import { fetchSystemNameApi } from 'api/header';
 import {
     fetchSystemNameFail,
     fetchSystemNameStart,
@@ -10,7 +10,7 @@ export const fetchSystemName = () => (
     async (dispatch) => {
         dispatch(fetchSystemNameStart());
         try {
-            const {systemInfo: {systemName}} = await fetchSystemNameApi();
+            const { systemInfo: { systemName } } = await fetchSystemNameApi();
             dispatch(fetchSystemNameSuccess(systemName));
         } catch (err) {
             dispatch(fetchSystemNameFail(err));

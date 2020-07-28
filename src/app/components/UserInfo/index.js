@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {Auth0Context} from "Auth0Provider";
+import { Auth0Context } from "Auth0Provider";
 import config from 'auth_config';
-import {withRouter} from "react-router-dom";
-import {connect} from "react-redux";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 class UserInfo extends Component {
     static contextType = Auth0Context;
@@ -20,11 +20,11 @@ class UserInfo extends Component {
     }
 
     openMenuHandler = event => {
-        this.setState({open: true, anchorEl: event.currentTarget});
+        this.setState({ open: true, anchorEl: event.currentTarget });
     };
 
     closeMenuHandler = () => {
-        this.setState({open: false});
+        this.setState({ open: false });
     };
 
     logoutHandler = (e) => {
@@ -34,8 +34,8 @@ class UserInfo extends Component {
     };
 
     render() {
-        const {admin, fetching} = this.props;
-        const {user: {nickname, picture}} = this.context;
+        const { admin, fetching } = this.props;
+        const { user: { nickname, picture } } = this.context;
 
         return (
             <div className="user-profile d-flex flex-row align-items-center">
@@ -81,7 +81,7 @@ class UserInfo extends Component {
     }
 }
 
-const mapStateToProps = ({header}) => {
+const mapStateToProps = ({ header }) => {
     return {
         admin: header.admin,
         fetching: header.fetching,

@@ -3,7 +3,7 @@ import Menu from '@material-ui/core/Menu';
 import PropTypes from 'prop-types';
 
 
-const CardMenu = ({menuState, anchorEl, handleRequestClose, children}) => (
+const CardMenu = ({ menuState, anchorEl, handleRequestClose, children }) => (
     <Menu id="long-menu"
           anchorEl={anchorEl}
           open={menuState}

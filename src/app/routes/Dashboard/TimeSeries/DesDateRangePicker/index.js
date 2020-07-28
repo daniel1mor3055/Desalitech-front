@@ -1,11 +1,11 @@
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import {DateRangePicker} from "react-dates";
+import { DateRangePicker } from "react-dates";
 import React from "react";
 import './index.scss';
 
-const DesDateRangePicker = ({startDate, startDateId, endDate, endDateId, onDatesChange, focusedInput, onFocusChange, numberOfMonths, isOutsideRange}) => {
+const DesDateRangePicker = ({ startDate, startDateId, endDate, endDateId, onDatesChange, focusedInput, onFocusChange, numberOfMonths, isOutsideRange }) => {
     return <DateRangePicker
         startDate={startDate} // momentPropTypes.momentObj or null,
         startDateId={startDateId} // PropTypes.string.isRequired,

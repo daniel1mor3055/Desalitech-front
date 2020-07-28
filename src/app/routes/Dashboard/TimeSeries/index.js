@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import moment from "moment";
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import momentPropTypes from 'react-moment-proptypes';
 
 import MultiYChart from "./MultiYChart";
@@ -32,7 +32,7 @@ class TimeSeries extends Component {
     }
 
     componentDidMount = () => {
-        const {startDate, endDate, currentPickedRange} = this.props;
+        const { startDate, endDate, currentPickedRange } = this.props;
         const newButtonColors = {
             yearColor: currentPickedRange === 'Year' ? 'primary' : 'default',
             halfYearColor: currentPickedRange === 'Six Month' ? 'primary' : 'default',
@@ -48,13 +48,13 @@ class TimeSeries extends Component {
         });
     };
 
-    handleRangePick = ({startDate, endDate}) => {
+    handleRangePick = ({ startDate, endDate }) => {
         if (endDate === this.state.endDate) {
-            this.setState({startDate});
+            this.setState({ startDate });
             return null;
         } else {
             this.handlePushedButtonColor('Custom');
-            this.setState({startDate, endDate});
+            this.setState({ startDate, endDate });
             this.dateTimeSeriesChange(startDate, endDate, 'Custom');
         }
     };
@@ -70,7 +70,7 @@ class TimeSeries extends Component {
         if (propertyToColor !== 'Custom') {
             buttonsColor[propertyToColor] = 'primary';
         }
-        this.setState({buttonsColor: buttonsColor});
+        this.setState({ buttonsColor: buttonsColor });
     };
 
     handleFromTodayPick = (delta, scale, code) => {
@@ -85,7 +85,7 @@ class TimeSeries extends Component {
 
 
     dateTimeSeriesChange = (startDate, endDate, code) => {
-        const {tags, placement} = this.props;
+        const { tags, placement } = this.props;
         const timeSeries = {
             detail1: code,
             startDate,
@@ -98,7 +98,7 @@ class TimeSeries extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -109,7 +109,7 @@ class TimeSeries extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {startDate, endDate, placement, currentPickedRange, tagsList} = this.props;
+        const { startDate, endDate, placement, currentPickedRange, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
@@ -139,11 +139,11 @@ class TimeSeries extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
     handleDeleteWidget = () => {
-        const {startDate, endDate, placement, currentPickedRange, tags} = this.props;
+        const { startDate, endDate, placement, currentPickedRange, tags } = this.props;
 
         const timeSeries = {
             startDate,
@@ -156,12 +156,13 @@ class TimeSeries extends Component {
     };
 
     render() {
-        const {editFormOpen,deleteFormOpen, buttonsColor: {yearColor, halfYearColor, monthColor, weekColor, dayColor}} = this.state;
-        const {tags, times, placement} = this.props;
+        const { editFormOpen, deleteFormOpen, buttonsColor: { yearColor, halfYearColor, monthColor, weekColor, dayColor } } = this.state;
+        const { tags, times, placement } = this.props;
         const initialFormValues = this.getFormInitialValues(tags);
 
         return (
-            <Widget childrenStyle={'col-12'} onDeleteClick={this.handleOpenDeleteForm} onEditClick={this.handleOpenEditForm}>
+            <Widget childrenStyle={'col-12'} onDeleteClick={this.handleOpenDeleteForm}
+                    onEditClick={this.handleOpenEditForm}>
                 <>
                     <Button className="jr-btn" color={`${yearColor}`}
                             onClick={() => {
@@ -194,7 +195,7 @@ class TimeSeries extends Component {
                                         endDateId={'endDate' + placement.toString()} // PropTypes.string.isRequired,
                                         onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
                                         focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                                        onFocusChange={(focusedInput) => this.setState({focusedInput})} // PropTypes.func.isRequired,
+                                        onFocusChange={(focusedInput) => this.setState({ focusedInput })} // PropTypes.func.isRequired,
                                         numberOfMonths={1}
                                         isOutsideRange={() => false}/>
                 </>
@@ -235,7 +236,7 @@ TimeSeries.propTypes = {
 };
 
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
     };

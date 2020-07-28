@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
@@ -8,13 +8,13 @@ import 'react-dates/lib/css/_datepicker.css';
 import {
     fetchBackgroundTags,
     fetchDashboard,
+    gaugeAdd,
+    seeqAdd,
+    tagAdd,
+    timeSeriesAdd,
     timeSeriesChange,
     timeSeriesDelete,
-    timeSeriesAdd,
-    gaugeAdd,
-    tagAdd,
     triggerAdd,
-    seeqAdd,
 } from "store/thunk/dashboard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import Gauge from "./Gauge";
@@ -23,9 +23,6 @@ import Tag from './Tag';
 import Trigger from "./Trigger";
 import Seeq from './Seeq';
 import IconButton from "@material-ui/core/IconButton";
-import {extractCurrentTabFromURL} from "../../../api/utils";
-import ChooseTagsForm from "./ChooseTagsForm";
-import AddWidgetForm from "./AddWidgetForm";
 import WidgetTypesSelector from "./WidgetTypesSelector";
 import FormGauge from "./FormGauge";
 import FormTag from "./FormTag";
@@ -57,11 +54,11 @@ class Dashboard extends Component {
 
     handleOpenSelectorWidgetType = (event) => {
         event.preventDefault();
-        this.setState({widgetTypesSelectorOpen: true});
+        this.setState({ widgetTypesSelectorOpen: true });
     };
 
     handleCloseSelectorWidgetType = () => {
-        this.setState({widgetTypesSelectorOpen: false});
+        this.setState({ widgetTypesSelectorOpen: false });
     };
 
     handleCloseWidgetForm = () => {
@@ -77,7 +74,7 @@ class Dashboard extends Component {
 
     handleChooseSelectorWidgetType = (event, widgetType) => {
         event.preventDefault();
-        const newState = {...this.state};
+        const newState = { ...this.state };
         switch (widgetType) {
             case('timeSeries'):
                 newState.timeSeriesFormOpen = true;
@@ -111,7 +108,7 @@ class Dashboard extends Component {
     };
 
     handleTimeSeriesSubmit = (values) => {
-        const {currentPlacement, tagsList} = this.props;
+        const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
@@ -130,8 +127,8 @@ class Dashboard extends Component {
     };
 
     handleGaugesSubmit = (values) => {
-        const {newGaugetype} = this.state;
-        const {currentPlacement, tagsList} = this.props;
+        const { newGaugetype } = this.state;
+        const { currentPlacement, tagsList } = this.props;
         const {
             measuredTag, lLFromOptionsCheckBox, lLFromOptions, lL, lFromOptionsCheckBox,
             lFromOptions, l, hFromOptionsCheckBox, hFromOptions, h, hHFromOptionsCheckBox, hHFromOptions, hH
@@ -154,8 +151,8 @@ class Dashboard extends Component {
     };
 
     handleTagsSubmit = (values) => {
-        const {tagName} = values;
-        const {currentPlacement, tagsList} = this.props;
+        const { tagName } = values;
+        const { currentPlacement, tagsList } = this.props;
 
         const tag = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
@@ -165,8 +162,8 @@ class Dashboard extends Component {
     };
 
     handleTriggersSubmit = (values) => {
-        const {tagName, controllerTagName} = values;
-        const {currentPlacement, tagsList} = this.props;
+        const { tagName, controllerTagName } = values;
+        const { currentPlacement, tagsList } = this.props;
 
         const trigger = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
@@ -177,8 +174,8 @@ class Dashboard extends Component {
     };
 
     handleSeeqsSubmit = (values) => {
-        const {url} = values;
-        const {currentPlacement} = this.props;
+        const { url } = values;
+        const { currentPlacement } = this.props;
 
         const seeq = {
             url,
@@ -188,7 +185,7 @@ class Dashboard extends Component {
     };
 
     render() {
-        const {widgetTypesSelectorOpen, gaugeFormOpen, tagFormOpen, triggerFormOpen, seeqFormOpen, timeSeriesFormOpen} = this.state;
+        const { widgetTypesSelectorOpen, gaugeFormOpen, tagFormOpen, triggerFormOpen, seeqFormOpen, timeSeriesFormOpen } = this.state;
         const {
             triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
@@ -236,7 +233,7 @@ class Dashboard extends Component {
                                             open={timeSeriesFormOpen}/>
 
                             {timeSeries.map((timeSeries) => {
-                                const {startDate, endDate, times, tags, placement, currentPickedRange} = timeSeries;
+                                const { startDate, endDate, times, tags, placement, currentPickedRange } = timeSeries;
                                 return (
                                     <TimeSeries
                                         onTimeSeriesChange={this.props.onTimeSeriesChange}
@@ -251,32 +248,32 @@ class Dashboard extends Component {
                             })}
                             <div className="justify-content-around d-flex flex-wrap">
                                 {middleGauges.map((middleGauge) => {
-                                    const {placement} = middleGauge;
+                                    const { placement } = middleGauge;
                                     return <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge} key={placement}/>;
                                 })}
                                 {leftGauges.map((leftGauge) => {
-                                    const {placement} = leftGauge;
+                                    const { placement } = leftGauge;
                                     return <Gauge gaugeType={'LEFT'} gaugeData={leftGauge} key={placement}/>;
                                 })}
                                 {rightGauges.map((rightGauge) => {
-                                    const {placement} = rightGauge;
+                                    const { placement } = rightGauge;
                                     return <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge} key={placement}/>;
                                 })}
                             </div>
                             <div className="justify-content-around d-flex flex-wrap">
                                 {tags.map((tag) => {
-                                    const {tagId, tagName, tagValue, tagUnits, placement} = tag;
+                                    const { tagId, tagName, tagValue, tagUnits, placement } = tag;
                                     return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnits={tagUnits}
                                                 placement={placement} key={placement}/>;
                                 })}
                                 {triggers.map((trigger) => {
-                                    const {controllerTag, tag, placement} = trigger;
+                                    const { controllerTag, tag, placement } = trigger;
                                     return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}
                                                     key={placement}/>;
                                 })}
                             </div>
                             {seeqs.map((seeq) => {
-                                    const {url, placement} = seeq;
+                                    const { url, placement } = seeq;
                                     return <Seeq url={url} placement={placement} key={placement}/>;
                                 }
                             )}
@@ -288,7 +285,7 @@ class Dashboard extends Component {
 }
 
 
-const mapStateToProps = ({dashboard, tags}) => {
+const mapStateToProps = ({ dashboard, tags }) => {
     return {
         triggers: dashboard.triggers,
         tags: dashboard.tags,

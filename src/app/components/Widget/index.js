@@ -5,7 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './index.scss';
 
-const Widget = ({heading, children, cardName, childrenStyle, onEditClick,onDeleteClick}) => {
+const Widget = ({ heading, children, cardName, childrenStyle, onEditClick, onDeleteClick }) => {
 
     return (
         <div className={`Widget jr-card ${cardName}`}>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {STORE_TOKEN} from '../actionTypes/auth';
+import { STORE_TOKEN } from '../actionTypes/auth';
 
 export const storeToken = (accessToken, idToken) => (
     {

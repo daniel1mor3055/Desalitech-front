@@ -1,6 +1,6 @@
-import {applyMiddleware, compose, createStore} from 'redux';
-import {createBrowserHistory} from 'history';
-import {routerMiddleware} from 'connected-react-router';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'connected-react-router';
 import thunkMiddleware from 'redux-thunk';
 
 import reducers from './reducers';
@@ -27,5 +27,5 @@ const configureStore = (initialState) => {
     }
     return store;
 };
-export {history};
+export { history };
 export default configureStore;

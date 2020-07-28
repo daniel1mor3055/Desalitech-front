@@ -1,5 +1,5 @@
 import React from 'react';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -7,14 +7,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from "@material-ui/core/Typography";
-import {connect} from "react-redux";
 import TextField from "@material-ui/core/TextField";
 
 const styles = {};
 
-const FormSeeq = ({open, handleClose, handleSubmit, initialValues}) => {
+const FormSeeq = ({ open, handleClose, handleSubmit, initialValues }) => {
     return (
         <Dialog
             open={open}
@@ -29,14 +28,14 @@ const FormSeeq = ({open, handleClose, handleSubmit, initialValues}) => {
                     <Formik
                         initialValues={initialValues == null ? {
                             url: '',
-                        }:initialValues}
-                        onSubmit={async (values, {setSubmitting, setErrors}) => {
+                        } : initialValues}
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             setSubmitting(true);
                             try {
                                 await handleSubmit(values);
                                 handleClose();
                             } catch (error) {
-                                setErrors({global: error.message});
+                                setErrors({ global: error.message });
                             }
                             setSubmitting(false);
                         }}

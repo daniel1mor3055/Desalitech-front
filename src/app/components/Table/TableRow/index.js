@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 
-const TableRow = ({cellData, key, onClick}) => {
+const TableRow = ({ cellData, key, onClick }) => {
     const cellElems = Object.values(cellData).map(value => (<td className="text-nowrap">{value}</td>));
     return (
         <tr

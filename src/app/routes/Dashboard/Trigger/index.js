@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import {triggerChange, triggerDelete} from 'store/thunk/dashboard';
+import { triggerChange, triggerDelete } from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
 import SolidCard from "app/components/SolidCards/SolidCards";
 import './index.scss';
@@ -25,7 +25,7 @@ class Trigger extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -36,8 +36,8 @@ class Trigger extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {tagName, controllerTagName} = values;
-        const {placement, tagsList} = this.props;
+        const { tagName, controllerTagName } = values;
+        const { placement, tagsList } = this.props;
 
         const trigger = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
@@ -55,11 +55,11 @@ class Trigger extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
     handleDeleteWidget = () => {
-        const {placement, tag, controllerTag} = this.props;
+        const { placement, tag, controllerTag } = this.props;
 
         const trigger = {
             tagId: tag.tagId,
@@ -70,8 +70,8 @@ class Trigger extends Component {
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen} = this.state;
-        const {tag, controllerTag} = this.props;
+        const { editFormOpen, deleteFormOpen } = this.state;
+        const { tag, controllerTag } = this.props;
         const initialFormValues = this.getFormInitialValues(tag, controllerTag);
 
         return (
@@ -109,7 +109,7 @@ Trigger.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
     };

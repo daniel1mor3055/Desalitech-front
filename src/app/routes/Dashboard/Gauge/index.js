@@ -1,13 +1,12 @@
 import ReactSpeedometer from 'react-d3-speedometer';
-import React, {Component} from "react";
-import {ResponsiveContainer} from 'recharts';
+import React, { Component } from "react";
+import { ResponsiveContainer } from 'recharts';
 import PropTypes from "prop-types";
-import * as Yup from 'yup';
-import {withRouter} from "react-router";
-import {connect} from "react-redux";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
 
 import Widget from "app/components/Widget";
-import {gaugeChange, gaugeDelete} from 'store/thunk/dashboard';
+import { gaugeChange, gaugeDelete } from 'store/thunk/dashboard';
 import FormGauge from "../FormGauge";
 import FormDelete from "../FormDelete";
 
@@ -28,7 +27,7 @@ class Gauge extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -39,8 +38,8 @@ class Gauge extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {lL, l, h, hH, measuredTag} = values;
-        const {gaugeType, gaugeData: {placement}, tagsList} = this.props;
+        const { lL, l, h, hH, measuredTag } = values;
+        const { gaugeType, gaugeData: { placement }, tagsList } = this.props;
         const newLl = tagsList.find(o => o.tagName === lL);
         const newL = tagsList.find(o => o.tagName === l);
         const newH = tagsList.find(o => o.tagName === h);
@@ -58,7 +57,7 @@ class Gauge extends Component {
     };
 
     getFormInitialValues = (gaugeData) => {
-        const {lL, l, h, hH, tags} = gaugeData;
+        const { lL, l, h, hH, tags } = gaugeData;
         const initialValues = {
             measuredTag: tags[0].tagName,
             lLFromOptionsCheckBox: !(lL.tagName == null || lL.tagName === ''),
@@ -78,11 +77,11 @@ class Gauge extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
     handleDeleteWidget = () => {
-        const {gaugeData: {lL, l, h, hH, tags, placement}, gaugeType} = this.props;
+        const { gaugeData: { lL, l, h, hH, tags, placement }, gaugeType } = this.props;
 
         const gauge = {
             measuredTag: tags[0].tagId,
@@ -96,7 +95,7 @@ class Gauge extends Component {
         this.props.onGaugeDelete(gaugeType, gauge);
     };
     static getDerivedStateFromProps = (props, state) => {
-        const {gaugeData: {lL, l, h, hH}} = props;
+        const { gaugeData: { lL, l, h, hH } } = props;
         return {
             ...state,
             lL: lL,
@@ -110,11 +109,11 @@ class Gauge extends Component {
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen, lL, l, h, hH, shouldForceRender} = this.state;
-        const {gaugeType, gaugeData} = this.props;
-        const {tags} = gaugeData;
+        const { editFormOpen, deleteFormOpen, lL, l, h, hH, shouldForceRender } = this.state;
+        const { gaugeType, gaugeData } = this.props;
+        const { tags } = gaugeData;
 
-        const {tagId, tagName, tagValue, tagUnits} = tags[0];
+        const { tagId, tagName, tagValue, tagUnits } = tags[0];
         const gaugeTitle = (tagName !== '' && tagName != null) ? tagName : tagId;
 
         const segmentColorsOptions = {
@@ -130,7 +129,7 @@ class Gauge extends Component {
                     onEditClick={this.handleOpenEditForm}
                     onDeleteClick={this.handleOpenDeleteForm}>
                 <ResponsiveContainer width="100%">
-                    <div className="d-flex justify-content-center" style={{width: "100%", height: "150px"}}>
+                    <div className="d-flex justify-content-center" style={{ width: "100%", height: "150px" }}>
                         <ReactSpeedometer
                             forceRender={shouldForceRender}
                             needleHeightRatio={0.7}
@@ -173,7 +172,7 @@ Gauge.propTypes = {
 };
 
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
     };

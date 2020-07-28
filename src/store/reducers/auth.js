@@ -1,4 +1,4 @@
-import {STORE_TOKEN} from '../actionTypes/auth';
+import { STORE_TOKEN } from '../actionTypes/auth';
 
 const initialState = {
     accessToken: null,

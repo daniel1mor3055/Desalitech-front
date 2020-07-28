@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
-const CardHeader = ({heading, subHeading, styleName, children}) =>
+const CardHeader = ({ heading, subHeading, styleName, children }) =>
     (
         <div className={`jr-card-header d-flex align-items-start p-0 ${styleName}`}>
             <div>

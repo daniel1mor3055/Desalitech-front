@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
-import {Link, withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import 'fontsource-roboto';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap';
-import {COLLAPSED_DRAWER, FIXED_DRAWER} from 'store/actionTypes';
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
+import { COLLAPSED_DRAWER, FIXED_DRAWER } from 'store/actionTypes';
 import LiveAlarmsNotifications from 'app/components/LiveAlarmsNotifications';
-import {toggleCollapsedNav} from 'store/actions/Setting';
-import {fetchSystemName} from 'store/thunk/header';
+import { toggleCollapsedNav } from 'store/actions/Setting';
+import { fetchSystemName } from 'store/thunk/header';
 import UserInfoPopup from 'app/components/UserInfo/UserInfoPopup';
 import PropTypes from 'prop-types';
 import './index.scss';
-import {Auth0Context} from "Auth0Provider";
+import { Auth0Context } from "Auth0Provider";
 
 
 class Header extends Component {
@@ -60,10 +60,10 @@ class Header extends Component {
     };
 
     activeAlarmsLocalStorageSync = () => {
-        const {activeAlarms, fetchingPoll} = this.props;
+        const { activeAlarms, fetchingPoll } = this.props;
         if (!fetchingPoll && !(activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
             const activeAlarmIdArray = activeAlarms.map((activeAlarm) => {
-                    const {id} = activeAlarm;
+                    const { id } = activeAlarm;
                     return id;
                 }
             );
@@ -95,7 +95,7 @@ class Header extends Component {
             drawerType, showSidebarIcon, userInfoInHeader,
             systemName, fetching, error, activeAlarms
         } = this.props;
-        const {user: {picture}} = this.context;
+        const { user: { picture } } = this.context;
         this.activeAlarmsLocalStorageSync();
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-block d-xl-none' : drawerType.includes(COLLAPSED_DRAWER) ? 'd-block' : 'd-none';
         const notificationsIconToShow = this.notificationsIconToShow();
@@ -191,7 +191,7 @@ Header.defaultProps = {
     userInfoInHeader: false,
 };
 
-const mapStateToProps = ({header, settings, poll}) => {
+const mapStateToProps = ({ header, settings, poll }) => {
     return {
         drawerType: settings.drawerType,
         locale: settings.locale,

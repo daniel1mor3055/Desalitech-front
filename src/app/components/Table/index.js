@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TableRow from './TableRow';
 
 
-const Table = ({data, clickFunction,clickable}) => {
+const Table = ({ data, clickFunction, clickable }) => {
     const columns = Object.keys(data[0]).map(elem => (<th scope="col">{elem}</th>));
 
     return (
@@ -16,10 +16,10 @@ const Table = ({data, clickFunction,clickable}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {data.map((cellData,index) => {
+                {data.map((cellData, index) => {
                     return (
                         <TableRow key={index} cellData={cellData}
-                                   onClick={clickable ? ()=>clickFunction(cellData): null}/>
+                                  onClick={clickable ? () => clickFunction(cellData) : null}/>
                     );
                 })}
                 </tbody>

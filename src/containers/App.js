@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
+import React, { Component } from 'react';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
-import {MuiPickersUtilsProvider} from 'material-ui-pickers';
-import {Redirect, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {IntlProvider} from 'react-intl';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { Redirect, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { IntlProvider } from 'react-intl';
 
 import 'assets/vendors/style';
 import AppLocale from 'lngProvider';
 import RTL from 'util/RTL';
-import {Auth0Context} from 'Auth0Provider';
+import { Auth0Context } from 'Auth0Provider';
 import PrivateRoute from 'app/components/PrivateRoute';
 import asyncComponent from 'util/asyncComponent';
 import blueTheme from './themes/blueTheme';
@@ -28,8 +28,8 @@ class App extends Component {
     }
 
     render() {
-        const {match, locale, isDirectionRTL} = this.props;
-        const {loading, loginWithRedirect, isAuthenticated} = this.context;
+        const { match, locale, isDirectionRTL } = this.props;
+        const { loading, loginWithRedirect, isAuthenticated } = this.context;
 
         if (!isAuthenticated && !loading) {
             loginWithRedirect({});
@@ -77,9 +77,9 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = ({settings}) => {
-    const {sideNavColor, locale, isDirectionRTL} = settings;
-    return {sideNavColor, locale, isDirectionRTL};
+const mapStateToProps = ({ settings }) => {
+    const { sideNavColor, locale, isDirectionRTL } = settings;
+    return { sideNavColor, locale, isDirectionRTL };
 };
 
 export default connect(mapStateToProps)(App);

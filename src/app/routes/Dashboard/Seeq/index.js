@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import {seeqChange,seeqDelete} from 'store/thunk/dashboard';
+import { seeqChange, seeqDelete } from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
 import './index.scss';
 import FormSeeq from "../FormSeeq";
@@ -24,7 +24,7 @@ class Seeq extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -35,8 +35,8 @@ class Seeq extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {url} = values;
-        const {placement} = this.props;
+        const { url } = values;
+        const { placement } = this.props;
 
         const seeq = {
             url,
@@ -52,21 +52,21 @@ class Seeq extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
     handleDeleteWidget = () => {
-        const {url, placement} = this.props;
+        const { url, placement } = this.props;
         const seeq = {
             url,
             placement,
-        }
-        this.props.onSeeqDelete(seeq)
+        };
+        this.props.onSeeqDelete(seeq);
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen} = this.state;
-        const {url} = this.props;
+        const { editFormOpen, deleteFormOpen } = this.state;
+        const { url } = this.props;
         const initialFormValues = this.getFormInitialValues(url);
 
         return (

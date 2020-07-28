@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson} from './utils';
+import { camelizeJson } from './utils';
 
 export const fetchSystemsApi = async () => {
     try {

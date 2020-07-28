@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { Component } from 'react';
+import { connect } from "react-redux";
 import moment from 'moment';
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import {fetchBackgroundTags, timeSeriesAdd, timeSeriesChange,timeSeriesDelete} from 'store/thunk/charts';
+import { fetchBackgroundTags, timeSeriesAdd, timeSeriesChange, timeSeriesDelete } from 'store/thunk/charts';
 import TimeSeries from '../Dashboard/TimeSeries';
 import IconButton from "@material-ui/core/IconButton";
 import FormTimeSeries from "../Dashboard/FormTimeSeries";
@@ -26,20 +26,20 @@ class Charts extends Component {
 
     handleOpenAddTimeSeriesForm = (event) => {
         event.preventDefault();
-        this.setState({addTimeSeriesFormOpen: true});
+        this.setState({ addTimeSeriesFormOpen: true });
     };
 
     handleCloseAddTimeSeriesForm = () => {
-        this.setState({addTimeSeriesFormOpen: false});
+        this.setState({ addTimeSeriesFormOpen: false });
     };
 
     handleAddTimeSeriesFormSubmit = (values) => {
-        const {currentPlacement, tagsList} = this.props;
+        const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
-            const newTag = tagsList.find(o => o.tagName === values[key])
+            const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
                 tagId: newTag == null ? '' : newTag.tagId,
-            }
+            };
         });
 
         const timeSeries = {
@@ -60,8 +60,8 @@ class Charts extends Component {
     };
 
     render() {
-        const {addTimeSeriesFormOpen} = this.state;
-        const {timeSeries, error, tagsList} = this.props;
+        const { addTimeSeriesFormOpen } = this.state;
+        const { timeSeries, error, tagsList } = this.props;
 
 
         return (
@@ -82,14 +82,14 @@ class Charts extends Component {
                     <>
                         <div className="animated slideInUpTiny animation-duration-3">
                             {timeSeries.map((timeSeries) => {
-                                const {startDate, endDate, times, tags, placement} = timeSeries;
+                                const { startDate, endDate, times, tags, placement } = timeSeries;
                                 const tagsToDisplay = tags.map((tag) => {
-                                    const newTag = tagsList.find(o => o.tagId === tag.tagId)
+                                    const newTag = tagsList.find(o => o.tagId === tag.tagId);
                                     return {
                                         ...tag,
                                         tagUnits: newTag.units,
                                         tagName: newTag.tagName,
-                                    }
+                                    };
                                 });
 
                                 return (
@@ -111,7 +111,7 @@ class Charts extends Component {
 }
 
 
-const mapStateToProps = ({charts, tags}) => {
+const mapStateToProps = ({ charts, tags }) => {
     return {
         tagsList: tags.tags,
         timeSeries: charts.timeSeries,

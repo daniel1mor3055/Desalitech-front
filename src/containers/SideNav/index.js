@@ -1,12 +1,12 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {withRouter} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 
 import SidenavContent from './SidenavContent';
 import UserInfo from 'app/components/UserInfo';
-import {COLLAPSED_DRAWER, FIXED_DRAWER, HORIZONTAL_NAVIGATION} from 'store/actionTypes';
-import {toggleCollapsedNav, updateWindowWidth} from 'store/actions/Setting';
+import { COLLAPSED_DRAWER, FIXED_DRAWER, HORIZONTAL_NAVIGATION } from 'store/actionTypes';
+import { toggleCollapsedNav, updateWindowWidth } from 'store/actions/Setting';
 
 class SideNav extends React.PureComponent {
 
@@ -23,7 +23,7 @@ class SideNav extends React.PureComponent {
 
 
     render() {
-        const {navCollapsed, drawerType, width, navigationStyle} = this.props;
+        const { navCollapsed, drawerType, width, navigationStyle } = this.props;
         let drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'd-xl-flex' : drawerType.includes(COLLAPSED_DRAWER) ? '' : 'd-flex';
         let type = 'permanent';
         if (drawerType.includes(COLLAPSED_DRAWER) || (drawerType.includes(FIXED_DRAWER) && width < 1200)) {
@@ -53,10 +53,10 @@ class SideNav extends React.PureComponent {
     }
 }
 
-const mapStateToProps = ({settings}) => {
-    const {navCollapsed, drawerType, width, navigationStyle} = settings;
-    return {navCollapsed, drawerType, width, navigationStyle};
+const mapStateToProps = ({ settings }) => {
+    const { navCollapsed, drawerType, width, navigationStyle } = settings;
+    return { navCollapsed, drawerType, width, navigationStyle };
 };
 
-export default withRouter(connect(mapStateToProps, {toggleCollapsedNav, updateWindowWidth})(SideNav));
+export default withRouter(connect(mapStateToProps, { toggleCollapsedNav, updateWindowWidth })(SideNav));
 

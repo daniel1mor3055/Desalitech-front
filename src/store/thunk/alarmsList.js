@@ -1,4 +1,4 @@
-import {fetchAlarmsApi, setEmailNotificationApi} from 'api/alarmsList';
+import { fetchAlarmsApi, setEmailNotificationApi } from 'api/alarmsList';
 import {
     fetchAlarmsFail,
     fetchAlarmsStart,
@@ -7,15 +7,15 @@ import {
     setEmailNotificationStart,
     setEmailNotificationSuccess
 } from '../actions/alarmsList';
-import {setAdminStatus} from '../actions/header';
-import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from "app/components/Notifications";
+import { setAdminStatus } from '../actions/header';
+import createNotification, { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION } from "app/components/Notifications";
 
 
 export const fetchAlarms = () => (
     async (dispatch) => {
         dispatch(fetchAlarmsStart());
         try {
-            const {alarms, admin, emailNotification} = await fetchAlarmsApi();
+            const { alarms, admin, emailNotification } = await fetchAlarmsApi();
             dispatch(setAdminStatus(admin));
             dispatch(fetchAlarmsSuccess(alarms, emailNotification));
         } catch (err) {

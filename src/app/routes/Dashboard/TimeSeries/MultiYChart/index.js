@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Chart from "react-apexcharts";
 import PropTypes from "prop-types";
 
@@ -68,7 +68,7 @@ class MultiYChart extends Component {
 
 
     static getDerivedStateFromProps = (props, state) => {
-        const {xData, data, yLabels, showYLabels, colors} = props;
+        const { xData, data, yLabels, showYLabels, colors } = props;
         return {
             ...state,
             series: yLabels.map((yLabel, index) => (

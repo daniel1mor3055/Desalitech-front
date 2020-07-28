@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import createAuth0Client from "@auth0/auth0-spa-js";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
-import {setToken} from './store/actions/auth';
+import { setToken } from './store/actions/auth';
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
     window.history.replaceState({}, document.title, window.location.pathname);
@@ -28,7 +28,7 @@ const Auth0Provider = ({
 
             if (window.location.search.includes("code=") &&
                 window.location.search.includes("state=")) {
-                const {appState} = await auth0FromHook.handleRedirectCallback();
+                const { appState } = await auth0FromHook.handleRedirectCallback();
                 onRedirectCallback(appState);
             }
 
@@ -95,7 +95,7 @@ const Auth0Provider = ({
 };
 
 const mapDispatchedToProps = dispatch => {
-    return {onSetToken: (accessToken, idToken) => dispatch(setToken(accessToken, idToken))};
+    return { onSetToken: (accessToken, idToken) => dispatch(setToken(accessToken, idToken)) };
 };
 
 export default connect(null, mapDispatchedToProps)(Auth0Provider);

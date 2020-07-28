@@ -1,5 +1,5 @@
 import React from 'react';
-import {Field, Formik} from 'formik';
+import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -7,14 +7,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import FormikNewAutocomplete from "app/components/FormikAutoComplete";
 import Typography from "@material-ui/core/Typography";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 
 const styles = {};
 
-const FormTrigger = ({open, handleClose, handleSubmit, initialValues, tagsList}) => {
+const FormTrigger = ({ open, handleClose, handleSubmit, initialValues, tagsList }) => {
     return (
         <Dialog
             open={open}
@@ -31,7 +31,7 @@ const FormTrigger = ({open, handleClose, handleSubmit, initialValues, tagsList})
                             tagName: '',
                             controllerTagName: '',
                         } : initialValues}
-                        onSubmit={async (values, {setSubmitting, setErrors}) => {
+                        onSubmit={async (values, { setSubmitting, setErrors }) => {
                             setErrors({});
                             const globalError = verifyValues(values);
                             if (globalError !== null) {
@@ -42,7 +42,7 @@ const FormTrigger = ({open, handleClose, handleSubmit, initialValues, tagsList})
                                     await handleSubmit(values);
                                     handleClose();
                                 } catch (error) {
-                                    setErrors({global: error.message});
+                                    setErrors({ global: error.message });
                                 }
                             }
                             setSubmitting(false);
@@ -123,7 +123,7 @@ FormTrigger.propTypes = {
     initialValues: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
         fetching: tags.fetching,
@@ -134,9 +134,9 @@ const mapStateToProps = ({tags}) => {
 export default connect(mapStateToProps)(withStyles(styles)(FormTrigger));
 
 function verifyValues(values) {
-    const {tagName, controllerTagName} = values;
+    const { tagName, controllerTagName } = values;
     if (tagName === controllerTagName) {
-        return {global: "Tag and its controller should be different"};
+        return { global: "Tag and its controller should be different" };
     }
 
     return null;

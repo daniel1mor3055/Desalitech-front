@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
+import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
 
 
 export const fetchAlarmsApi = async () => {
@@ -8,7 +8,7 @@ export const fetchAlarmsApi = async () => {
         const response = await axios.get(`/system/alarm-list?SysId=${sysId}`);
         camelizeJson(response.data);
         response.data.alarms.forEach(alarm => {
-            const {alarmId, timeStamp} = alarm;
+            const { alarmId, timeStamp } = alarm;
             alarm.id = alarmId + timeStamp;
         });
         return response.data;

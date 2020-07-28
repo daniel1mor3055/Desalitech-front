@@ -1,8 +1,8 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle} from 'reactstrap';
+import { Card, CardBody, CardSubtitle } from 'reactstrap';
 import PropTypes from "prop-types";
 
-const TitleCard = ({tagName, tagValue, tagUnits}) =>
+const TitleCard = ({ tagName, tagValue, tagUnits }) =>
     (
         <Card className="shadow border-0">
             <CardBody>

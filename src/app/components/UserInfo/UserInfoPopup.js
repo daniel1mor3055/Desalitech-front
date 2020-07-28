@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {Auth0Context} from "Auth0Provider";
-import {connect} from "react-redux";
-import {withRouter} from "react-router-dom";
+import { Auth0Context } from "Auth0Provider";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import config from "auth_config.json";
 
 class UserInfoPopup extends Component {
@@ -16,8 +16,8 @@ class UserInfoPopup extends Component {
     };
 
     render() {
-        const {user: {nickname, picture}} = this.context;
-        const {admin, fetching} = this.props;
+        const { user: { nickname, picture } } = this.context;
+        const { admin, fetching } = this.props;
         return (
             <div>
                 <div className="user-profile">
@@ -47,7 +47,7 @@ class UserInfoPopup extends Component {
     }
 }
 
-const mapStateToProps = ({header}) => {
+const mapStateToProps = ({ header }) => {
     return {
         admin: header.admin,
         fetching: header.fetching,

@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
-import {fetchAlarms, setEmailNotification} from 'store/thunk/alarmsList';
+import { fetchAlarms, setEmailNotification } from 'store/thunk/alarmsList';
 import SearchBox from "app/components/SearchBox";
 import CardHeader from 'app/components/CardHeader';
 import DataTable from "app/components/DataTable";
@@ -35,7 +35,7 @@ class AlarmList extends PureComponent {
     updateSearchText(event, id) {
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: event.target.value});
+        this.setState({ [stateSearchOptions[id]]: event.target.value });
 
     }
 
@@ -43,13 +43,13 @@ class AlarmList extends PureComponent {
         event.preventDefault();
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: ''});
+        this.setState({ [stateSearchOptions[id]]: '' });
     }
 
     getFilterData(alarms) {
-        const {alarmIdSearchText, alarmDescriptionSearchText} = this.state;
+        const { alarmIdSearchText, alarmDescriptionSearchText } = this.state;
         let filteredAlarms = alarms.filter(alarm => {
-            const {alarmId, description} = alarm;
+            const { alarmId, description } = alarm;
             const alarmIdToSearch = alarmId === null ? '' : alarmId;
             const descriptionToSearch = description === null ? '' : description;
 
@@ -57,7 +57,7 @@ class AlarmList extends PureComponent {
                 descriptionToSearch.toLowerCase().includes(alarmDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredAlarms.length;
-        return {filteredAlarms, badSearch};
+        return { filteredAlarms, badSearch };
     }
 
     handleNotificationChange = (event) => {
@@ -67,11 +67,11 @@ class AlarmList extends PureComponent {
 
 
     render() {
-        const {alarmIdSearchText, alarmDescriptionSearchText} = this.state;
-        const {alarms, fetching, error, emailNotification} = this.props;
+        const { alarmIdSearchText, alarmDescriptionSearchText } = this.state;
+        const { alarms, fetching, error, emailNotification } = this.props;
         const columnsIds = ['alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['Alarm ID', 'Description', 'Timestamp'];
-        const {filteredAlarms, badSearch} = this.getFilterData(alarms);
+        const { filteredAlarms, badSearch } = this.getFilterData(alarms);
 
         const alarmList =
             <div className="row animated slideInUpTiny animation-duration-3">
@@ -131,7 +131,7 @@ class AlarmList extends PureComponent {
     }
 }
 
-const mapStateToProps = ({alarms}) => {
+const mapStateToProps = ({ alarms }) => {
     return {
         alarms: alarms.alarms,
         emailNotification: alarms.emailNotification,
