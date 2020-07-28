@@ -28,9 +28,12 @@ export const dashboardFetchStart = () => (
     }
 );
 
-export const dashboardFetchFail = () => (
+export const dashboardFetchFail = (error) => (
     {
         type: DASHBOARD_FETCH_FAIL,
+        payload: {
+            error
+        }
     }
 );
 
@@ -40,9 +43,12 @@ export const dashboardPostStart = () => (
     }
 );
 
-export const dashboardPostFail = () => (
+export const dashboardPostFail = (error) => (
     {
         type: DASHBOARD_POST_FAIL,
+        payload: {
+            error
+        }
     }
 );
 
