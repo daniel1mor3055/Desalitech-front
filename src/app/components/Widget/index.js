@@ -15,11 +15,11 @@ const Widget = ({heading, children, cardName, childrenStyle, onEditClick,onDelet
                     {children.length > 1 ? children[0] : null}
                 </div>
                 <div className={'Widget-controllers'}>
-                    <IconButton className={'p-1'} color="primary">
+                    <IconButton className={'p-1'}>
                         <EditIcon onClick={onEditClick}/>
                     </IconButton>
                     <IconButton className={'p-0'}>
-                        <DeleteIcon onClick={onDeleteClick} color={'error'}/>
+                        <DeleteIcon onClick={onDeleteClick}/>
                     </IconButton>
                 </div>
             </div>
