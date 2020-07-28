@@ -5,8 +5,6 @@ import { isIOS, isMobile } from 'react-device-detect';
 
 import Header from 'app/components/Header';
 import Footer from 'app/components/Footer';
-import Tour from 'app/components/Tour/index';
-import TopNav from 'app/components/TopNav';
 import SystemCard from "./SystemCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
@@ -267,11 +265,9 @@ class SystemsAndLiveAlarms extends React.Component {
 
         return (
             <div className={`SystemsAndLiveAlarms app-container collapsible-drawer`}>
-                <Tour/>
                 <div className="app-main-container">
                     <div
                         className={`app-header`}>
-                        <TopNav styleName="app-top-header"/>
                         <Header showSidebarIcon={false} userInfoInHeader={true}/>
                     </div>
 

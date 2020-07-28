@@ -120,7 +120,7 @@ FormTrigger.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.object.isRequired,
+    initialValues: PropTypes.object,
 };
 
 const mapStateToProps = ({ tags }) => {

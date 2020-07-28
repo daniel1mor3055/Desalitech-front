@@ -6,7 +6,6 @@ import { isIOS, isMobile } from 'react-device-detect';
 import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
 import Footer from 'app/components/Footer';
-import Tour from 'app/components/Tour';
 import { COLLAPSED_DRAWER, FIXED_DRAWER, } from 'store/actionTypes';
 import asyncComponent from 'util/asyncComponent';
 import PrivateRoute from 'app/components/PrivateRoute';
@@ -48,7 +47,6 @@ class App extends Component {
 
         return (
             <div className={`app-container ${drawerStyle}`}>
-                <Tour/>
 
                 <Sidebar/>
                 <div className="app-main-container">

@@ -52,7 +52,6 @@ const FormTag = ({ open, handleClose, handleSubmit, initialValues, tagsList }) =
                                 isSubmitting,
                                 handleSubmit,
                                 handleReset,
-                                values,
                             } = props;
 
                             const options = tagsList.map((tag) => (tag.tagName)).sort();
@@ -104,7 +103,7 @@ FormTag.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.object.isRequired,
+    initialValues: PropTypes.object,
 };
 
 const mapStateToProps = ({ tags }) => {

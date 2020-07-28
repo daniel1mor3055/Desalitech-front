@@ -1,8 +1,6 @@
 import axios from 'axios';
 import moment from "moment";
 import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
-import ar from '@amcharts/amcharts4/lang/ar';
-
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
 const TIME_SERIES = 'Time Series';
