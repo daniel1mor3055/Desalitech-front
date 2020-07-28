@@ -1,13 +1,12 @@
 import ReactSpeedometer from 'react-d3-speedometer';
-import React, {Component} from "react";
-import {ResponsiveContainer} from 'recharts';
+import React, { Component } from "react";
+import { ResponsiveContainer } from 'recharts';
 import PropTypes from "prop-types";
-import * as Yup from 'yup';
-import {withRouter} from "react-router";
-import {connect} from "react-redux";
+import { withRouter } from "react-router";
+import { connect } from "react-redux";
 
 import Widget from "app/components/Widget";
-import {gaugeChange, gaugeDelete} from 'store/thunk/dashboard';
+import { gaugeChange, gaugeDelete } from 'store/thunk/dashboard';
 import FormGauge from "../FormGauge";
 import FormDelete from "../FormDelete";
 
@@ -28,7 +27,7 @@ class Gauge extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -38,27 +37,37 @@ class Gauge extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
-        const {lL, l, h, hH, measuredTag} = values;
-        const {gaugeType, gaugeData: {placement}, tagList} = this.props;
-        const newLl = tagList.find(o => o.tagName === lL);
-        const newL = tagList.find(o => o.tagName === l);
-        const newH = tagList.find(o => o.tagName === h);
-        const newHh = tagList.find(o => o.tagName === hH);
+    handleFormSubmit = async (values) => {
+        const {
+            measuredTag, lLFromOptionsCheckBox, lLFromOptions, lL, lFromOptionsCheckBox,
+            lFromOptions, l, hFromOptionsCheckBox, hFromOptions, h, hHFromOptionsCheckBox, hHFromOptions, hH
+        } = values;
+
+        const { gaugeType, gaugeData: { placement }, tagsList } = this.props;
+        const newLl = tagsList.find(o => o.tagName === lLFromOptions);
+        const newL = tagsList.find(o => o.tagName === lFromOptions);
+        const newH = tagsList.find(o => o.tagName === hFromOptions);
+        const newHh = tagsList.find(o => o.tagName === hHFromOptions);
         const gauge = {
-            measuredTag: tagList.find(o => o.tagName === measuredTag).tagId,
-            placement,
-            lL: newLl == null ? lL : newLl.tagId,
-            l: newL == null ? l : newL.tagId,
-            h: newH == null ? h : newH.tagId,
-            hH: newHh == null ? hH : newHh.tagId,
+            measuredTag: tagsList.find(o => o.tagName === measuredTag).tagId,
+            placement: placement,
+            lL: !lLFromOptionsCheckBox ? lL : newLl.tagId,
+            l: !lFromOptionsCheckBox ? l : newL.tagId,
+            h: !hFromOptionsCheckBox ? h : newH.tagId,
+            hH: !hHFromOptionsCheckBox ? hH : newHh.tagId,
         };
 
-        this.props.onGaugeChange(gaugeType, gauge);
+        await this.props.onGaugeChange(gaugeType, gauge);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
+
     };
 
     getFormInitialValues = (gaugeData) => {
-        const {lL, l, h, hH, tags} = gaugeData;
+        const { lL, l, h, hH, tags } = gaugeData;
         const initialValues = {
             measuredTag: tags[0].tagName,
             lLFromOptionsCheckBox: !(lL.tagName == null || lL.tagName === ''),
@@ -78,11 +87,11 @@ class Gauge extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
-        const {gaugeData: {lL, l, h, hH, tags, placement}, gaugeType} = this.props;
+    handleDeleteWidget = async () => {
+        const { gaugeData: { lL, l, h, hH, tags, placement }, gaugeType } = this.props;
 
         const gauge = {
             measuredTag: tags[0].tagId,
@@ -93,10 +102,15 @@ class Gauge extends Component {
             hH: hH.tagId == null || hH.tagId === '' ? hH.value : hH.tagId,
         };
 
-        this.props.onGaugeDelete(gaugeType, gauge);
+        await this.props.onGaugeDelete(gaugeType, gauge);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
+
     static getDerivedStateFromProps = (props, state) => {
-        const {gaugeData: {lL, l, h, hH}} = props;
+        const { gaugeData: { lL, l, h, hH } } = props;
         return {
             ...state,
             lL: lL,
@@ -110,11 +124,11 @@ class Gauge extends Component {
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen, lL, l, h, hH, shouldForceRender} = this.state;
-        const {gaugeType, gaugeData} = this.props;
-        const {tags} = gaugeData;
+        const { editFormOpen, deleteFormOpen, lL, l, h, hH, shouldForceRender } = this.state;
+        const { gaugeType, gaugeData } = this.props;
+        const { tags } = gaugeData;
 
-        const {tagId, tagName, tagValue, tagUnits} = tags[0];
+        const { tagId, tagName, tagValue, tagUnits } = tags[0];
         const gaugeTitle = (tagName !== '' && tagName != null) ? tagName : tagId;
 
         const segmentColorsOptions = {
@@ -130,7 +144,7 @@ class Gauge extends Component {
                     onEditClick={this.handleOpenEditForm}
                     onDeleteClick={this.handleOpenDeleteForm}>
                 <ResponsiveContainer width="100%">
-                    <div className="d-flex justify-content-center" style={{width: "100%", height: "150px"}}>
+                    <div className="d-flex justify-content-center" style={{ width: "100%", height: "150px" }}>
                         <ReactSpeedometer
                             forceRender={shouldForceRender}
                             needleHeightRatio={0.7}
@@ -173,9 +187,10 @@ Gauge.propTypes = {
 };
 
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags, dashboard }) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
+        postingError: dashboard.postingError,
     };
 };
 

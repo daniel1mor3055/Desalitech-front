@@ -1,4 +1,4 @@
-import {fetchTagsApi, postTagApi} from 'api/tagsList';
+import { fetchTagsApi, postTagApi } from 'api/tagsList';
 import {
     fetchTagsFail,
     fetchTagsStart,
@@ -7,15 +7,15 @@ import {
     postTagStart,
     postTagSuccess
 } from '../actions/tagsList';
-import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from 'app/components/Notifications';
-import {setAdminStatus} from "../actions/header";
+import createNotification, { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION } from 'app/components/Notifications';
+import { setAdminStatus } from "../actions/header";
 
 
 export const fetchTags = () => (
     async (dispatch) => {
         dispatch(fetchTagsStart());
         try {
-            const {tags,admin} = await fetchTagsApi();
+            const { tags, admin } = await fetchTagsApi();
             dispatch(setAdminStatus(admin));
             dispatch(fetchTagsSuccess(tags));
         } catch (err) {

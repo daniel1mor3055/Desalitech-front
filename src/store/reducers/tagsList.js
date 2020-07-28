@@ -12,6 +12,7 @@ const initialState = {
     fetching: true,
     posting: false,
     error: null,
+    postingError: null,
 };
 
 
@@ -35,11 +36,11 @@ const reducer = (state = initialState, action) => {
 };
 
 
-function postTagStart(state, action) {
+function postTagStart(state) {
     return {
         ...state,
         posting: true,
-        error: null,
+        postingError: null,
     };
 }
 
@@ -55,7 +56,7 @@ function postTagSuccess(state, action) {
     return {
         ...state,
         posting: false,
-        error: null,
+        postingError: null,
         tags: newTags,
     };
 }
@@ -64,11 +65,11 @@ function postTagFail(state, action) {
     return {
         ...state,
         posting: false,
-        error: action.payload.error,
+        postingError: action.payload.error.message,
     };
 }
 
-function fetchTagsStart(state, action) {
+function fetchTagsStart(state) {
     return {
         ...state,
         fetching: true,
@@ -89,7 +90,7 @@ function fetchTagsFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error,
+        error: action.payload.error.message,
     };
 }
 

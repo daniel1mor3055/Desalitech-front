@@ -8,7 +8,7 @@ let render = () => {
     // Dynamically import our main App component, and render it
     const MainApp = require('./MainApp').default;
     ReactDOM.render(
-        <MainApp />,
+        <MainApp/>,
         rootEl
     );
 };
@@ -17,7 +17,7 @@ if (module.hot) {
     module.hot.accept('./MainApp', () => {
         const MainApp = require('./MainApp').default;
         render(
-            <MainApp />,
+            <MainApp/>,
             rootEl
         );
     });

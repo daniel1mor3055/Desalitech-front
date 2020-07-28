@@ -1,4 +1,4 @@
-import {fetchAlarmsApi, setEmailNotificationApi} from 'api/alarmsList';
+import { fetchAlarmsApi, setEmailNotificationApi } from 'api/alarmsList';
 import {
     fetchAlarmsFail,
     fetchAlarmsStart,
@@ -7,17 +7,18 @@ import {
     setEmailNotificationStart,
     setEmailNotificationSuccess
 } from '../actions/alarmsList';
-import {setAdminStatus} from '../actions/header';
-import createNotification, {SUCCESS_NOTIFICATION, ERROR_NOTIFICATION} from "app/components/Notifications";
+import { setAdminStatus } from '../actions/header';
+import createNotification, { SUCCESS_NOTIFICATION, ERROR_NOTIFICATION } from "app/components/Notifications";
 
 
 export const fetchAlarms = () => (
     async (dispatch) => {
         dispatch(fetchAlarmsStart());
         try {
-            const {alarms, admin, emailNotification} = await fetchAlarmsApi();
+            const { alarms, admin, emailNotification } = await fetchAlarmsApi();
+            const boolEmailNotification = emailNotificationToBool(emailNotification);
             dispatch(setAdminStatus(admin));
-            dispatch(fetchAlarmsSuccess(alarms, emailNotification));
+            dispatch(fetchAlarmsSuccess(alarms, boolEmailNotification));
         } catch (err) {
             dispatch(fetchAlarmsFail(err));
         }
@@ -36,3 +37,11 @@ export const setEmailNotification = (emailNotification) => (
         }
     }
 );
+
+function emailNotificationToBool(emailNotification) {
+    if (typeof emailNotification === 'boolean') {
+        return emailNotification;
+    } else {
+        return emailNotification === 'true' || emailNotification === 'True';
+    }
+}

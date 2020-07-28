@@ -5,7 +5,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import './index.scss';
 
-const Widget = ({heading, children, cardName, childrenStyle, onEditClick,onDeleteClick}) => {
+const Widget = ({ heading, children, cardName, childrenStyle, onEditClick, onDeleteClick }) => {
 
     return (
         <div className={`Widget jr-card ${cardName}`}>
@@ -15,11 +15,11 @@ const Widget = ({heading, children, cardName, childrenStyle, onEditClick,onDelet
                     {children.length > 1 ? children[0] : null}
                 </div>
                 <div className={'Widget-controllers'}>
-                    <IconButton className={'p-1'} color="primary">
-                        <EditIcon onClick={onEditClick}/>
+                    <IconButton onClick={onEditClick} className={'p-1'}>
+                        <EditIcon/>
                     </IconButton>
-                    <IconButton className={'p-0'}>
-                        <DeleteIcon onClick={onDeleteClick} color={'error'}/>
+                    <IconButton onClick={onDeleteClick} className={'p-0'}>
+                        <DeleteIcon/>
                     </IconButton>
                 </div>
             </div>

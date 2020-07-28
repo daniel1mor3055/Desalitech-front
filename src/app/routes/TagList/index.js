@@ -1,8 +1,8 @@
-import React, {PureComponent} from 'react';
-import {connect} from 'react-redux';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 
 import CircularIndeterminate from 'app/components/Progress/CircularIndeterminate';
-import {fetchTags, postTag} from 'store/thunk/tagsList';
+import { fetchTags, postTag } from 'store/thunk/tagsList';
 import SearchBox from 'app/components/SearchBox';
 import DataTable from 'app/components/DataTable';
 import EditTagForm from "./EditTagForm";
@@ -38,11 +38,16 @@ class TagList extends PureComponent {
     };
 
     handleClose = () => {
-        this.setState({openEditModal: false});
+        this.setState({ openEditModal: false });
     };
 
-    handleSubmit = (values) => {
-        this.props.onPostTag(values);
+    handleSubmit = async (values) => {
+        await this.props.onPostTag(values);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getSearchOptions = () => {
@@ -56,21 +61,21 @@ class TagList extends PureComponent {
     updateSearchText(event, id) {
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: event.target.value});
+        this.setState({ [stateSearchOptions[id]]: event.target.value });
     }
 
     handleSearchClear(event, id) {
         event.preventDefault();
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: ''});
+        this.setState({ [stateSearchOptions[id]]: '' });
     }
 
 
-    getFilterData(tags) {
-        const {tagIdSearchText, tagNameSearchText, tagDescriptionSearchText} = this.state;
-        let filteredTags = tags.filter(tag => {
-            const {tagId, tagName, description} = tag;
+    getFilterData(tagsList) {
+        const { tagIdSearchText, tagNameSearchText, tagDescriptionSearchText } = this.state;
+        let filteredTags = tagsList.filter(tag => {
+            const { tagId, tagName, description } = tag;
             const tagNameToSearch = tagName === null ? '' : tagName;
             const tagIdToSearch = tagId === null ? '' : tagId;
             const tagDescriptionToSearch = description === null ? '' : description;
@@ -80,7 +85,7 @@ class TagList extends PureComponent {
                 tagDescriptionToSearch.toLowerCase().includes(tagDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredTags.length;
-        return {filteredTags, badSearch};
+        return { filteredTags, badSearch };
     }
 
     render() {
@@ -88,10 +93,10 @@ class TagList extends PureComponent {
             openEditModal, tagId, tagName, description, units,
             tagIdSearchText, tagNameSearchText, tagDescriptionSearchText
         } = this.state;
-        const {tags, fetching, error} = this.props;
+        const { tagsList, fetching, error } = this.props;
         const columnsIds = ['tagId', 'tagName', 'description', 'units'];
         const columnsLabels = ['Tag ID', 'Tag Name', 'Description', 'Units'];
-        const {filteredTags, badSearch} = this.getFilterData(tags);
+        const { filteredTags, badSearch } = this.getFilterData(tagsList);
 
         const tagList =
             <div className="row animated slideInUpTiny animation-duration-3">
@@ -136,7 +141,7 @@ class TagList extends PureComponent {
                                    cell: (dataObject) => (
                                        <IconButton className="icon-btn text-light p-1"
                                                    onClick={(event) => this.handleEditClick(event, dataObject)}>
-                                           <i className="zmdi zmdi-edit text-blue"/>
+                                           <i className="zmdi zmdi-edit text-light-grey"/>
                                        </IconButton>),
                                }]}
                                handleEditClick={this.handleEditClick}/>
@@ -153,22 +158,23 @@ class TagList extends PureComponent {
                 </div>
             </div>;
 
+        if (error) {
+            throw new Error('Could not fetch tags');
+        }
         return (
             <div className="TagList app-wrapper">
-                {fetching ?
-                    error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
-                    : tagList}
-
+                {fetching ? <CircularIndeterminate/> : tagList}
             </div>
         );
     }
 }
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
-        tags: tags.tags,
+        tagsList: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
+        postingError: tags.postingError,
     };
 };
 

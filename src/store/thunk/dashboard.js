@@ -16,63 +16,35 @@ import {
     gaugeDeleteApi,
     timeSeriesDeleteApi,
 } from 'api/dashboard';
-import {fetchTags} from './tagsList';
+import { fetchTags } from './tagsList';
 import {
-    fetchDashboardFail,
-    fetchDashboardStart,
     fetchDashboardSuccess,
-    gaugeAddFail,
-    gaugeAddStart,
     gaugeAddSuccess,
-    gaugeChangeFail,
-    gaugeChangeStart,
     gaugeChangeSuccess,
-    seeqAddFail,
-    seeqAddStart,
     seeqAddSuccess,
-    seeqChangeFail,
-    seeqChangeStart,
     seeqChangeSuccess,
-    seeqDeleteFail,
-    seeqDeleteStart,
     seeqDeleteSuccess,
-    tagAddFail,
-    tagAddStart,
     tagAddSuccess,
-    tagChangeFail,
-    tagChangeStart,
     tagChangeSuccess,
-    timeSeriesAddFail,
-    timeSeriesAddStart,
     timeSeriesAddSuccess,
-    timeSeriesChangeFail,
-    timeSeriesChangeStart,
     timeSeriesChangeSuccess,
-    triggerAddFail,
-    triggerAddStart,
     triggerAddSuccess,
-    triggerChangeFail,
-    triggerChangeStart,
     triggerChangeSuccess,
-    tagDeleteFail,
-    tagDeleteStart,
     tagDeleteSuccess,
-    gaugeDeleteFail,
-    gaugeDeleteStart,
     gaugeDeleteSuccess,
-    timeSeriesDeleteFail,
-    timeSeriesDeleteStart,
     timeSeriesDeleteSuccess,
-    triggerDeleteFail,
-    triggerDeleteStart,
     triggerDeleteSuccess,
+    dashboardFetchFail,
+    dashboardFetchStart,
+    dashboardPostFail,
+    dashboardPostStart,
 } from '../actions/dashboard';
-import {setAdminStatus} from "../actions/header";
+import { setAdminStatus } from "../actions/header";
 
 
 export const fetchDashboard = () => (
     async (dispatch) => {
-        dispatch(fetchDashboardStart());
+        dispatch(dashboardFetchStart());
         try {
             const {
                 admin, triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs, currentPlacement
@@ -80,7 +52,7 @@ export const fetchDashboard = () => (
             dispatch(setAdminStatus(admin));
             dispatch(fetchDashboardSuccess(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs, currentPlacement));
         } catch (err) {
-            dispatch(fetchDashboardFail(err));
+            dispatch(dashboardFetchFail(err));
         }
     });
 
@@ -88,176 +60,175 @@ export const fetchBackgroundTags = () => (fetchTags());
 
 export const timeSeriesChange = (timeSeries) => (
     async (dispatch) => {
-        dispatch(timeSeriesChangeStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTimeSeries} = await timeSeriesChangeApi(timeSeries);
+            const { admin, responseTimeSeries } = await timeSeriesChangeApi(timeSeries);
             dispatch(setAdminStatus(admin));
             dispatch(timeSeriesChangeSuccess(responseTimeSeries));
         } catch (err) {
-            dispatch(timeSeriesChangeFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
-
 export const timeSeriesAdd = (timeSeries) => (
     async (dispatch) => {
-        dispatch(timeSeriesAddStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTimeSeries} = await timeSeriesAddApi(timeSeries);
+            const { admin, responseTimeSeries } = await timeSeriesAddApi(timeSeries);
             dispatch(setAdminStatus(admin));
             dispatch(timeSeriesAddSuccess(responseTimeSeries));
         } catch (err) {
-            dispatch(timeSeriesAddFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const gaugeChange = (gaugeType, gauge) => (
     async (dispatch) => {
-        dispatch(gaugeChangeStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseGauge} = await gaugeChangeApi(gaugeType, gauge);
+            const { admin, responseGauge } = await gaugeChangeApi(gaugeType, gauge);
             dispatch(setAdminStatus(admin));
             dispatch(gaugeChangeSuccess(gaugeType, responseGauge));
         } catch (err) {
-            dispatch(gaugeChangeFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const gaugeAdd = (gaugeType, gauge) => (
     async (dispatch) => {
-        dispatch(gaugeAddStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseGauge} = await gaugeAddApi(gaugeType, gauge);
+            const { admin, responseGauge } = await gaugeAddApi(gaugeType, gauge);
             dispatch(setAdminStatus(admin));
             dispatch(gaugeAddSuccess(gaugeType, responseGauge));
         } catch (err) {
-            dispatch(gaugeAddFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const tagChange = (tag) => (
     async (dispatch) => {
-        dispatch(tagChangeStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTag} = await tagChangeApi(tag);
+            const { admin, responseTag } = await tagChangeApi(tag);
             dispatch(setAdminStatus(admin));
             dispatch(tagChangeSuccess(responseTag));
         } catch (err) {
-            dispatch(tagChangeFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const tagDelete = (tag) => (
     async (dispatch) => {
-        dispatch(tagDeleteStart());
+        dispatch(dashboardPostStart());
         try {
             await tagDeleteApi(tag);
             dispatch(tagDeleteSuccess(tag));
         } catch (err) {
-            dispatch(tagDeleteFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const tagAdd = (tag) => (
     async (dispatch) => {
-        dispatch(tagAddStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTag} = await tagAddApi(tag);
+            const { admin, responseTag } = await tagAddApi(tag);
             dispatch(setAdminStatus(admin));
             dispatch(tagAddSuccess(responseTag));
         } catch (err) {
-            dispatch(tagAddFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const triggerChange = (trigger) => (
     async (dispatch) => {
-        dispatch(triggerChangeStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTrigger} = await triggerChangeApi(trigger);
+            const { admin, responseTrigger } = await triggerChangeApi(trigger);
             dispatch(setAdminStatus(admin));
             dispatch(triggerChangeSuccess(responseTrigger));
         } catch (err) {
-            dispatch(triggerChangeFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const triggerDelete = (trigger) => (
     async (dispatch) => {
-        dispatch(triggerDeleteStart());
+        dispatch(dashboardPostStart());
         try {
             await triggerDeleteApi(trigger);
             dispatch(triggerDeleteSuccess(trigger));
         } catch (err) {
-            dispatch(triggerDeleteFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const gaugeDelete = (gaugeType, gauge) => (
     async (dispatch) => {
-        dispatch(gaugeDeleteStart());
+        dispatch(dashboardPostStart());
         try {
             await gaugeDeleteApi(gaugeType, gauge);
             dispatch(gaugeDeleteSuccess(gaugeType, gauge));
         } catch (err) {
-            dispatch(gaugeDeleteFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const timeSeriesDelete = (timeSeries) => (
     async (dispatch) => {
-        dispatch(timeSeriesDeleteStart());
+        dispatch(dashboardPostStart());
         try {
             await timeSeriesDeleteApi(timeSeries);
             dispatch(timeSeriesDeleteSuccess(timeSeries));
         } catch (err) {
-            dispatch(timeSeriesDeleteFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const triggerAdd = (trigger) => (
     async (dispatch) => {
-        dispatch(triggerAddStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseTrigger} = await triggerAddApi(trigger);
+            const { admin, responseTrigger } = await triggerAddApi(trigger);
             dispatch(setAdminStatus(admin));
             dispatch(triggerAddSuccess(responseTrigger));
         } catch (err) {
-            dispatch(triggerAddFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const seeqChange = (seeq) => (
     async (dispatch) => {
-        dispatch(seeqChangeStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseSeeq} = await seeqChangeApi(seeq);
+            const { admin, responseSeeq } = await seeqChangeApi(seeq);
             dispatch(setAdminStatus(admin));
             dispatch(seeqChangeSuccess(responseSeeq));
         } catch (err) {
-            dispatch(seeqChangeFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const seeqDelete = (seeq) => (
     async (dispatch) => {
-        dispatch(seeqDeleteStart());
+        dispatch(dashboardPostStart());
         try {
             await seeqDeleteApi(seeq);
             dispatch(seeqDeleteSuccess(seeq));
         } catch (err) {
-            dispatch(seeqDeleteFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });
 
 export const seeqAdd = (seeq) => (
     async (dispatch) => {
-        dispatch(seeqAddStart());
+        dispatch(dashboardPostStart());
         try {
-            const {admin, responseSeeq} = await seeqAddApi(seeq);
+            const { admin, responseSeeq } = await seeqAddApi(seeq);
             dispatch(setAdminStatus(admin));
             dispatch(seeqAddSuccess(responseSeeq));
         } catch (err) {
-            dispatch(seeqAddFail(err));
+            dispatch(dashboardPostFail(err));
         }
     });

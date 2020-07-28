@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { PureComponent } from 'react';
+import { connect } from "react-redux";
 import moment from 'moment';
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
-import {fetchBackgroundTags, timeSeriesAdd, timeSeriesChange,timeSeriesDelete} from 'store/thunk/charts';
+import { fetchBackgroundTags, timeSeriesAdd, timeSeriesChange, timeSeriesDelete } from 'store/thunk/charts';
 import TimeSeries from '../Dashboard/TimeSeries';
 import IconButton from "@material-ui/core/IconButton";
 import FormTimeSeries from "../Dashboard/FormTimeSeries";
 
-class Charts extends Component {
+class Charts extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -26,20 +26,20 @@ class Charts extends Component {
 
     handleOpenAddTimeSeriesForm = (event) => {
         event.preventDefault();
-        this.setState({addTimeSeriesFormOpen: true});
+        this.setState({ addTimeSeriesFormOpen: true });
     };
 
     handleCloseAddTimeSeriesForm = () => {
-        this.setState({addTimeSeriesFormOpen: false});
+        this.setState({ addTimeSeriesFormOpen: false });
     };
 
-    handleAddTimeSeriesFormSubmit = (values) => {
-        const {currentPlacement, tagList} = this.props;
+    handleAddTimeSeriesFormSubmit = async (values) => {
+        const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
-            const newTag = tagList.find(o => o.tagName === values[key])
+            const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
                 tagId: newTag == null ? '' : newTag.tagId,
-            }
+            };
         });
 
         const timeSeries = {
@@ -48,7 +48,11 @@ class Charts extends Component {
             placement: currentPlacement,
             tags,
         };
-        this.props.onTimeSeriesAdd(timeSeries);
+        await this.props.onTimeSeriesAdd(timeSeries);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getAddTimeSeriesFormInitialValues = () => {
@@ -60,9 +64,8 @@ class Charts extends Component {
     };
 
     render() {
-        const {addTimeSeriesFormOpen} = this.state;
-        const {timeSeries, error, tagList} = this.props;
-
+        const { addTimeSeriesFormOpen } = this.state;
+        const { timeSeries, tagsList } = this.props;
 
         return (
             <div className="Charts app-wrapper">
@@ -77,46 +80,44 @@ class Charts extends Component {
                     handleSubmit={this.handleAddTimeSeriesFormSubmit}
                     open={addTimeSeriesFormOpen}/>
 
-                {error ?
-                    <p>{"Error in charts"}</p> :
-                    <>
-                        <div className="animated slideInUpTiny animation-duration-3">
-                            {timeSeries.map((timeSeries) => {
-                                const {startDate, endDate, times, tags, placement} = timeSeries;
-                                const tagsToDisplay = tags.map((tag) => {
-                                    const newTag = tagList.find(o => o.tagId === tag.tagId)
-                                    return {
-                                        ...tag,
-                                        tagUnits: newTag.units,
-                                        tagName: newTag.tagName,
-                                    }
-                                });
+                {<>
+                    <div className="animated slideInUpTiny animation-duration-3">
+                        {timeSeries.map((timeSeries) => {
+                            const { startDate, endDate, times, tags, placement } = timeSeries;
+                            const tagsToDisplay = tags.map((tag) => {
+                                const newTag = tagsList.find(o => o.tagId === tag.tagId);
+                                return {
+                                    ...tag,
+                                    tagUnits: newTag.units,
+                                    tagName: newTag.tagName,
+                                };
+                            });
 
-                                return (
-                                    <TimeSeries
-                                        onTimeSeriesChange={this.props.onTimeSeriesChange}
-                                        onTimeSeriesDelete={this.props.onTimeSeriesDelete}
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        tags={tagsToDisplay}
-                                        times={times}
-                                        placement={placement}
-                                        key={placement}/>);
-                            })}
-                        </div>
-                    </>}
+                            return (
+                                <TimeSeries
+                                    onTimeSeriesChange={this.props.onTimeSeriesChange}
+                                    onTimeSeriesDelete={this.props.onTimeSeriesDelete}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    tags={tagsToDisplay}
+                                    times={times}
+                                    placement={placement}
+                                    key={placement}/>);
+                        })}
+                    </div>
+                </>}
             </div>
         );
     }
 }
 
 
-const mapStateToProps = ({charts, tags}) => {
+const mapStateToProps = ({ charts, tags }) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
         timeSeries: charts.timeSeries,
-        error: charts.error,
         currentPlacement: charts.currentPlacement,
+        postingError: charts.postingError,
     };
 };
 

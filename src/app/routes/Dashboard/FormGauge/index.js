@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Field, Formik} from 'formik';
+import React, { Component } from 'react';
+import { Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -7,11 +7,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {withStyles} from '@material-ui/core/styles';
-import FormikNewAutocomplete from "app/components/FormikAutoComplete";
+import { withStyles } from '@material-ui/core/styles';
+import FormikAutocomplete from "app/components/FormikAutoComplete";
 import Typography from "@material-ui/core/Typography";
-import {connect} from "react-redux";
-import FormikFormControlLabel from "../../../components/FormikFormControlLabel";
+import { connect } from "react-redux";
+import FormikFormControlLabel from "app/components/FormikFormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import './index.scss';
 
@@ -19,7 +19,7 @@ const styles = {};
 
 class FormGauge extends Component {
     render() {
-        const {open, handleClose, handleSubmit, initialValues, tagsList} = this.props;
+        const { open, handleClose, handleSubmit, initialValues, tagsList } = this.props;
 
         return (
             <Dialog
@@ -48,7 +48,7 @@ class FormGauge extends Component {
                                 hHFromOptions: '',
                                 hH: '',
                             } : initialValues}
-                            onSubmit={async (values, {setSubmitting, setErrors}) => {
+                            onSubmit={async (values, { setSubmitting, setErrors }) => {
                                 setErrors({});
                                 const globalError = verifyValues(values);
                                 if (globalError !== null) {
@@ -59,7 +59,7 @@ class FormGauge extends Component {
                                         await handleSubmit(values);
                                         handleClose();
                                     } catch (error) {
-                                        setErrors({global: error.message});
+                                        setErrors({ global: error.message });
                                     }
                                 }
                                 setSubmitting(false);
@@ -68,16 +68,16 @@ class FormGauge extends Component {
                             validationSchema={Yup.object().shape({
                                 measuredTag: Yup.string().required('Please select tag name to measure'),
                                 lLFromOptionsCheckBox: Yup.bool(),
-                                lLFromOptions: Yup.string(),
+                                lLFromOptions: Yup.string().nullable(),
                                 lL: Yup.number(),
                                 lFromOptionsCheckBox: Yup.bool(),
-                                lFromOptions: Yup.string(),
+                                lFromOptions: Yup.string().nullable(),
                                 l: Yup.number(),
                                 hFromOptionsCheckBox: Yup.bool(),
-                                hFromOptions: Yup.string(),
+                                hFromOptions: Yup.string().nullable(),
                                 h: Yup.number(),
                                 hHFromOptionsCheckBox: Yup.bool(),
-                                hHFromOptions: Yup.string(),
+                                hHFromOptions: Yup.string().nullable(),
                                 hH: Yup.number(),
                             })}
                         >
@@ -108,7 +108,7 @@ class FormGauge extends Component {
                                         <Typography variant={'subtitle1'} color={'error'} align={'center'}>
                                             {errors.global}
                                         </Typography>}
-                                        <Field name='measuredTag' component={FormikNewAutocomplete} label="Measured Tag"
+                                        <Field name='measuredTag' component={FormikAutocomplete} label="Measured Tag"
                                                options={options}
                                                disableClearable
                                                textFieldProps={textFieldProps}/>
@@ -119,7 +119,7 @@ class FormGauge extends Component {
                                             checked={values.lLFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='lLFromOptions' component={FormikNewAutocomplete}
+                                            <Field name='lLFromOptions' component={FormikAutocomplete}
                                                    className='FormGauge-field'
                                                    label="LL Value"
                                                    options={options}
@@ -147,7 +147,7 @@ class FormGauge extends Component {
                                             checked={values.lFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='lFromOptions' component={FormikNewAutocomplete} label="L Value"
+                                            <Field name='lFromOptions' component={FormikAutocomplete} label="L Value"
                                                    options={options}
                                                    className='FormGauge-field'
                                                    disabled={!values.lFromOptionsCheckBox}
@@ -174,7 +174,7 @@ class FormGauge extends Component {
                                             checked={values.hFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='hFromOptions' component={FormikNewAutocomplete} label="H Value"
+                                            <Field name='hFromOptions' component={FormikAutocomplete} label="H Value"
                                                    options={options}
                                                    className='FormGauge-field'
                                                    disabled={!values.hFromOptionsCheckBox}
@@ -200,7 +200,7 @@ class FormGauge extends Component {
                                             checked={values.hHFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='hHFromOptions' component={FormikNewAutocomplete}
+                                            <Field name='hHFromOptions' component={FormikAutocomplete}
                                                    label="HH Value"
                                                    options={options}
                                                    className='FormGauge-field'
@@ -250,10 +250,10 @@ FormGauge.propTypes = {
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired,
-    initialValues: PropTypes.object.isRequired,
+    initialValues: PropTypes.object,
 };
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags }) => {
     return {
         tagsList: tags.tags,
         fetching: tags.fetching,
@@ -280,12 +280,12 @@ function verifyValues(values) {
         }
         if ((thresholdValues[i] === '' || thresholdValues[i] == null) &&
             (thresholdTags[i] === '' || thresholdTags[i] == null)) {
-            return {global: "Each value has to be a tag name or a numerical value"};
+            return { global: "Each value has to be a tag name or a numerical value" };
         }
     }
     for (let i = 0; i < numericValues.length - 1; i++) {
         if (numericValues[i] > numericValues[i + 1]) {
-            return {global: "Make sure that LL Value < L Value < H Value < HH Value"};
+            return { global: "Make sure that LL Value < L Value < H Value < HH Value" };
         }
     }
 

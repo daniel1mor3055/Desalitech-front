@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import Chart from "react-apexcharts";
 import PropTypes from "prop-types";
 
@@ -19,8 +19,8 @@ class MultiYChart extends Component {
                             download: true,
                             selection: true,
                             zoom: true,
-                            zoomin: false,
-                            zoomout: false,
+                            zoomin: true,
+                            zoomout: true,
                             pan: false,
                             reset: true | '<img src="/static/icons/reset.png" width="20">',
                             customIcons: []
@@ -68,7 +68,7 @@ class MultiYChart extends Component {
 
 
     static getDerivedStateFromProps = (props, state) => {
-        const {xData, data, yLabels, showYLabels, colors} = props;
+        const { xData, data, yLabels, showYLabels, colors } = props;
         return {
             ...state,
             series: yLabels.map((yLabel, index) => (
@@ -123,7 +123,7 @@ class MultiYChart extends Component {
 
 MultiYChart.propTypes = {
     xData: PropTypes.array.isRequired,
-    data: PropTypes.arrayOf(PropTypes.array).isRequired, // [[data_of_y1],[data_of_y2],...]
+    data: PropTypes.arrayOf(PropTypes.array).isRequired,
     yLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
     colors: PropTypes.arrayOf(PropTypes.any).isRequired,
     showYLabels: PropTypes.bool,

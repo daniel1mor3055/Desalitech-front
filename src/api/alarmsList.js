@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
+import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
+import { AXIOS_TIMEOUT } from 'constants/globalConstats';
 
 
 export const fetchAlarmsApi = async () => {
@@ -8,13 +9,19 @@ export const fetchAlarmsApi = async () => {
         const response = await axios.get(`/system/alarm-list?SysId=${sysId}`);
         camelizeJson(response.data);
         response.data.alarms.forEach(alarm => {
-            const {alarmId, timeStamp} = alarm;
+            const { alarmId, timeStamp } = alarm;
             alarm.id = alarmId + timeStamp;
         });
         return response.data;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -27,10 +34,16 @@ export const setEmailNotificationApi = async (emailNotification) => {
             emailNotification: emailNotification,
         };
         capitalizeJson(dataToPass);
-        const response = await axios.post(`/system/alarm-list`, dataToPass);
+        const response = await axios.post(`/system/alarm-list`, dataToPass,AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import moment from "moment";
-import {camelizeJson, capitalizeJson, extractSystemId} from './utils';
+import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
+import { AXIOS_TIMEOUT } from 'constants/globalConstats';
+
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -17,8 +19,8 @@ export const fetchDashboardApi = async () => {
     try {
         const response = await axios.get(`/system/dashboard?SysId=${sysId}`);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
-        const {triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs} = getWidgetsByType(widgets);
+        const { admin, widgets } = response.data;
+        const { triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs } = getWidgetsByType(widgets);
         const currentPlacement = calcCurrentPlacement(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs);
         return {
             admin,
@@ -33,8 +35,14 @@ export const fetchDashboardApi = async () => {
             currentPlacement
         };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -44,14 +52,20 @@ export const timeSeriesAddApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTimeSeries = extractTimeSeries(widgets[0]);
-        return {admin, responseTimeSeries};
+        return { admin, responseTimeSeries };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -60,14 +74,20 @@ export const timeSeriesChangeApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTimeSeries = extractTimeSeries(widgets[0]);
-        return {admin, responseTimeSeries};
+        return { admin, responseTimeSeries };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -76,11 +96,17 @@ export const timeSeriesDeleteApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -89,14 +115,20 @@ export const gaugeChangeApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseGauge = extractGauge(widgets[0]);
-        return {admin, responseGauge};
+        return { admin, responseGauge };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -105,11 +137,17 @@ export const gaugeDeleteApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -118,14 +156,20 @@ export const gaugeAddApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseGauge = extractGauge(widgets[0]);
-        return {admin, responseGauge};
+        return { admin, responseGauge };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -134,14 +178,20 @@ export const tagChangeApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTag = extractTag(widgets[0]);
-        return {admin, responseTag};
+        return { admin, responseTag };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -150,11 +200,17 @@ export const tagDeleteApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -163,14 +219,20 @@ export const tagAddApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTag = extractTag(widgets[0]);
-        return {admin, responseTag};
+        return { admin, responseTag };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -179,14 +241,20 @@ export const triggerChangeApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTrigger = extractTrigger(widgets[0]);
-        return {admin, responseTrigger};
+        return { admin, responseTrigger };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -195,11 +263,17 @@ export const triggerDeleteApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -208,14 +282,20 @@ export const triggerAddApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseTrigger = extractTrigger(widgets[0]);
-        return {admin, responseTrigger};
+        return { admin, responseTrigger };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -224,14 +304,20 @@ export const seeqChangeApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseSeeq = extractSeeq(widgets[0]);
-        return {admin, responseSeeq};
+        return { admin, responseSeeq };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -240,11 +326,17 @@ export const seeqDeleteApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -253,19 +345,25 @@ export const seeqAddApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
-        const {admin, widgets} = response.data;
+        const { admin, widgets } = response.data;
         const responseSeeq = extractSeeq(widgets[0]);
-        return {admin, responseSeeq};
+        return { admin, responseSeeq };
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
 function manipulateSeeq(seeq, sysId) {
-    const {placement, url} = seeq;
+    const { placement, url } = seeq;
 
     return {
         sysId,
@@ -286,7 +384,7 @@ function manipulateSeeq(seeq, sysId) {
 }
 
 function manipulateTrigger(trigger, sysId) {
-    const {placement, tagId, controllerTagId} = trigger;
+    const { placement, tagId, controllerTagId } = trigger;
 
     return {
         sysId,
@@ -307,7 +405,7 @@ function manipulateTrigger(trigger, sysId) {
 }
 
 function manipulateTag(tag, sysId) {
-    const {placement, tagId} = tag;
+    const { placement, tagId } = tag;
 
     return {
         sysId,
@@ -328,7 +426,7 @@ function manipulateTag(tag, sysId) {
 }
 
 function manipulateGauge(gaugeType, gauge, sysId) {
-    const {measuredTag, placement, lL, l, h, hH} = gauge;
+    const { measuredTag, placement, lL, l, h, hH } = gauge;
     const gaugesTypesOptions = {
         MIDDLE: 'MiddleGauge',
         RIGHT: 'RightGauge',
@@ -354,7 +452,7 @@ function manipulateGauge(gaugeType, gauge, sysId) {
 }
 
 export function manipulateTimeSeries(timeSeries, sysId) {
-    const {startDate, endDate, tags, placement, detail1} = timeSeries;
+    const { startDate, endDate, tags, placement, detail1 } = timeSeries;
     let backTags = tags.map((tag) => (tag.tagId));
 
     for (let i = tags.length; i < 3; i++) {
@@ -390,7 +488,7 @@ export function getWidgetsByType(widgets) {
     let leftGauges = [];
     let seeqs = [];
     for (let i = 0; i < widgets.length; i++) {
-        const {widgetType} = widgets[i];
+        const { widgetType } = widgets[i];
         switch (widgetType) {
             case TRIGGER:
                 triggers.push(extractRelevantData(widgets[i], TRIGGER));
@@ -417,7 +515,7 @@ export function getWidgetsByType(widgets) {
                 seeqs.push(extractRelevantData(widgets[i], SEEQ));
                 break;
             default:
-                console.log("WE ARE IN DEFAULT DASHBOARD API FILE, WRONG");
+                break;
         }
     }
     return {
@@ -451,7 +549,7 @@ function extractRelevantData(widget, widgetType) {
 
 
 function extractSeeq(widget) {
-    const {placement, extraData} = widget;
+    const { placement, extraData } = widget;
     return {
         placement: placement,
         url: extraData,
@@ -459,8 +557,8 @@ function extractSeeq(widget) {
 }
 
 function extractGauge(widget) {
-    const {gaugeData, tags, placement} = widget;
-    const {lL, l, h, hH} = gaugeData;
+    const { gaugeData, tags, placement } = widget;
+    const { lL, l, h, hH } = gaugeData;
 
     const newTags = tags.map((tag, index) => {
         return {
@@ -482,10 +580,10 @@ function extractGauge(widget) {
 }
 
 function extractTrigger(widget) {
-    const {tags, placement} = widget;
+    const { tags, placement } = widget;
 
-    const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
-    const {tag2, tag2Name, tag2Value, tag2Units} = tags[1];
+    const { tag1, tag1Name, tag1Value, tag1Units } = tags[0];
+    const { tag2, tag2Name, tag2Value, tag2Units } = tags[1];
     return {
         placement,
         tag: {
@@ -504,7 +602,7 @@ function extractTrigger(widget) {
 }
 
 export function extractTimeSeries(widget) {
-    const {placement, startDate, endDate, tags, influxData, extraData} = widget;
+    const { placement, startDate, endDate, tags, influxData, extraData } = widget;
 
     const newTags = tags.map((tag, index) => {
         return {
@@ -534,15 +632,15 @@ export function extractTimeSeries(widget) {
         tags: newTags,
         placement,
         times,
-        startDate: moment.utc(moment.unix(startDate)).local(), // Dates are being saved as moment object local time
-        endDate: moment.utc(moment.unix(endDate)).local(), // Dates are being saved as moment object local time
+        startDate: moment.utc(moment.unix(startDate)).local(),
+        endDate: moment.utc(moment.unix(endDate)).local(),
         currentPickedRange: extraData,
     };
 }
 
 function extractTag(widget) {
-    const {tags, placement} = widget;
-    const {tag1, tag1Name, tag1Value, tag1Units} = tags[0];
+    const { tags, placement } = widget;
+    const { tag1, tag1Name, tag1Value, tag1Units } = tags[0];
 
     return {
         placement,
@@ -555,40 +653,47 @@ function extractTag(widget) {
 
 
 function interpolateData(array) {
-    const arrayAfterNullsRemove = removeNulls(array);
-    if (arrayAfterNullsRemove.length === 0) {
-        for (let i = 0; i < array.length; i++) {
-            array[i] = 0;
-        }
-    } else {
-        const interpolatedArray = interpolateArray(arrayAfterNullsRemove, array.length);
-        for (let i = 0; i < array.length; i++) {
-            array[i] = interpolatedArray[i];
-        }
+    const indicesWithValues = extractIndicesWithValues(array);
+
+    if (!indicesWithValues.length) {
+        return array;
     }
+
+    interpolateArray(array, indicesWithValues);
+
+    return array;
 }
 
-function removeNulls(array) {
-    return array.filter(elem => elem !== null);
+function extractIndicesWithValues(array) {
+    const indicesWithValues = [];
+    array.forEach((value, index) => {
+        if (value != null) {
+            indicesWithValues.push(index);
+        } else {
+            array[index] = 0;
+        }
+    });
+
+    return indicesWithValues;
 }
 
-function interpolateArray(data, fitCount) {
-    const linearInterpolate = function (before, after, atPoint) {
-        return before + (after - before) * atPoint;
-    };
 
-    const newData = [];
-    const springFactor = Number((data.length - 1) / (fitCount - 1));
-    newData[0] = data[0]; // for new allocation
-    for (let i = 1; i < fitCount - 1; i++) {
-        const tmp = i * springFactor;
-        const before = Number(Math.floor(tmp)).toFixed();
-        const after = Number(Math.ceil(tmp)).toFixed();
-        const atPoint = tmp - before;
-        newData[i] = linearInterpolate(data[before], data[after], atPoint);
+function interpolateArray(array, indicesWithValues) {
+    for (let i = 0; i < indicesWithValues[0]; i++) {
+        array[i] = array[indicesWithValues[0]];
     }
-    newData[fitCount - 1] = data[data.length - 1]; // for new allocation
-    return newData;
+
+    indicesWithValues.forEach((indexInArray, indexInIndicesArray) => {
+        if (indexInIndicesArray < indicesWithValues.length - 1) {
+            for (let i = indexInArray + 1; i < indicesWithValues[indexInIndicesArray + 1]; i++) {
+                array[i] = array[indexInArray] + (i - indexInArray) / (indicesWithValues[indexInIndicesArray + 1] - indexInArray) * (array[indicesWithValues[indexInIndicesArray + 1]] - array[indexInArray]);
+            }
+        }
+    });
+
+    for (let i = indicesWithValues[indicesWithValues.length - 1] + 1; i < array.length; i++) {
+        array[i] = array[indicesWithValues[indicesWithValues.length - 1]];
+    }
 }
 
 function calcCurrentPlacement(triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs) {

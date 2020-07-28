@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson, extractSystemId, dashboardIsCurrentLocation, pollAllSystems} from './utils';
+import { camelizeJson, extractSystemId, dashboardIsCurrentLocation, pollAllSystems } from './utils';
 
 export const fetchPollingApi = async () => {
     const sysId = extractSystemId();
@@ -10,12 +10,18 @@ export const fetchPollingApi = async () => {
         const response = await axios.get(getAddress);
         camelizeJson(response.data);
         response.data.activeAlarms.forEach(activeAlarm => {
-            const {alarmId, timeStamp, sysId} = activeAlarm;
+            const { alarmId, timeStamp, sysId } = activeAlarm;
             activeAlarm.id = alarmId + timeStamp + sysId;
         });
         return response.data;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };

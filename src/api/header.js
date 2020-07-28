@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {camelizeJson, extractSystemId} from './utils';
+import { camelizeJson, extractSystemId } from './utils';
 
 
 export const fetchSystemNameApi = async () => {
     const sysId = extractSystemId();
-    if (sysId == null || sysId==='null') {
+    if (sysId == null || sysId === 'null') {
         return null;
     }
     try {
@@ -12,7 +12,13 @@ export const fetchSystemNameApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };

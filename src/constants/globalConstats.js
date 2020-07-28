@@ -1,6 +1,3 @@
-export const APP_POLLING_INTERVAL = 10000;
-export const SYSTEMS_ALARMS_POLLING_INTERVAL = 30000;
-
-export const MIDDLE = 'MIDDLE';
-export const RIGHT = 'RIGHT';
-export const LEFT = 'LEFT';
+export const APP_POLLING_INTERVAL = 10 * 1000;
+export const SYSTEMS_ALARMS_POLLING_INTERVAL = 10 * 1000;
+export const AXIOS_TIMEOUT = { timeout: 2 * 1000 };

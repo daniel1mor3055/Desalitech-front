@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SidenavList = ({children}) => (
+const SidenavList = ({ children }) => (
     <ul className="nav-menu">
         {children}
     </ul>

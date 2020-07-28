@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,13 +11,13 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 
-class DataTableHead extends React.Component {
+class DataTableHead extends Component {
     createSortHandler = property => event => {
         this.props.onRequestSort(event, property);
     };
 
     render() {
-        const {order, orderBy, columnsIds, columnsLabels, actions} = this.props;
+        const { order, orderBy, columnsIds, columnsLabels, actions } = this.props;
         const cellWidth = `${100 / (columnsIds.length + (Array.isArray(actions) ? actions.length : 0))}%`;
 
         const columnsData = new Array(columnsIds.length).fill(0).map((_, index) => (
@@ -38,7 +38,7 @@ class DataTableHead extends React.Component {
                                 key={column.id}
                                 align={column.align}
                                 padding={column.disablePadding ? 'none' : 'default'}
-                                style={{width: cellWidth}}
+                                style={{ width: cellWidth }}
                             >
                                 <Tooltip
                                     title="Sort"
@@ -58,7 +58,7 @@ class DataTableHead extends React.Component {
                     }, this)}
                     {actions ?
                         actions.map(action => (
-                            <TableCell style={{width: cellWidth}} align={'center'} key={action.id}>
+                            <TableCell style={{ width: cellWidth }} align={'center'} key={action.id}>
                                 {action.label}
                             </TableCell>))
                         : null}
@@ -79,18 +79,18 @@ DataTableHead.propTypes = {
 };
 
 
-class DataTable extends React.Component {
+class DataTable extends Component {
     constructor(props, context) {
         super(props, context);
 
-        const {data, initialOrderBy, order} = props;
+        const { data, initialOrderBy, order } = props;
 
         this.state = {
             order: order == null ? 'asc' : 'desc',
             orderBy: initialOrderBy,
             data: data,
             page: 0,
-            rowsPerPage: 10, //Later on we can support user preferences and store it
+            rowsPerPage: 10,
         };
     }
 
@@ -115,11 +115,11 @@ class DataTable extends React.Component {
             order = 'asc';
         }
 
-        this.setState({order, orderBy});
+        this.setState({ order, orderBy });
     };
 
     handleChangePage = (event, page) => {
-        this.setState({page});
+        this.setState({ page });
     };
 
     handleChangeRowsPerPage = event => {
@@ -131,8 +131,8 @@ class DataTable extends React.Component {
 
 
     render() {
-        const {data, order, orderBy, rowsPerPage, page} = this.state;
-        const {cellIdentifier, columnsIds, columnsLabels, actions, onRowClick} = this.props;
+        const { data, order, orderBy, rowsPerPage, page } = this.state;
+        const { cellIdentifier, columnsIds, columnsLabels, actions, onRowClick } = this.props;
         const cellWidth = `${100 / (columnsIds.length + (Array.isArray(actions) ? actions.length : 0))}%`;
 
         return (
@@ -158,15 +158,15 @@ class DataTable extends React.Component {
                                             role="checkbox"
                                             tabIndex={-1}
                                             key={dataObject[cellIdentifier]}
-                                            style={onRowClick != null ? {cursor: 'pointer'} : null}
+                                            style={onRowClick != null ? { cursor: 'pointer' } : null}
                                         >
                                             {columnsIds.map((colId) => (
-                                                <TableCell style={{width: cellWidth}} align={"center"}
+                                                <TableCell style={{ width: cellWidth }} align={"center"}
                                                            key={colId}>{dataObject[colId]}</TableCell>
                                             ))}
                                             {actions ?
                                                 actions.map(action => (
-                                                    <TableCell style={{width: cellWidth}} align={'center'}
+                                                    <TableCell style={{ width: cellWidth }} align={'center'}
                                                                key={action.id}>
                                                         {action.cell(dataObject)}
                                                     </TableCell>))

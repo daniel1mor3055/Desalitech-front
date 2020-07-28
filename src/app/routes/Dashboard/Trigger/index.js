@@ -1,12 +1,12 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
 import 'react-dates/lib/css/_datepicker.css';
 import PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {withRouter} from "react-router";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
-import {triggerChange, triggerDelete} from 'store/thunk/dashboard';
+import { triggerChange, triggerDelete } from 'store/thunk/dashboard';
 import Widget from "app/components/Widget";
 import SolidCard from "app/components/SolidCards/SolidCards";
 import './index.scss';
@@ -25,7 +25,7 @@ class Trigger extends Component {
 
     handleOpenEditForm = (event) => {
         event.preventDefault();
-        this.setState({editFormOpen: true});
+        this.setState({ editFormOpen: true });
     };
 
     handleCloseForm = () => {
@@ -35,16 +35,20 @@ class Trigger extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
-        const {tagName, controllerTagName} = values;
-        const {placement, tagList} = this.props;
+    handleFormSubmit = async (values) => {
+        const { tagName, controllerTagName } = values;
+        const { placement, tagsList } = this.props;
 
         const trigger = {
-            tagId: tagList.find(o => o.tagName === tagName).tagId,
-            controllerTagId: tagList.find(o => o.tagName === controllerTagName).tagId,
+            tagId: tagsList.find(o => o.tagName === tagName).tagId,
+            controllerTagId: tagsList.find(o => o.tagName === controllerTagName).tagId,
             placement
         };
-        this.props.onTriggerChange(trigger);
+        await this.props.onTriggerChange(trigger);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getFormInitialValues = (tag, controllerTag) => {
@@ -55,23 +59,27 @@ class Trigger extends Component {
     };
 
     handleOpenDeleteForm = () => {
-        this.setState({deleteFormOpen: true});
+        this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
-        const {placement, tag, controllerTag} = this.props;
+    handleDeleteWidget = async () => {
+        const { placement, tag, controllerTag } = this.props;
 
         const trigger = {
             tagId: tag.tagId,
             controllerTagId: controllerTag.tagId,
             placement,
         };
-        this.props.onTriggerDelete(trigger);
+        await this.props.onTriggerDelete(trigger);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {
-        const {editFormOpen, deleteFormOpen} = this.state;
-        const {tag, controllerTag} = this.props;
+        const { editFormOpen, deleteFormOpen } = this.state;
+        const { tag, controllerTag } = this.props;
         const initialFormValues = this.getFormInitialValues(tag, controllerTag);
 
         return (
@@ -109,9 +117,10 @@ Trigger.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({tags}) => {
+const mapStateToProps = ({ tags, dashboard }) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
+        postingError: dashboard.postingError,
     };
 };
 

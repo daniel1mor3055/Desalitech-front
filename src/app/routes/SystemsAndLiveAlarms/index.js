@@ -1,27 +1,25 @@
-import React from 'react';
-import {withRouter} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {isIOS, isMobile} from 'react-device-detect';
+import React, { PureComponent } from 'react';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { isIOS, isMobile } from 'react-device-detect';
 
 import Header from 'app/components/Header';
 import Footer from 'app/components/Footer';
-import Tour from 'app/components/Tour/index';
-import TopNav from 'app/components/TopNav';
-import BasicCard from "./BasicCards/BasicCard";
+import SystemCard from "./SystemCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
 import SearchBox from "app/components/SearchBox";
-import {fetchSystems} from "store/thunk/systemSelect";
-import {fetchPolling} from "store/thunk/polling";
-import {setSystemName} from 'store/actions/header';
+import { fetchSystems } from "store/thunk/systemSelect";
+import { fetchPolling } from "store/thunk/polling";
+import { setSystemName } from 'store/actions/header';
 import DataTable from 'app/components/DataTable';
 import './index.scss';
 import StatusIndicator from "app/components/StatusIndicator";
-import {STATUS_OFFLINE, STATUS_ONLINE} from 'constants/systemStatus';
-import {SYSTEMS_ALARMS_POLLING_INTERVAL} from "constants/globalConstats";
+import { STATUS_OFFLINE, STATUS_ONLINE } from 'constants/systemStatus';
+import { SYSTEMS_ALARMS_POLLING_INTERVAL } from "constants/globalConstats";
 
-class SystemsAndLiveAlarms extends React.Component {
+class SystemsAndLiveAlarms extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -44,7 +42,7 @@ class SystemsAndLiveAlarms extends React.Component {
                 this.props.onFetchPolling();
             },
             SYSTEMS_ALARMS_POLLING_INTERVAL);
-        this.setState({dataPolling});
+        this.setState({ dataPolling });
     }
 
     componentWillUnmount() {
@@ -53,7 +51,6 @@ class SystemsAndLiveAlarms extends React.Component {
 
     getSearchOptions = () => {
         return {
-            'SYSTEM_ID': 'systemIdSearchText',
             'SYSTEM_NAME': 'systemNameSearchText',
             'ACTIVE_ALARM_SYSTEM_ID': 'activeAlarmSystemIdSearchText',
             'ACTIVE_ALARM_ID': 'activeAlarmIdSearchText',
@@ -64,33 +61,33 @@ class SystemsAndLiveAlarms extends React.Component {
     updateSearchText(event, id) {
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: event.target.value});
+        this.setState({ [stateSearchOptions[id]]: event.target.value });
     }
 
     handleSearchClear(event, id) {
         event.preventDefault();
         const stateSearchOptions = this.getSearchOptions();
 
-        this.setState({[stateSearchOptions[id]]: ''});
+        this.setState({ [stateSearchOptions[id]]: '' });
     }
 
     handleClickOnSystemRow = (dataObject) => {
-        const {sysId, systemName} = dataObject;
-        const {history} = this.props;
+        const { sysId, systemName } = dataObject;
+        const { history } = this.props;
         history.push(`/app/dashboard?sysId=${encodeURIComponent(sysId)}`);
         this.props.onSetSystemName(systemName);
     };
 
     handleClickOnAlarmRow = (dataObject) => {
-        const {sysId} = dataObject;
-        const {history} = this.props;
+        const { sysId } = dataObject;
+        const { history } = this.props;
         history.push(`/app/alarm-list?sysId=${encodeURIComponent(sysId)}`);
     };
 
     getFilterData(systems, systemsStatusIcons) {
-        const {systemIdSearchText, systemNameSearchText} = this.state;
+        const { systemIdSearchText, systemNameSearchText } = this.state;
         let filteredSystems = systems.filter(system => {
-            const {sysId, systemName} = system;
+            const { sysId, systemName } = system;
             const sysIdToSearch = sysId === null ? '' : sysId;
             const systemNameToSearch = systemName === null ? '' : systemName;
 
@@ -104,11 +101,11 @@ class SystemsAndLiveAlarms extends React.Component {
                 systemStatus: systemsStatusIcons[filteredSystems[i].sysId],
             };
         }
-        return {filteredSystems, badSearch};
+        return { filteredSystems, badSearch };
     }
 
     prepareSystemsStatus() {
-        const {systemsStatus} = this.props;
+        const { systemsStatus } = this.props;
         let systemsStatusIcons = {};
         let systemsStatusBorders = {};
         for (let i = 0; i < systemsStatus.length; i++) {
@@ -130,10 +127,10 @@ class SystemsAndLiveAlarms extends React.Component {
     }
 
     getFilteredActiveAlarms() {
-        const {activeAlarmSystemIdSearchText, activeAlarmIdSearchText, activeAlarmDescriptionSearchText} = this.state;
-        const {activeAlarms} = this.props;
+        const { activeAlarmSystemIdSearchText, activeAlarmIdSearchText, activeAlarmDescriptionSearchText } = this.state;
+        const { activeAlarms } = this.props;
         let filteredActiveAlarms = activeAlarms.filter(activeAlarm => {
-            const {sysId, alarmId, description} = activeAlarm;
+            const { sysId, alarmId, description } = activeAlarm;
             const sysIdToSearch = sysId == null ? '' : sysId;
             const alarmIdToSearch = alarmId == null ? '' : alarmId;
             const descriptionToSearch = description == null ? '' : description;
@@ -143,11 +140,11 @@ class SystemsAndLiveAlarms extends React.Component {
                 descriptionToSearch.toLowerCase().includes(activeAlarmDescriptionSearchText.toLowerCase());
         });
         const badSearch = !filteredActiveAlarms.length;
-        return {filteredActiveAlarms, badSearch};
+        return { filteredActiveAlarms, badSearch };
     }
 
     render() {
-        const {systems, fetching, error, admin, history, errorPoll, fetchingPoll, activeAlarms} = this.props;
+        const { systems, fetching, error, admin, history, errorPoll, fetchingPoll, activeAlarms } = this.props;
 
         if (isIOS && isMobile) {
             document.body.classList.add('ios-mobile-view-height');
@@ -158,13 +155,13 @@ class SystemsAndLiveAlarms extends React.Component {
         let systemsTable = <CircularIndeterminate/>;
 
         if (!error && !fetching && systems.length !== 0) {
-            const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
+            const { systemsStatusIcons, systemsStatusBorders } = this.prepareSystemsStatus();
             systemsCards =
-                <div className='d-flex justify-content-center'>
+                <div className='justify-content-around d-flex flex-wrap'>
                     {systems.map(system => {
-                        const {sysId, recovery, production, conductivity, systemName} = system;
+                        const { sysId, recovery, production, conductivity, systemName } = system;
                         return (
-                            <BasicCard
+                            <SystemCard
                                 key={sysId}
                                 image={require('./assets/large_no_background_top.svg')}
                                 title={systemName}
@@ -181,21 +178,12 @@ class SystemsAndLiveAlarms extends React.Component {
                         );
                     })}
                 </div>;
-            const {filteredSystems, badSearch} = this.getFilterData(systems, systemsStatusIcons);
-            const columnsIds = ['sysId', 'systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
-            const columnsLabels = ['System ID', 'System Name', 'Recovery', 'Production', 'Conductivity', 'Status'];
+            const { filteredSystems, badSearch } = this.getFilterData(systems, systemsStatusIcons);
+            const columnsIds = ['systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
+            const columnsLabels = ['System Name', 'Recovery [%]', 'Production [gpm]', 'Conductivity [us/cm]', 'Status'];
             systemsTable =
                 <>
                     <div className='SystemsAndLiveAlarms-searchBoxes row'>
-                        <div className='col-2'>
-                            <SearchBox
-                                showClear={true}
-                                styleName="d-none d-lg-block"
-                                placeholder="Filter by System ID"
-                                onChange={(event) => this.updateSearchText(event, 'SYSTEM_ID')}
-                                value={this.state.systemIdSearchText} badSearch={badSearch}
-                                handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_ID')}/>
-                        </div>
                         <div className='col-2'>
                             <SearchBox
                                 showClear={true}
@@ -209,8 +197,8 @@ class SystemsAndLiveAlarms extends React.Component {
                     <DataTable data={filteredSystems}
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
-                               initialOrderBy={'sysId'}
-                               cellIdentifier={'sysId'}
+                               initialOrderBy={'systemName'}
+                               cellIdentifier={'systemName'}
                                onRowClick={this.handleClickOnSystemRow}
                     />
                 </>;
@@ -218,7 +206,7 @@ class SystemsAndLiveAlarms extends React.Component {
 
         const columnsIds = ['sysId', 'alarmId', 'description', 'timeStamp'];
         const columnsLabels = ['System ID', 'Alarm ID', 'Description', 'Timestamp'];
-        const {badSearch, filteredActiveAlarms} = this.getFilteredActiveAlarms();
+        const { badSearch, filteredActiveAlarms } = this.getFilteredActiveAlarms();
         let alarmsJSX = <CircularIndeterminate/>;
         if (!errorPoll && !(fetchingPoll && activeAlarms.length === 1 && activeAlarms[0] === 'null')) {
             alarmsJSX =
@@ -264,12 +252,7 @@ class SystemsAndLiveAlarms extends React.Component {
         }
 
         if (error) {
-            systemsCards = <p>{"Couldn't fetch systems"}</p>;
-            systemsTable = <p>{"Couldn't fetch systems"}</p>;
-        }
-
-        if (errorPoll) {
-            alarmsJSX = <p>{"Couldn't fetch active alarms"}</p>;
+            throw new Error("Could not fetch systems");
         }
 
         const systemsJSX = admin ?
@@ -277,11 +260,9 @@ class SystemsAndLiveAlarms extends React.Component {
 
         return (
             <div className={`SystemsAndLiveAlarms app-container collapsible-drawer`}>
-                <Tour/>
                 <div className="app-main-container">
                     <div
                         className={`app-header`}>
-                        <TopNav styleName="app-top-header"/>
                         <Header showSidebarIcon={false} userInfoInHeader={true}/>
                     </div>
 
@@ -298,7 +279,7 @@ class SystemsAndLiveAlarms extends React.Component {
 }
 
 
-const mapStateToProps = ({systems, header, poll}) => {
+const mapStateToProps = ({ systems, header, poll }) => {
     return {
         systems: systems.systems,
         fetching: systems.fetching,

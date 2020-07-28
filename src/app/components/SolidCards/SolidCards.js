@@ -1,8 +1,8 @@
 import React from 'react';
-import {Card, CardBody, CardSubtitle} from 'reactstrap';
+import { Card, CardBody, CardSubtitle } from 'reactstrap';
 import PropTypes from "prop-types";
 
-const SolidCard = ({tagName, tagValue, tagUnits, colorIndicator}) => {
+const SolidCard = ({ tagName, tagValue, tagUnits, colorIndicator }) => {
     const cardStyle = colorIndicator ? "bg-success text-white" : "bg-warning text-white";
     return (
         <Card className={`shadow border-0 ${cardStyle}`}>

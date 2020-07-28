@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {connect} from "react-redux";
+import React, { PureComponent } from 'react';
+import { connect } from "react-redux";
 
 import 'react-dates/initialize';
 import 'bootstrap/dist/css/bootstrap-grid.min.css';
@@ -8,13 +8,13 @@ import 'react-dates/lib/css/_datepicker.css';
 import {
     fetchBackgroundTags,
     fetchDashboard,
+    gaugeAdd,
+    seeqAdd,
+    tagAdd,
+    timeSeriesAdd,
     timeSeriesChange,
     timeSeriesDelete,
-    timeSeriesAdd,
-    gaugeAdd,
-    tagAdd,
     triggerAdd,
-    seeqAdd,
 } from "store/thunk/dashboard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import Gauge from "./Gauge";
@@ -23,9 +23,6 @@ import Tag from './Tag';
 import Trigger from "./Trigger";
 import Seeq from './Seeq';
 import IconButton from "@material-ui/core/IconButton";
-import {extractCurrentTabFromURL} from "../../../api/utils";
-import ChooseTagsForm from "./ChooseTagsForm";
-import AddWidgetForm from "./AddWidgetForm";
 import WidgetTypesSelector from "./WidgetTypesSelector";
 import FormGauge from "./FormGauge";
 import FormTag from "./FormTag";
@@ -34,7 +31,7 @@ import FormSeeq from "./FormSeeq";
 import FormTimeSeries from "./FormTimeSeries";
 import moment from "moment";
 
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -57,11 +54,11 @@ class Dashboard extends Component {
 
     handleOpenSelectorWidgetType = (event) => {
         event.preventDefault();
-        this.setState({widgetTypesSelectorOpen: true});
+        this.setState({ widgetTypesSelectorOpen: true });
     };
 
     handleCloseSelectorWidgetType = () => {
-        this.setState({widgetTypesSelectorOpen: false});
+        this.setState({ widgetTypesSelectorOpen: false });
     };
 
     handleCloseWidgetForm = () => {
@@ -77,7 +74,7 @@ class Dashboard extends Component {
 
     handleChooseSelectorWidgetType = (event, widgetType) => {
         event.preventDefault();
-        const newState = {...this.state};
+        const newState = { ...this.state };
         switch (widgetType) {
             case('timeSeries'):
                 newState.timeSeriesFormOpen = true;
@@ -104,14 +101,14 @@ class Dashboard extends Component {
                 newState.gaugeFormOpen = true;
                 break;
             default:
-                console.log('WE SHOULD NOT GET HERE');
+                break;
         }
         this.setState(newState);
         this.handleCloseSelectorWidgetType(event);
     };
 
-    handleTimeSeriesSubmit = (values) => {
-        const {currentPlacement, tagsList} = this.props;
+    handleTimeSeriesSubmit = async (values) => {
+        const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
@@ -126,12 +123,16 @@ class Dashboard extends Component {
             tags,
             detail1: 'Day',
         };
-        this.props.onTimeSeriesAdd(timeSeries);
+        await this.props.onTimeSeriesAdd(timeSeries);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleGaugesSubmit = (values) => {
-        const {newGaugetype} = this.state;
-        const {currentPlacement, tagsList} = this.props;
+    handleGaugesSubmit = async (values) => {
+        const { newGaugetype } = this.state;
+        const { currentPlacement, tagsList } = this.props;
         const {
             measuredTag, lLFromOptionsCheckBox, lLFromOptions, lL, lFromOptionsCheckBox,
             lFromOptions, l, hFromOptionsCheckBox, hFromOptions, h, hHFromOptionsCheckBox, hHFromOptions, hH
@@ -150,55 +151,76 @@ class Dashboard extends Component {
             hH: !hHFromOptionsCheckBox ? hH : newHh.tagId,
         };
 
-        this.props.onGaugeAdd(newGaugetype, gauge);
+        await this.props.onGaugeAdd(newGaugetype, gauge);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleTagsSubmit = (values) => {
-        const {tagName} = values;
-        const {currentPlacement, tagsList} = this.props;
+    handleTagsSubmit = async (values) => {
+        const { tagName } = values;
+        const { currentPlacement, tagsList } = this.props;
 
         const tag = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
             placement: currentPlacement,
         };
-        this.props.onTagAdd(tag);
+        await this.props.onTagAdd(tag);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleTriggersSubmit = (values) => {
-        const {tagName, controllerTagName} = values;
-        const {currentPlacement, tagsList} = this.props;
+    handleTriggersSubmit = async (values) => {
+        const { tagName, controllerTagName } = values;
+        const { currentPlacement, tagsList } = this.props;
 
         const trigger = {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
             controllerTagId: tagsList.find(o => o.tagName === controllerTagName).tagId,
             placement: currentPlacement,
         };
-        this.props.onTriggerAdd(trigger);
+        await this.props.onTriggerAdd(trigger);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleSeeqsSubmit = (values) => {
-        const {url} = values;
-        const {currentPlacement} = this.props;
+    handleSeeqsSubmit = async (values) => {
+        const { url } = values;
+        const { currentPlacement } = this.props;
 
         const seeq = {
             url,
             placement: currentPlacement,
         };
-        this.props.onSeeqAdd(seeq);
+        await this.props.onSeeqAdd(seeq);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {
-        const {widgetTypesSelectorOpen, gaugeFormOpen, tagFormOpen, triggerFormOpen, seeqFormOpen, timeSeriesFormOpen} = this.state;
+        const { widgetTypesSelectorOpen, gaugeFormOpen, tagFormOpen, triggerFormOpen, seeqFormOpen, timeSeriesFormOpen } = this.state;
         const {
             triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
+        if (error) {
+            throw new Error('Could not fetch dashboard');
+        }
+
         return (
             <div className="Dashboard app-wrapper">
 
-                {fetching ?
-                    error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
-                    :
+                {fetching ? <CircularIndeterminate/> :
                     <>
                         <div className="dashboard animated slideInUpTiny animation-duration-3">
                             <div className="add-dashboard-option">
@@ -236,7 +258,7 @@ class Dashboard extends Component {
                                             open={timeSeriesFormOpen}/>
 
                             {timeSeries.map((timeSeries) => {
-                                const {startDate, endDate, times, tags, placement, currentPickedRange} = timeSeries;
+                                const { startDate, endDate, times, tags, placement, currentPickedRange } = timeSeries;
                                 return (
                                     <TimeSeries
                                         onTimeSeriesChange={this.props.onTimeSeriesChange}
@@ -251,32 +273,33 @@ class Dashboard extends Component {
                             })}
                             <div className="justify-content-around d-flex flex-wrap">
                                 {middleGauges.map((middleGauge) => {
-                                    const {placement} = middleGauge;
+                                    const { placement } = middleGauge;
                                     return <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge} key={placement}/>;
                                 })}
                                 {leftGauges.map((leftGauge) => {
-                                    const {placement} = leftGauge;
+                                    const { placement } = leftGauge;
                                     return <Gauge gaugeType={'LEFT'} gaugeData={leftGauge} key={placement}/>;
                                 })}
                                 {rightGauges.map((rightGauge) => {
-                                    const {placement} = rightGauge;
+                                    const { placement } = rightGauge;
                                     return <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge} key={placement}/>;
                                 })}
                             </div>
                             <div className="justify-content-around d-flex flex-wrap">
                                 {tags.map((tag) => {
-                                    const {tagId, tagName, tagValue, tagUnits, placement} = tag;
-                                    return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue} tagUnits={tagUnits}
+                                    const { tagId, tagName, tagValue, tagUnits, placement } = tag;
+                                    return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue}
+                                                tagUnits={tagUnits}
                                                 placement={placement} key={placement}/>;
                                 })}
                                 {triggers.map((trigger) => {
-                                    const {controllerTag, tag, placement} = trigger;
+                                    const { controllerTag, tag, placement } = trigger;
                                     return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}
                                                     key={placement}/>;
                                 })}
                             </div>
                             {seeqs.map((seeq) => {
-                                    const {url, placement} = seeq;
+                                    const { url, placement } = seeq;
                                     return <Seeq url={url} placement={placement} key={placement}/>;
                                 }
                             )}
@@ -288,7 +311,7 @@ class Dashboard extends Component {
 }
 
 
-const mapStateToProps = ({dashboard, tags}) => {
+const mapStateToProps = ({ dashboard, tags }) => {
     return {
         triggers: dashboard.triggers,
         tags: dashboard.tags,
@@ -302,6 +325,7 @@ const mapStateToProps = ({dashboard, tags}) => {
         error: dashboard.error,
         tagsList: tags.tags,
         currentPlacement: dashboard.currentPlacement,
+        postingError: dashboard.postingError,
     };
 };
 

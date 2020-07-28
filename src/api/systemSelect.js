@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {camelizeJson} from './utils';
+import { camelizeJson } from './utils';
 
 export const fetchSystemsApi = async () => {
     try {
@@ -7,7 +7,13 @@ export const fetchSystemsApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        console.log(err);
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
