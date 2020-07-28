@@ -136,7 +136,7 @@ class TagList extends PureComponent {
                                    cell: (dataObject) => (
                                        <IconButton className="icon-btn text-light p-1"
                                                    onClick={(event) => this.handleEditClick(event, dataObject)}>
-                                           <i className="zmdi zmdi-edit text-blue"/>
+                                           <i className="zmdi zmdi-edit text-light-grey"/>
                                        </IconButton>),
                                }]}
                                handleEditClick={this.handleEditClick}/>

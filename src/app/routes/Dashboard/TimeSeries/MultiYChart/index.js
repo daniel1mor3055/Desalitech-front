@@ -19,8 +19,8 @@ class MultiYChart extends Component {
                             download: true,
                             selection: true,
                             zoom: true,
-                            zoomin: false,
-                            zoomout: false,
+                            zoomin: true,
+                            zoomout: true,
                             pan: false,
                             reset: true | '<img src="/static/icons/reset.png" width="20">',
                             customIcons: []
