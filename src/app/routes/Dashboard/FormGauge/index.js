@@ -8,10 +8,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
-import FormikNewAutocomplete from "app/components/FormikAutoComplete";
+import FormikAutocomplete from "app/components/FormikAutoComplete";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import FormikFormControlLabel from "../../../components/FormikFormControlLabel";
+import FormikFormControlLabel from "app/components/FormikFormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import './index.scss';
 
@@ -108,7 +108,7 @@ class FormGauge extends Component {
                                         <Typography variant={'subtitle1'} color={'error'} align={'center'}>
                                             {errors.global}
                                         </Typography>}
-                                        <Field name='measuredTag' component={FormikNewAutocomplete} label="Measured Tag"
+                                        <Field name='measuredTag' component={FormikAutocomplete} label="Measured Tag"
                                                options={options}
                                                disableClearable
                                                textFieldProps={textFieldProps}/>
@@ -119,7 +119,7 @@ class FormGauge extends Component {
                                             checked={values.lLFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='lLFromOptions' component={FormikNewAutocomplete}
+                                            <Field name='lLFromOptions' component={FormikAutocomplete}
                                                    className='FormGauge-field'
                                                    label="LL Value"
                                                    options={options}
@@ -147,7 +147,7 @@ class FormGauge extends Component {
                                             checked={values.lFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='lFromOptions' component={FormikNewAutocomplete} label="L Value"
+                                            <Field name='lFromOptions' component={FormikAutocomplete} label="L Value"
                                                    options={options}
                                                    className='FormGauge-field'
                                                    disabled={!values.lFromOptionsCheckBox}
@@ -174,7 +174,7 @@ class FormGauge extends Component {
                                             checked={values.hFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='hFromOptions' component={FormikNewAutocomplete} label="H Value"
+                                            <Field name='hFromOptions' component={FormikAutocomplete} label="H Value"
                                                    options={options}
                                                    className='FormGauge-field'
                                                    disabled={!values.hFromOptionsCheckBox}
@@ -200,7 +200,7 @@ class FormGauge extends Component {
                                             checked={values.hHFromOptionsCheckBox}/>
 
                                         <div className={'w-100 d-flex justify-content-between'}>
-                                            <Field name='hHFromOptions' component={FormikNewAutocomplete}
+                                            <Field name='hHFromOptions' component={FormikAutocomplete}
                                                    label="HH Value"
                                                    options={options}
                                                    className='FormGauge-field'

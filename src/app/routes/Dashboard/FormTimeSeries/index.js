@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
-import FormikNewAutocomplete from "app/components/FormikAutoComplete";
+import FormikAutocomplete from "app/components/FormikAutoComplete";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 
@@ -76,13 +76,13 @@ const FormTimeSeries = ({ open, handleClose, handleSubmit, tagsList, initialValu
                                     <Typography variant={'subtitle1'} color={'error'} align={'center'}>
                                         {errors.global}
                                     </Typography>}
-                                    <Field name='tag1Name' component={FormikNewAutocomplete} label="Tag 1 Name"
+                                    <Field name='tag1Name' component={FormikAutocomplete} label="Tag 1 Name"
                                            options={options}
                                            textFieldProps={textFieldProps}/>
-                                    <Field name='tag2Name' component={FormikNewAutocomplete} label="Tag 2 Name"
+                                    <Field name='tag2Name' component={FormikAutocomplete} label="Tag 2 Name"
                                            options={options}
                                            textFieldProps={textFieldProps}/>
-                                    <Field name='tag3Name' component={FormikNewAutocomplete} label="Tag 3 Name"
+                                    <Field name='tag3Name' component={FormikAutocomplete} label="Tag 3 Name"
                                            options={options}
                                            textFieldProps={textFieldProps}/>
 

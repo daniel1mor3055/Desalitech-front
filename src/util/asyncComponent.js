@@ -3,7 +3,6 @@ import Nprogress from 'nprogress';
 import ReactPlaceholder from 'react-placeholder';
 import 'nprogress/nprogress.css';
 import 'react-placeholder/lib/reactPlaceholder.css';
-import CircularProgress from "app/components/CircularProgress/index";
 
 export default function asyncComponent(importComponent) {
     class AsyncFunc extends Component {
@@ -36,7 +35,6 @@ export default function asyncComponent(importComponent) {
             const Component = this.state.component ||
                 <div className="loader-view"
                      style={{ height: 'calc(100vh - 200px)' }}>
-                    <CircularProgress/>
                 </div>;
             return (
                 <ReactPlaceholder type="text" rows={7} ready={Component !== null}>

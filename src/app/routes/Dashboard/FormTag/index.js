@@ -8,7 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { withStyles } from '@material-ui/core/styles';
-import FormikNewAutocomplete from "app/components/FormikAutoComplete";
+import FormikAutocomplete from "app/components/FormikAutoComplete";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 
@@ -69,7 +69,7 @@ const FormTag = ({ open, handleClose, handleSubmit, initialValues, tagsList }) =
                                     </Typography>}
                                     <Field
                                         name='tagName'
-                                        component={FormikNewAutocomplete}
+                                        component={FormikAutocomplete}
                                         label="Tag Name"
                                         options={options}
                                         disableClearable

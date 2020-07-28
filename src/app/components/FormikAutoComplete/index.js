@@ -4,7 +4,7 @@ import { TextField } from '@material-ui/core';
 import { fieldToTextField } from 'formik-material-ui';
 
 
-const FormikNewAutocomplete = ({ textFieldProps, ...props }) => {
+const FormikAutocomplete = ({ textFieldProps, ...props }) => {
 
     const { form: { setTouched, setFieldValue }, label } = props;
     const { error, helperText, ...field } = fieldToTextField(props);
@@ -23,4 +23,4 @@ const FormikNewAutocomplete = ({ textFieldProps, ...props }) => {
     );
 };
 
-export default FormikNewAutocomplete;
+export default FormikAutocomplete;
