@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 const styles = {};
 
 const ChooseTagsForm = ({
-                            open, handleClose, handleSubmit, tags, fetching, error, initialValues,
+                            open, handleClose, handleSubmit, tagsList, fetching, error, initialValues,
                             validationSchemaObject, verifyValues, formTitle, labels, optionsFlag
                         }) => {
 
@@ -61,7 +61,7 @@ const ChooseTagsForm = ({
                                 name={key}
                                 index={index}
                                 key={key}
-                                options={optionsFlag === 'seeq' ? [] : tags.map((tag) => (tag.tagName)).sort()}
+                                options={optionsFlag === 'seeq' ? [] : tagsList.map((tag) => (tag.tagName)).sort()}
                                 textFieldProps={{
                                     fullWidth: true,
                                     margin: 'normal',
@@ -122,7 +122,7 @@ ChooseTagsForm.propTypes = {
 
 const mapStateToProps = ({tags}) => {
     return {
-        tags: tags.tags,
+        tagsList: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
     };

@@ -40,13 +40,13 @@ class Gauge extends Component {
 
     handleFormSubmit = (values) => {
         const {lL, l, h, hH, measuredTag} = values;
-        const {gaugeType, gaugeData: {placement}, tagList} = this.props;
-        const newLl = tagList.find(o => o.tagName === lL);
-        const newL = tagList.find(o => o.tagName === l);
-        const newH = tagList.find(o => o.tagName === h);
-        const newHh = tagList.find(o => o.tagName === hH);
+        const {gaugeType, gaugeData: {placement}, tagsList} = this.props;
+        const newLl = tagsList.find(o => o.tagName === lL);
+        const newL = tagsList.find(o => o.tagName === l);
+        const newH = tagsList.find(o => o.tagName === h);
+        const newHh = tagsList.find(o => o.tagName === hH);
         const gauge = {
-            measuredTag: tagList.find(o => o.tagName === measuredTag).tagId,
+            measuredTag: tagsList.find(o => o.tagName === measuredTag).tagId,
             placement,
             lL: newLl == null ? lL : newLl.tagId,
             l: newL == null ? l : newL.tagId,
@@ -175,7 +175,7 @@ Gauge.propTypes = {
 
 const mapStateToProps = ({tags}) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
     };
 };
 

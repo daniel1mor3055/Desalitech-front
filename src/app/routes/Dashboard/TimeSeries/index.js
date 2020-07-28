@@ -109,9 +109,9 @@ class TimeSeries extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const {startDate, endDate, placement, currentPickedRange, tagList} = this.props;
+        const {startDate, endDate, placement, currentPickedRange, tagsList} = this.props;
         const tags = Object.keys(values).map((key) => {
-            const newTag = tagList.find(o => o.tagName === values[key]);
+            const newTag = tagsList.find(o => o.tagName === values[key]);
             return {
                 tagId: newTag == null ? '' : newTag.tagId,
             };
@@ -237,7 +237,7 @@ TimeSeries.propTypes = {
 
 const mapStateToProps = ({tags}) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
     };
 };
 

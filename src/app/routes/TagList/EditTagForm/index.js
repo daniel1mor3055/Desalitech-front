@@ -1,5 +1,5 @@
 import React from 'react';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 
@@ -9,11 +9,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
 
 const styles = {};
 
-const EditTagForm = ({tagId, tagName, description, units, open, handleClose, handleSubmit}) => (
+const EditTagForm = ({ tagsList, tagId, tagName, description, units, open, handleClose, handleSubmit }) => (
 
     <Dialog
         open={open}
@@ -30,13 +32,20 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
                         description: description || '',
                         units: units || '',
                     }}
-                    onSubmit={async (values, {setSubmitting, setErrors}) => {
-                        setSubmitting(true);
-                        try {
-                            await handleSubmit(values);
-                            handleClose();
-                        } catch (e) {
-                            // setErrors({globalError: error.message});
+
+                    onSubmit={async (values, { setSubmitting, setErrors }) => {
+                        setErrors({});
+                        const globalError = verifyValues(tagsList, values);
+                        if (globalError != null) {
+                            setErrors(globalError);
+                        } else {
+                            setSubmitting(true);
+                            try {
+                                await handleSubmit(values);
+                                handleClose();
+                            } catch (error) {
+                                setErrors({ global: error.message });
+                            }
                         }
                         setSubmitting(false);
                     }}
@@ -62,6 +71,10 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
                         } = props;
                         return (
                             <form onSubmit={handleSubmit}>
+                                {errors.global &&
+                                <Typography variant={'subtitle1'} color={'error'} align={'center'}>
+                                    {errors.global}
+                                </Typography>}
                                 <TextField
                                     className='w-50 p-2'
                                     label="Tag ID"
@@ -132,6 +145,7 @@ const EditTagForm = ({tagId, tagName, description, units, open, handleClose, han
     </Dialog>
 );
 
+
 EditTagForm.propTypes = {
     tagId: PropTypes.string.isRequired,
     tagName: PropTypes.string.isRequired,
@@ -142,4 +156,21 @@ EditTagForm.propTypes = {
     handleSubmit: PropTypes.func.isRequired
 };
 
-export default withStyles(styles)(EditTagForm);
+const mapStateToProps = ({ tags }) => {
+    return {
+        tagsList: tags.tags,
+    };
+};
+
+function verifyValues(tagsList, values) {
+    const { tagName } = values;
+    for (let i = 0; i < tagsList.length; i++) {
+        if (tagsList[i].tagName === tagName) {
+            return { global: `Tag name is already taken` };
+        }
+    }
+
+    return null;
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(EditTagForm));

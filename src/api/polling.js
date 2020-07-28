@@ -8,7 +8,6 @@ export const fetchPollingApi = async () => {
     const getAddress = pollAllSystemsFlag ? '/polling' : `/system/polling?SysId=${sysId}&Dashboard=${dashboardFlag}`;
     try {
         const response = await axios.get(getAddress);
-        // console.log(response)
         camelizeJson(response.data);
         response.data.activeAlarms.forEach(activeAlarm => {
             const {alarmId, timeStamp, sysId} = activeAlarm;

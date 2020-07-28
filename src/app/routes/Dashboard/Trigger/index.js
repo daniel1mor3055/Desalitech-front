@@ -37,11 +37,11 @@ class Trigger extends Component {
 
     handleFormSubmit = (values) => {
         const {tagName, controllerTagName} = values;
-        const {placement, tagList} = this.props;
+        const {placement, tagsList} = this.props;
 
         const trigger = {
-            tagId: tagList.find(o => o.tagName === tagName).tagId,
-            controllerTagId: tagList.find(o => o.tagName === controllerTagName).tagId,
+            tagId: tagsList.find(o => o.tagName === tagName).tagId,
+            controllerTagId: tagsList.find(o => o.tagName === controllerTagName).tagId,
             placement
         };
         this.props.onTriggerChange(trigger);
@@ -111,7 +111,7 @@ Trigger.propTypes = {
 
 const mapStateToProps = ({tags}) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
     };
 };
 

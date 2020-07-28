@@ -7,7 +7,7 @@ import Header from 'app/components/Header';
 import Footer from 'app/components/Footer';
 import Tour from 'app/components/Tour/index';
 import TopNav from 'app/components/TopNav';
-import BasicCard from "./BasicCards/BasicCard";
+import SystemCard from "./SystemCard";
 import CircularIndeterminate from "app/components/Progress/CircularIndeterminate";
 import ChangeAlarmsSystemTabs from "./SystemsAndLiveAlarmsToolbar/ChangeAlarmsSystemTabs";
 import ChangeSystemViewTabs from "./SystemsAndLiveAlarmsToolbar/ChangeSystemViewTabs";
@@ -53,7 +53,6 @@ class SystemsAndLiveAlarms extends React.Component {
 
     getSearchOptions = () => {
         return {
-            'SYSTEM_ID': 'systemIdSearchText',
             'SYSTEM_NAME': 'systemNameSearchText',
             'ACTIVE_ALARM_SYSTEM_ID': 'activeAlarmSystemIdSearchText',
             'ACTIVE_ALARM_ID': 'activeAlarmIdSearchText',
@@ -160,11 +159,11 @@ class SystemsAndLiveAlarms extends React.Component {
         if (!error && !fetching && systems.length !== 0) {
             const {systemsStatusIcons, systemsStatusBorders} = this.prepareSystemsStatus();
             systemsCards =
-                <div className='d-flex justify-content-center'>
+                <div className='justify-content-around d-flex flex-wrap'>
                     {systems.map(system => {
                         const {sysId, recovery, production, conductivity, systemName} = system;
                         return (
-                            <BasicCard
+                            <SystemCard
                                 key={sysId}
                                 image={require('./assets/large_no_background_top.svg')}
                                 title={systemName}
@@ -182,20 +181,11 @@ class SystemsAndLiveAlarms extends React.Component {
                     })}
                 </div>;
             const {filteredSystems, badSearch} = this.getFilterData(systems, systemsStatusIcons);
-            const columnsIds = ['sysId', 'systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
-            const columnsLabels = ['System ID', 'System Name', 'Recovery', 'Production', 'Conductivity', 'Status'];
+            const columnsIds = ['systemName', 'recovery', 'production', 'conductivity', 'systemStatus'];
+            const columnsLabels = ['System Name', 'Recovery [%]', 'Production [gpm]', 'Conductivity [us/cm]', 'Status'];
             systemsTable =
                 <>
                     <div className='SystemsAndLiveAlarms-searchBoxes row'>
-                        <div className='col-2'>
-                            <SearchBox
-                                showClear={true}
-                                styleName="d-none d-lg-block"
-                                placeholder="Filter by System ID"
-                                onChange={(event) => this.updateSearchText(event, 'SYSTEM_ID')}
-                                value={this.state.systemIdSearchText} badSearch={badSearch}
-                                handleClear={(event) => this.handleSearchClear(event, 'SYSTEM_ID')}/>
-                        </div>
                         <div className='col-2'>
                             <SearchBox
                                 showClear={true}
@@ -209,8 +199,8 @@ class SystemsAndLiveAlarms extends React.Component {
                     <DataTable data={filteredSystems}
                                columnsIds={columnsIds}
                                columnsLabels={columnsLabels}
-                               initialOrderBy={'sysId'}
-                               cellIdentifier={'sysId'}
+                               initialOrderBy={'systemName'}
+                               cellIdentifier={'systemName'}
                                onRowClick={this.handleClickOnSystemRow}
                     />
                 </>;

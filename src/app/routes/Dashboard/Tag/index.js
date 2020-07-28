@@ -37,10 +37,10 @@ class Tag extends Component {
 
     handleFormSubmit = (values) => {
         const {tagName} = values;
-        const {placement, tagList} = this.props;
+        const {placement, tagsList} = this.props;
 
         const tag = {
-            tagId: tagList.find(o => o.tagName === tagName).tagId,
+            tagId: tagsList.find(o => o.tagName === tagName).tagId,
             placement,
         };
         this.props.onTagChange(tag);
@@ -109,7 +109,7 @@ Tag.propTypes = {
 
 const mapStateToProps = ({tags}) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
     };
 };
 

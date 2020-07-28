@@ -34,9 +34,9 @@ class Charts extends Component {
     };
 
     handleAddTimeSeriesFormSubmit = (values) => {
-        const {currentPlacement, tagList} = this.props;
+        const {currentPlacement, tagsList} = this.props;
         const tags = Object.keys(values).map((key) => {
-            const newTag = tagList.find(o => o.tagName === values[key])
+            const newTag = tagsList.find(o => o.tagName === values[key])
             return {
                 tagId: newTag == null ? '' : newTag.tagId,
             }
@@ -61,7 +61,7 @@ class Charts extends Component {
 
     render() {
         const {addTimeSeriesFormOpen} = this.state;
-        const {timeSeries, error, tagList} = this.props;
+        const {timeSeries, error, tagsList} = this.props;
 
 
         return (
@@ -84,7 +84,7 @@ class Charts extends Component {
                             {timeSeries.map((timeSeries) => {
                                 const {startDate, endDate, times, tags, placement} = timeSeries;
                                 const tagsToDisplay = tags.map((tag) => {
-                                    const newTag = tagList.find(o => o.tagId === tag.tagId)
+                                    const newTag = tagsList.find(o => o.tagId === tag.tagId)
                                     return {
                                         ...tag,
                                         tagUnits: newTag.units,
@@ -113,7 +113,7 @@ class Charts extends Component {
 
 const mapStateToProps = ({charts, tags}) => {
     return {
-        tagList: tags.tags,
+        tagsList: tags.tags,
         timeSeries: charts.timeSeries,
         error: charts.error,
         currentPlacement: charts.currentPlacement,

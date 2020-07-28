@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import {Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
-import {isIOS, isMobile} from 'react-device-detect';
+import React, { Component } from 'react';
+import { Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { isIOS, isMobile } from 'react-device-detect';
 
 import Header from 'app/components/Header';
 import Sidebar from 'containers/SideNav/index';
 import Footer from 'app/components/Footer';
 import Tour from 'app/components/Tour';
-import {COLLAPSED_DRAWER, FIXED_DRAWER,} from 'store/actionTypes';
+import { COLLAPSED_DRAWER, FIXED_DRAWER, } from 'store/actionTypes';
 import asyncComponent from 'util/asyncComponent';
 import PrivateRoute from 'app/components/PrivateRoute';
-import {fetchPolling} from "../store/thunk/polling";
-import {APP_POLLING_INTERVAL} from "constants/globalConstats";
+import { fetchPolling } from "../store/thunk/polling";
+import { APP_POLLING_INTERVAL } from "constants/globalConstats";
 
 class App extends Component {
     constructor(props) {
@@ -29,7 +29,7 @@ class App extends Component {
                 this.props.onFetchPolling();
             },
             APP_POLLING_INTERVAL);
-        this.setState({dataPolling});
+        this.setState({ dataPolling });
     }
 
     componentWillUnmount() {
@@ -37,7 +37,7 @@ class App extends Component {
     }
 
     render() {
-        const {match, drawerType} = this.props;
+        const { match, drawerType } = this.props;
         const drawerStyle = drawerType.includes(FIXED_DRAWER) ? 'fixed-drawer' : drawerType.includes(COLLAPSED_DRAWER) ? 'collapsible-drawer' : 'mini-drawer';
 
         if (isIOS && isMobile) {
@@ -68,8 +68,6 @@ class App extends Component {
                                               component={asyncComponent(() => import('app/routes/TagList'))}/>
                                 <PrivateRoute path={`${match.url}/charts`}
                                               component={asyncComponent(() => import('app/routes/Charts'))}/>
-                                {/*<PrivateRoute path={`${match.url}/reports`}*/}
-                                {/*              component={asyncComponent(() => import('app/routes/Reports'))}/>*/}
                                 <PrivateRoute component={asyncComponent(() => import('app/components/Error404'))}/>
                             </Switch>
                         </div>
@@ -82,7 +80,7 @@ class App extends Component {
 }
 
 
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({ settings }) => {
     return {
         drawerType: settings.drawerType,
     };

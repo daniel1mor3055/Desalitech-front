@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import SidenavList from '../SidenavItems';
 import SidenavItem from '../SidenavItems/SidenavItem';
-import {connect} from "react-redux";
-import {withRouter} from 'react-router-dom';
+import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
 import './index.scss';
 import StatusIndicator from "app/components/StatusIndicator";
 
@@ -22,7 +22,7 @@ class SidenavContent extends Component {
     };
 
     componentDidMount() {
-        const {history} = this.props;
+        const { history } = this.props;
         const that = this;
         const pathname = `${history.location.pathname}`;
 
@@ -60,7 +60,7 @@ class SidenavContent extends Component {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        const {history} = nextProps;
+        const { history } = nextProps;
         const pathname = `${history.location.pathname}`;
 
         this.activeLi(pathname);
@@ -94,7 +94,7 @@ class SidenavContent extends Component {
     }
 
     prepareSystemsStatus() {
-        const {systemsStatus} = this.props;
+        const { systemsStatus } = this.props;
 
         if (systemsStatus.length) {
             return systemsStatus[0].status;
@@ -102,7 +102,7 @@ class SidenavContent extends Component {
     }
 
     render() {
-        const {location} = this.props;
+        const { location } = this.props;
         const queryParams = new URLSearchParams(location.search);
         const encodedSysId = queryParams.get('sysId');
         const systemStatus = this.prepareSystemsStatus();
@@ -113,12 +113,10 @@ class SidenavContent extends Component {
                                  icon={"zmdi-time-countdown"}/>
                     <SidenavItem relativePath={`charts?sysId=${encodedSysId}`} id={"Charts"}
                                  icon={"zmdi-chart"}/>
-                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"Alarm List"}
+                    <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"Alarms History"}
                                  icon={"zmdi-notifications-active"}/>
-                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"Tag List"}
+                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"Tags List"}
                                  icon={"zmdi-tag"}/>
-                    {/*<SidenavItem relativePath={`reports?sysId=${encodedSysId}`} id={"pages.reportsPage"}*/}
-                    {/*             icon={"zmdi-file-text"}/>*/}
                 </SidenavList>
                 <StatusIndicator systemStatus={systemStatus}/>
             </div>
@@ -126,9 +124,9 @@ class SidenavContent extends Component {
     }
 }
 
-const mapStateToProps = ({poll}) => {
-    const {systemsStatus} = poll;
-    return {systemsStatus};
+const mapStateToProps = ({ poll }) => {
+    const { systemsStatus } = poll;
+    return { systemsStatus };
 };
 
 export default withRouter(connect(mapStateToProps)(SidenavContent));

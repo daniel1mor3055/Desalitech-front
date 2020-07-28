@@ -17,7 +17,6 @@ export const fetchDashboardApi = async () => {
     const sysId = extractSystemId();
     try {
         const response = await axios.get(`/system/dashboard?SysId=${sysId}`);
-        console.log(response);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const { triggers, tags, gauges, timeSeries, middleGauges, rightGauges, leftGauges, seeqs } = getWidgetsByType(widgets);
