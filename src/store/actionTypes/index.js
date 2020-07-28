@@ -40,7 +40,7 @@ export const ON_HIDE_LOADER = 'on_hide_loader';
 export const USER_INFO_STATE = 'user_info_state';
 export const UPDATE_MESSAGE_VALUE = 'update_message_value';
 
-//// Mail Module const
+// Mail Module const
 
 export const FETCH_ALL_MAIL_SUCCESS = 'fetch_all_mail_success';
 export const GET_STARRED_MAIL = 'get_starred_mail';
@@ -53,7 +53,7 @@ export const ON_OPTION_MENU_ITEM_SELECT = 'on_option_menu_item_select';
 export const ON_OPTION_MENU_SELECT = 'on_option_menu_select';
 export const ON_START_SELECT = 'on_start_select';
 
-//// TO-DO Module const
+// TO-DO Module const
 
 export const ON_SORTEND = 'on_sortend';
 export const FETCH_ALL_TODO = 'fetch_all_todo';

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import moment from "moment";
 import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
+
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
 const TIME_SERIES = 'Time Series';
@@ -416,7 +417,7 @@ export function getWidgetsByType(widgets) {
                 seeqs.push(extractRelevantData(widgets[i], SEEQ));
                 break;
             default:
-                console.log("WE ARE IN DEFAULT DASHBOARD API FILE, WRONG");
+                break;
         }
     }
     return {
@@ -533,8 +534,8 @@ export function extractTimeSeries(widget) {
         tags: newTags,
         placement,
         times,
-        startDate: moment.utc(moment.unix(startDate)).local(), // Dates are being saved as moment object local time
-        endDate: moment.utc(moment.unix(endDate)).local(), // Dates are being saved as moment object local time
+        startDate: moment.utc(moment.unix(startDate)).local(),
+        endDate: moment.utc(moment.unix(endDate)).local(),
         currentPickedRange: extraData,
     };
 }
@@ -580,7 +581,6 @@ function extractIndicesWithValues(array) {
 
 
 function interpolateArray(array, indicesWithValues) {
-    // padding at the start
     for (let i = 0; i < indicesWithValues[0]; i++) {
         array[i] = array[indicesWithValues[0]];
     }
@@ -593,7 +593,6 @@ function interpolateArray(array, indicesWithValues) {
         }
     });
 
-    // padding at the end
     for (let i = indicesWithValues[indicesWithValues.length - 1] + 1; i < array.length; i++) {
         array[i] = array[indicesWithValues[indicesWithValues.length - 1]];
     }

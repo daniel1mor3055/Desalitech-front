@@ -123,7 +123,7 @@ class MultiYChart extends Component {
 
 MultiYChart.propTypes = {
     xData: PropTypes.array.isRequired,
-    data: PropTypes.arrayOf(PropTypes.array).isRequired, // [[data_of_y1],[data_of_y2],...]
+    data: PropTypes.arrayOf(PropTypes.array).isRequired,
     yLabels: PropTypes.arrayOf(PropTypes.string).isRequired,
     colors: PropTypes.arrayOf(PropTypes.any).isRequired,
     showYLabels: PropTypes.bool,

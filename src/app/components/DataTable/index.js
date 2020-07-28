@@ -90,7 +90,7 @@ class DataTable extends React.Component {
             orderBy: initialOrderBy,
             data: data,
             page: 0,
-            rowsPerPage: 10, //Later on we can support user preferences and store it
+            rowsPerPage: 10,
         };
     }
 

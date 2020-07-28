@@ -101,7 +101,7 @@ class Dashboard extends Component {
                 newState.gaugeFormOpen = true;
                 break;
             default:
-                console.log('WE SHOULD NOT GET HERE');
+                break;
         }
         this.setState(newState);
         this.handleCloseSelectorWidgetType(event);

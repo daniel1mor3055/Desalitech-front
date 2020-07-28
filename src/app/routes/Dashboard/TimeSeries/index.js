@@ -189,13 +189,13 @@ class TimeSeries extends Component {
                                 this.handlePushedButtonColor('dayColor');
                                 this.handleFromTodayPick(1, 'days', 'Day');
                             }}>1 Day</Button>
-                    <DesDateRangePicker startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                                        startDateId={'startDate' + placement.toString()} // PropTypes.string.isRequired,
-                                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                                        endDateId={'endDate' + placement.toString()} // PropTypes.string.isRequired,
-                                        onDatesChange={this.handleRangePick} // PropTypes.func.isRequired,
-                                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                                        onFocusChange={(focusedInput) => this.setState({ focusedInput })} // PropTypes.func.isRequired,
+                    <DesDateRangePicker startDate={this.state.startDate}
+                                        startDateId={'startDate' + placement.toString()}
+                                        endDate={this.state.endDate}
+                                        endDateId={'endDate' + placement.toString()}
+                                        onDatesChange={this.handleRangePick}
+                                        focusedInput={this.state.focusedInput}
+                                        onFocusChange={(focusedInput) => this.setState({ focusedInput })}
                                         numberOfMonths={1}
                                         isOutsideRange={() => false}/>
                 </>
@@ -225,8 +225,8 @@ class TimeSeries extends Component {
 
 
 TimeSeries.propTypes = {
-    startDate: momentPropTypes.momentObj, // Actually its a moment object
-    endDate: momentPropTypes.momentObj, // Actually its a moment object
+    startDate: momentPropTypes.momentObj,
+    endDate: momentPropTypes.momentObj,
     tags: PropTypes.arrayOf(PropTypes.object).isRequired,
     times: PropTypes.arrayOf(PropTypes.string).isRequired,
     placement: PropTypes.number.isRequired,

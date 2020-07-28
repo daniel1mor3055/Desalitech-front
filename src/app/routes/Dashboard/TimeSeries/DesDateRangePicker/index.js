@@ -7,13 +7,13 @@ import './index.css';
 
 const DesDateRangePicker = ({ startDate, startDateId, endDate, endDateId, onDatesChange, focusedInput, onFocusChange, numberOfMonths, isOutsideRange }) => {
     return <DateRangePicker
-        startDate={startDate} // momentPropTypes.momentObj or null,
-        startDateId={startDateId} // PropTypes.string.isRequired,
-        endDate={endDate} // momentPropTypes.momentObj or null,
-        endDateId={endDateId} // PropTypes.string.isRequired,
-        onDatesChange={onDatesChange} // PropTypes.func.isRequired,
-        focusedInput={focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-        onFocusChange={onFocusChange} // PropTypes.func.isRequired,
+        startDate={startDate}
+        startDateId={startDateId}
+        endDate={endDate}
+        endDateId={endDateId}
+        onDatesChange={onDatesChange}
+        focusedInput={focusedInput}
+        onFocusChange={onFocusChange}
         numberOfMonths={numberOfMonths}
         isOutsideRange={isOutsideRange}
     />;
