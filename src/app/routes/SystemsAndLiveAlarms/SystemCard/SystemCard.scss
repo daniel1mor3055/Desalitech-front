@@ -1,4 +1,4 @@
-.BasicCard {
+.SystemCard {
   cursor: pointer;
   margin: 16px;
 
@@ -7,10 +7,10 @@
     font-size: 16px;
     margin-bottom: 4px;
   }
-  .BasicCard-CardBody{
+  .SystemCard-CardBody{
     padding: 24px 24px 4px 24px;
   }
-  .BasicCard-ImgSize {
+  .SystemCard-ImgSize {
     height: 180px;
     display: block;
     margin-top: 10px;
@@ -20,21 +20,21 @@
     width: 75%;
   }
 
-  .BasicCard-CardSubtitleClass {
+  .SystemCard-CardSubtitleClass {
     white-space: pre;
     margin: 5px;
     text-align: left;
   }
 
 
-  .BasicCard-TextToTheRight {
+  .SystemCard-TextToTheRight {
     float: right;
   }
 
   .Indicator {
   }
 
-  .BasicCard-TitleClass {
+  .SystemCard-TitleClass {
     text-align: center;
     border-width: 2px;
     border-style: solid;
@@ -56,7 +56,7 @@
   }
 
 
-  .BasicCard-IconClass {
+  .SystemCard-IconClass {
     margin-right: 10px;
   }
 
