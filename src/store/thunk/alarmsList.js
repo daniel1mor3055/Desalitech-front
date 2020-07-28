@@ -16,8 +16,9 @@ export const fetchAlarms = () => (
         dispatch(fetchAlarmsStart());
         try {
             const { alarms, admin, emailNotification } = await fetchAlarmsApi();
+            const boolEmailNotification = emailNotificationToBool(emailNotification);
             dispatch(setAdminStatus(admin));
-            dispatch(fetchAlarmsSuccess(alarms, emailNotification));
+            dispatch(fetchAlarmsSuccess(alarms, boolEmailNotification));
         } catch (err) {
             dispatch(fetchAlarmsFail(err));
         }
@@ -36,3 +37,11 @@ export const setEmailNotification = (emailNotification) => (
         }
     }
 );
+
+function emailNotificationToBool(emailNotification) {
+    if (typeof emailNotification === 'boolean') {
+        return emailNotification;
+    } else {
+        return emailNotification === 'true' || emailNotification === 'True';
+    }
+}
