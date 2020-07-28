@@ -1,14 +1,10 @@
 import moment from 'moment';
 import {
-    TIME_SERIES_CHANGE_SUCCESS,
-    TIME_SERIES_CHANGE_START,
-    TIME_SERIES_CHANGE_FAIL,
+    CHARTS_POST_FAIL,
+    CHARTS_POST_START,
     TIME_SERIES_ADD_SUCCESS,
-    TIME_SERIES_ADD_START,
-    TIME_SERIES_ADD_FAIL,
-    TIME_SERIES_DELETE_FAIL,
-    TIME_SERIES_DELETE_START,
-    TIME_SERIES_DELETE_SUCCESS
+    TIME_SERIES_CHANGE_SUCCESS,
+    TIME_SERIES_DELETE_SUCCESS,
 } from '../actionTypes/charts';
 
 
@@ -27,29 +23,36 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case TIME_SERIES_CHANGE_START:
-            return timeSeriesChangeStart(state, action);
         case TIME_SERIES_CHANGE_SUCCESS:
             return timeSeriesChangeSuccess(state, action);
-        case TIME_SERIES_CHANGE_FAIL:
-            return timeSeriesChangeFail(state, action);
-        case TIME_SERIES_ADD_START:
-            return timeSeriesAddStart(state, action);
         case TIME_SERIES_ADD_SUCCESS:
             return timeSeriesAddSuccess(state, action);
-        case TIME_SERIES_ADD_FAIL:
-            return timeSeriesAddFail(state, action);
-        case TIME_SERIES_DELETE_START:
-            return timeSeriesDeleteStart(state, action);
         case TIME_SERIES_DELETE_SUCCESS:
             return timeSeriesDeleteSuccess(state, action);
-        case TIME_SERIES_DELETE_FAIL:
-            return timeSeriesDeleteFail(state, action);
+        case CHARTS_POST_START:
+            return chartsPostStart(state);
+        case CHARTS_POST_FAIL:
+            return chartsPostFail(state, action);
         default:
             return state;
     }
 };
 
+function chartsPostStart(state) {
+    return {
+        ...state,
+        posting: true,
+        error: null,
+    };
+}
+
+function chartsPostFail(state, action) {
+    return {
+        ...state,
+        posting: false,
+        error: action.payload.error,
+    };
+}
 
 function timeSeriesChangeSuccess(state, action) {
     const newTimeSeries = state.timeSeries.map((timeSeries) => {
@@ -68,22 +71,6 @@ function timeSeriesChangeSuccess(state, action) {
     };
 }
 
-function timeSeriesChangeFail(state, action) {
-    return {
-        ...state,
-        posting: false,
-        error: action.payload.error,
-    };
-}
-
-function timeSeriesChangeStart(state, action) {
-    return {
-        ...state,
-        posting: true,
-        error: null,
-    };
-}
-
 function timeSeriesDeleteSuccess(state, action) {
     const newTimeSeries = state.timeSeries.filter((timeSeries) => (
         timeSeries.placement !== action.payload.responseTimeSeries.placement));
@@ -96,22 +83,6 @@ function timeSeriesDeleteSuccess(state, action) {
     };
 }
 
-function timeSeriesDeleteFail(state, action) {
-    return {
-        ...state,
-        posting: false,
-        error: action.payload.error,
-    };
-}
-
-function timeSeriesDeleteStart(state, action) {
-    return {
-        ...state,
-        posting: true,
-        error: null,
-    };
-}
-
 function timeSeriesAddSuccess(state, action) {
     return {
         ...state,
@@ -121,22 +92,5 @@ function timeSeriesAddSuccess(state, action) {
         timeSeries: state.timeSeries.concat(action.payload.responseTimeSeries),
     };
 }
-
-function timeSeriesAddFail(state, action) {
-    return {
-        ...state,
-        posting: false,
-        error: action.payload.error,
-    };
-}
-
-function timeSeriesAddStart(state, action) {
-    return {
-        ...state,
-        posting: true,
-        error: null,
-    };
-}
-
 
 export default reducer;
