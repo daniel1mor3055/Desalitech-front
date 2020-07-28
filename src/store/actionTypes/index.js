@@ -13,7 +13,6 @@ export const CHANGE_NAVIGATION_STYLE = 'change-navigation-style';
 export const HORIZONTAL_NAVIGATION = 'horizontal_navigation';
 export const VERTICAL_NAVIGATION = 'vertical_navigation';
 export const HORIZONTAL_MENU_POSITION = 'horizontal_menu_position';
-export const ABOVE_THE_HEADER = 'above_the_header';
 export const INSIDE_THE_HEADER = 'inside_the_header';
 export const BELOW_THE_HEADER = 'below_the_header';
 

@@ -1,9 +1,7 @@
 import {
-    CHANGE_DIRECTION,
     CHANGE_NAVIGATION_STYLE,
     DARK_THEME,
     DRAWER_TYPE,
-    HORIZONTAL_MENU_POSITION,
     SWITCH_LANGUAGE,
     THEME_COLOR,
     TOGGLE_COLLAPSED_NAV,
@@ -30,21 +28,10 @@ export function setDarkTheme() {
     return { type: DARK_THEME };
 }
 
-export function changeDirection() {
-    return { type: CHANGE_DIRECTION };
-}
-
 export function changeNavigationStyle(layoutType) {
     return {
         type: CHANGE_NAVIGATION_STYLE,
         payload: layoutType
-    };
-}
-
-export function setHorizontalMenuPosition(navigationPosition) {
-    return {
-        type: HORIZONTAL_MENU_POSITION,
-        payload: navigationPosition
     };
 }
 
