@@ -18,8 +18,8 @@ const Widget = ({ heading, children, cardName, childrenStyle, onEditClick, onDel
                     <IconButton onClick={onEditClick} className={'p-1'}>
                         <EditIcon/>
                     </IconButton>
-                    <IconButton className={'p-0'}>
-                        <DeleteIcon onClick={onDeleteClick}/>
+                    <IconButton onClick={onDeleteClick} className={'p-0'}>
+                        <DeleteIcon/>
                     </IconButton>
                 </div>
             </div>
