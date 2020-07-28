@@ -76,11 +76,11 @@ const reducer = (state = initialState, action) => {
         case DASHBOARD_FETCH_START:
             return dashboardFetchStart(state);
         case DASHBOARD_FETCH_FAIL:
-            return dashboardFetchFail(state);
+            return dashboardFetchFail(state, action);
         case DASHBOARD_POST_START:
             return dashboardPostStart(state);
         case DASHBOARD_POST_FAIL:
-            return dashboardPostFail(state);
+            return dashboardPostFail(state, action);
         default:
             return state;
     }
