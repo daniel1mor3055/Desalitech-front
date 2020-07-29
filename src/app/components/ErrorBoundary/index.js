@@ -20,9 +20,10 @@ class ErrorBoundary extends Component {
         const { hasError } = this.state;
         const { children } = this.props;
         return (
-            <div>
-                {hasError ? <h1>Something Went Wrong</h1> : children}
-            </div>
+            hasError ?
+                <div>
+                    <h1>Something Went Wrong</h1>
+                </div> : children
         );
     }
 }

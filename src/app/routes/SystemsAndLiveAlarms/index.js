@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { isIOS, isMobile } from 'react-device-detect';
@@ -19,7 +19,7 @@ import StatusIndicator from "app/components/StatusIndicator";
 import { STATUS_OFFLINE, STATUS_ONLINE } from 'constants/systemStatus';
 import { SYSTEMS_ALARMS_POLLING_INTERVAL } from "constants/globalConstats";
 
-class SystemsAndLiveAlarms extends React.Component {
+class SystemsAndLiveAlarms extends Component {
     constructor(props) {
         super(props);
 

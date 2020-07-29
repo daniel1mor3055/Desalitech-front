@@ -24,7 +24,8 @@ class MainApp extends Component {
     };
 
     render() {
-        return (<ErrorBoundary>
+        return (
+            <ErrorBoundary>
                 <Provider store={store}>
                     <ConnectedRouter history={history}>
                         <Auth0Provider
