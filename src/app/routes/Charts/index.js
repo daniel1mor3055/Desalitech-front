@@ -63,6 +63,9 @@ class Charts extends Component {
         const { addTimeSeriesFormOpen } = this.state;
         const { timeSeries, error, tagsList } = this.props;
 
+        if (error) {
+            throw new Error('Error in charts');
+        }
 
         return (
             <div className="Charts app-wrapper">
@@ -77,34 +80,32 @@ class Charts extends Component {
                     handleSubmit={this.handleAddTimeSeriesFormSubmit}
                     open={addTimeSeriesFormOpen}/>
 
-                {error ?
-                    <p>{"Error in charts"}</p> :
-                    <>
-                        <div className="animated slideInUpTiny animation-duration-3">
-                            {timeSeries.map((timeSeries) => {
-                                const { startDate, endDate, times, tags, placement } = timeSeries;
-                                const tagsToDisplay = tags.map((tag) => {
-                                    const newTag = tagsList.find(o => o.tagId === tag.tagId);
-                                    return {
-                                        ...tag,
-                                        tagUnits: newTag.units,
-                                        tagName: newTag.tagName,
-                                    };
-                                });
+                {<>
+                    <div className="animated slideInUpTiny animation-duration-3">
+                        {timeSeries.map((timeSeries) => {
+                            const { startDate, endDate, times, tags, placement } = timeSeries;
+                            const tagsToDisplay = tags.map((tag) => {
+                                const newTag = tagsList.find(o => o.tagId === tag.tagId);
+                                return {
+                                    ...tag,
+                                    tagUnits: newTag.units,
+                                    tagName: newTag.tagName,
+                                };
+                            });
 
-                                return (
-                                    <TimeSeries
-                                        onTimeSeriesChange={this.props.onTimeSeriesChange}
-                                        onTimeSeriesDelete={this.props.onTimeSeriesDelete}
-                                        startDate={startDate}
-                                        endDate={endDate}
-                                        tags={tagsToDisplay}
-                                        times={times}
-                                        placement={placement}
-                                        key={placement}/>);
-                            })}
-                        </div>
-                    </>}
+                            return (
+                                <TimeSeries
+                                    onTimeSeriesChange={this.props.onTimeSeriesChange}
+                                    onTimeSeriesDelete={this.props.onTimeSeriesDelete}
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    tags={tagsToDisplay}
+                                    times={times}
+                                    placement={placement}
+                                    key={placement}/>);
+                        })}
+                    </div>
+                </>}
             </div>
         );
     }

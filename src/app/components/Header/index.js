@@ -122,7 +122,7 @@ class Header extends Component {
                             {window.location.pathname.includes('/app/system-select') ?
                                 null : fetching ?
                                     null : error ?
-                                        <p>{"Couldn't fetch system name"}</p> : systemName}
+                                        <p>{"Could not fetch system name"}</p> : systemName}
                         </Typography>
 
                         <ul className="header-notifications list-inline ml-auto">

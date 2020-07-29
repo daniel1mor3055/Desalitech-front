@@ -252,12 +252,11 @@ class SystemsAndLiveAlarms extends React.Component {
         }
 
         if (error) {
-            systemsCards = <p>{"Couldn't fetch systems"}</p>;
-            systemsTable = <p>{"Couldn't fetch systems"}</p>;
+            throw new Error("Could not fetch systems");
         }
 
         if (errorPoll) {
-            alarmsJSX = <p>{"Couldn't fetch active alarms"}</p>;
+            throw new Error("Could not fetch active alarms");
         }
 
         const systemsJSX = admin ?

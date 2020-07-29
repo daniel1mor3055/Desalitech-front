@@ -13,7 +13,6 @@ export const timeSeriesChangeApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(chartData);
         return { admin, responseTimeSeries };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };

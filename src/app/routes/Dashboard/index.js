@@ -190,12 +190,13 @@ class Dashboard extends Component {
             triggers, tags, timeSeries, middleGauges, rightGauges, leftGauges, fetching, error, seeqs
         } = this.props;
 
+        if (error) {
+            throw new Error('Could not fetch dashboard');
+        }
         return (
             <div className="Dashboard app-wrapper">
 
-                {fetching ?
-                    error ? <p>{"Coudn't fetch dashboard"}</p> : <CircularIndeterminate/>
-                    :
+                {fetching ? <CircularIndeterminate/> :
                     <>
                         <div className="dashboard animated slideInUpTiny animation-duration-3">
                             <div className="add-dashboard-option">

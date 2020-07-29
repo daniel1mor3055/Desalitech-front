@@ -153,12 +153,12 @@ class TagList extends PureComponent {
                 </div>
             </div>;
 
+        if (error) {
+            throw new Error('Could not fetch tags');
+        }
         return (
             <div className="TagList app-wrapper">
-                {fetching ?
-                    error ? <p>{"Coudn't fetch tags"}</p> : <CircularIndeterminate/>
-                    : tagList}
-
+                {fetching ? <CircularIndeterminate/> : tagList}
             </div>
         );
     }

@@ -12,7 +12,6 @@ export const fetchSystemNameApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };

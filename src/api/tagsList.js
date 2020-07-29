@@ -9,7 +9,6 @@ export const fetchTagsApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -25,7 +24,6 @@ export const postTagApi = async (tagData) => {
         const response = await axios.post(`/system/tag-list`, tagDataToPass);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };

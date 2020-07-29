@@ -13,7 +13,6 @@ export const fetchAlarmsApi = async () => {
         });
         return response.data;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -30,7 +29,6 @@ export const setEmailNotificationApi = async (emailNotification) => {
         const response = await axios.post(`/system/alarm-list`, dataToPass);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };

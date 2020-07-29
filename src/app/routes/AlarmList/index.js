@@ -120,12 +120,12 @@ class AlarmList extends PureComponent {
                 </div>
             </div>;
 
+        if (error) {
+            throw new Error('Could not fetch alarms');
+        }
         return (
             <div className="AlarmList app-wrapper">
-                {fetching ?
-                    error ? <p>{"Coudn't fetch alarms"}</p> : <CircularIndeterminate/>
-                    : alarmList}
-
+                {fetching ? <CircularIndeterminate/> : alarmList}
             </div>
         );
     }

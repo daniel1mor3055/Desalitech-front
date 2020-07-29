@@ -33,7 +33,6 @@ export const fetchDashboardApi = async () => {
             currentPlacement
         };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -50,7 +49,6 @@ export const timeSeriesAddApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -66,7 +64,6 @@ export const timeSeriesChangeApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -79,7 +76,6 @@ export const timeSeriesDeleteApi = async (timeSeries) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -95,7 +91,6 @@ export const gaugeChangeApi = async (gaugeType, gauge) => {
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -108,7 +103,6 @@ export const gaugeDeleteApi = async (gaugeType, gauge) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -124,7 +118,6 @@ export const gaugeAddApi = async (gaugeType, gauge) => {
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -140,7 +133,6 @@ export const tagChangeApi = async (tag) => {
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -153,7 +145,6 @@ export const tagDeleteApi = async (tag) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -169,7 +160,6 @@ export const tagAddApi = async (tag) => {
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -185,7 +175,6 @@ export const triggerChangeApi = async (trigger) => {
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -198,7 +187,6 @@ export const triggerDeleteApi = async (trigger) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -214,7 +202,6 @@ export const triggerAddApi = async (trigger) => {
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -230,7 +217,6 @@ export const seeqChangeApi = async (seeq) => {
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -243,7 +229,6 @@ export const seeqDeleteApi = async (seeq) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
@@ -259,7 +244,6 @@ export const seeqAddApi = async (seeq) => {
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        console.log(err);
         throw err;
     }
 };
