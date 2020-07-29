@@ -19,10 +19,16 @@ class ErrorBoundary extends Component {
     render() {
         const { hasError } = this.state;
         const { children } = this.props;
+
         return (
             hasError ?
-                <div>
-                    <h1>Something Went Wrong</h1>
+                <div className="app-wrapper page-error-container animated slideInUpTiny animation-duration-3">
+                    <div className="page-error-content">
+                        <div className="error-code mb-4 animated zoomInDown">Error</div>
+                        <h2 className="text-center fw-regular title bounceIn animation-delay-10 animated">
+                            Something went wrong
+                        </h2>
+                    </div>
                 </div> : children
         );
     }

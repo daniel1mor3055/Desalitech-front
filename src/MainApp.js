@@ -9,7 +9,6 @@ import config from './auth_config';
 import Auth0Provider from './Auth0Provider';
 import asyncComponent from 'util/asyncComponent';
 import { NotificationContainer } from "react-notifications";
-import ErrorBoundary from './app/components/ErrorBoundary';
 
 export const store = configureStore();
 
@@ -25,9 +24,8 @@ class MainApp extends Component {
 
     render() {
         return (
-            <ErrorBoundary>
-                <Provider store={store}>
-                    <ConnectedRouter history={history}>
+            <Provider store={store}>
+                <ConnectedRouter history={history}>
                         <Auth0Provider
                             domain={config.domain}
                             client_id={config.clientId}
@@ -41,9 +39,8 @@ class MainApp extends Component {
                             </Switch>
                         </Auth0Provider>
                         <NotificationContainer/>
-                    </ConnectedRouter>
-                </Provider>
-            </ErrorBoundary>
+                </ConnectedRouter>
+            </Provider>
         );
     }
 }

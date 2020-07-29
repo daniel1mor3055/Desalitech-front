@@ -255,10 +255,6 @@ class SystemsAndLiveAlarms extends Component {
             throw new Error("Could not fetch systems");
         }
 
-        if (errorPoll) {
-            throw new Error("Could not fetch active alarms");
-        }
-
         const systemsJSX = admin ?
             <ChangeSystemViewTabs cardsView={systemsCards} tableView={systemsTable}/> : systemsCards;
 

@@ -13,6 +13,7 @@ import { Auth0Context } from 'Auth0Provider';
 import PrivateRoute from 'app/components/PrivateRoute';
 import asyncComponent from 'util/asyncComponent';
 import blueTheme from './themes/blueTheme';
+import ErrorBoundary from '../app/components/ErrorBoundary';
 
 class App extends Component {
     static contextType = Auth0Context;
@@ -36,12 +37,6 @@ class App extends Component {
             return null;
         }
 
-        let redirect = null;
-        if (isAuthenticated && !loading) {
-            redirect = <Redirect exact from={'/'} to={'/app/system-select-active-alarms?currentTab=system_select'}/>;
-        }
-
-
         const applyTheme = createMuiTheme(blueTheme);
 
         if (isDirectionRTL) {
@@ -54,25 +49,31 @@ class App extends Component {
 
         const currentAppLocale = AppLocale[locale.locale];
         return (
-            <MuiThemeProvider theme={applyTheme}>
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <IntlProvider
-                        locale={currentAppLocale.locale}
-                        messages={currentAppLocale.messages}>
-                        <RTL>
-                            <div className="app-main">
-                                <Switch>
-                                    <PrivateRoute path={`${match.url}app/system-select-active-alarms`}
-                                                  component={asyncComponent(() => import('../app/routes/SystemsAndLiveAlarms'))}/>
-                                    <PrivateRoute path={`${match.url}app`}
-                                                  component={asyncComponent(() => import('../app'))}/>
-                                    {redirect}
-                                </Switch>
-                            </div>
-                        </RTL>
-                    </IntlProvider>
-                </MuiPickersUtilsProvider>
-            </MuiThemeProvider>
+            <ErrorBoundary>
+                <MuiThemeProvider theme={applyTheme}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                        <IntlProvider
+                            locale={currentAppLocale.locale}
+                            messages={currentAppLocale.messages}>
+                            <RTL>
+                                <div className="app-main">
+                                    <Switch>
+                                        {(isAuthenticated) ?
+                                            <Redirect push exact from={'/'}
+                                                      to={'/app/system-select-active-alarms?currentTab=system_select'}/>
+                                            : null}
+                                        <PrivateRoute path={`${match.url}app/system-select-active-alarms`}
+                                                      component={asyncComponent(() => import('../app/routes/SystemsAndLiveAlarms'))}/>
+                                        <PrivateRoute path={`${match.url}app`}
+                                                      component={asyncComponent(() => import('../app'))}/>
+
+                                    </Switch>
+                                </div>
+                            </RTL>
+                        </IntlProvider>
+                    </MuiPickersUtilsProvider>
+                </MuiThemeProvider>
+            </ErrorBoundary>
         );
     }
 }
