@@ -45,7 +45,7 @@ function fetchPollingSuccess(state, action) {
 function fetchPollingFail(state, action) {
     return {
         ...state,
-        error: action.payload.error.data.code,
+        error: action.payload.error.message,
         fetching: false,
     };
 

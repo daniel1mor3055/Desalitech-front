@@ -12,6 +12,13 @@ export const fetchSystemNameApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };

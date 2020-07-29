@@ -50,7 +50,7 @@ function fetchSystemNameFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error,
+        error: action.payload.error.message,
     };
 }
 

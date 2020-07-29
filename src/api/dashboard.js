@@ -1,6 +1,8 @@
 import axios from 'axios';
 import moment from "moment";
 import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
+import { AXIOS_TIMEOUT } from 'constants/globalConstats';
+
 
 const TRIGGER = 'Trigger';
 const TAG = 'Tag';
@@ -33,7 +35,14 @@ export const fetchDashboardApi = async () => {
             currentPlacement
         };
     } catch (err) {
-        throw err;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -43,14 +52,20 @@ export const timeSeriesAddApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -59,14 +74,20 @@ export const timeSeriesChangeApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -75,11 +96,17 @@ export const timeSeriesDeleteApi = async (timeSeries) => {
     const dataToPost = manipulateTimeSeries(timeSeries, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -88,14 +115,20 @@ export const gaugeChangeApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -104,11 +137,17 @@ export const gaugeDeleteApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -117,14 +156,20 @@ export const gaugeAddApi = async (gaugeType, gauge) => {
     const dataToPost = manipulateGauge(gaugeType, gauge, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -133,14 +178,20 @@ export const tagChangeApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -149,11 +200,17 @@ export const tagDeleteApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -162,14 +219,20 @@ export const tagAddApi = async (tag) => {
     const dataToPost = manipulateTag(tag, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -178,14 +241,20 @@ export const triggerChangeApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -194,11 +263,17 @@ export const triggerDeleteApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -207,14 +282,20 @@ export const triggerAddApi = async (trigger) => {
     const dataToPost = manipulateTrigger(trigger, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -223,14 +304,20 @@ export const seeqChangeApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard', dataToPost);
+        const response = await axios.post('/system/dashboard', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -239,11 +326,17 @@ export const seeqDeleteApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/delete-widget', dataToPost, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 
@@ -252,14 +345,20 @@ export const seeqAddApi = async (seeq) => {
     const dataToPost = manipulateSeeq(seeq, sysId);
     capitalizeJson(dataToPost);
     try {
-        const response = await axios.post('/system/dashboard/add-widget', dataToPost);
+        const response = await axios.post('/system/dashboard/add-widget', dataToPost, AXIOS_TIMEOUT);
         camelizeJson(response.data);
         const { admin, widgets } = response.data;
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        camelizeJson(err.response);
-        throw err.response;
+        if (err.hasOwnProperty('response')) {
+            camelizeJson(err.response);
+            throw {
+                message: err.response.data.code,
+            };
+        } else {
+            throw err;
+        }
     }
 };
 

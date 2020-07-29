@@ -45,7 +45,7 @@ function fetchSystemsFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error.data.code,
+        error: action.payload.error.message,
     };
 
 }

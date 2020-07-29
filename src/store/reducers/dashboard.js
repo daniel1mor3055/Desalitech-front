@@ -101,7 +101,7 @@ function dashboardFetchFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error
+        error: action.payload.error.message
     };
 }
 
@@ -119,7 +119,7 @@ function dashboardPostFail(state, action) {
     return {
         ...state,
         posting: false,
-        postingError: action.payload.error.data.code,
+        postingError: action.payload.error.message,
     };
 }
 

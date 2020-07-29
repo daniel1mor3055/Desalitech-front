@@ -57,7 +57,7 @@ function fetchAlarmsFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error,
+        error: action.payload.error.message,
     };
 }
 
@@ -84,7 +84,7 @@ function setEmailNotificationFail(state, action) {
         alarms: [],
         posting: false,
         emailNotification: false,
-        postingError: action.payload.error.data.code,
+        postingError: action.payload.error.message,
     };
 }
 

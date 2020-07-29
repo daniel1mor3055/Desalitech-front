@@ -50,7 +50,7 @@ function chartsPostFail(state, action) {
     return {
         ...state,
         posting: false,
-        postingError: action.payload.error.data.code,
+        postingError: action.payload.error.message,
     };
 }
 
