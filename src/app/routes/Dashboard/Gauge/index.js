@@ -37,7 +37,7 @@ class Gauge extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = async (values) => {
         const {
             measuredTag, lLFromOptionsCheckBox, lLFromOptions, lL, lFromOptionsCheckBox,
             lFromOptions, l, hFromOptionsCheckBox, hFromOptions, h, hHFromOptionsCheckBox, hHFromOptions, hH
@@ -57,7 +57,13 @@ class Gauge extends Component {
             hH: !hHFromOptionsCheckBox ? hH : newHh.tagId,
         };
 
-        this.props.onGaugeChange(gaugeType, gauge);
+        await this.props.onGaugeChange(gaugeType, gauge);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
+
     };
 
     getFormInitialValues = (gaugeData) => {
@@ -176,9 +182,10 @@ Gauge.propTypes = {
 };
 
 
-const mapStateToProps = ({ tags }) => {
+const mapStateToProps = ({ tags, dashboard }) => {
     return {
         tagsList: tags.tags,
+        postingError: dashboard.postingError,
     };
 };
 

@@ -91,7 +91,8 @@ export const gaugeChangeApi = async (gaugeType, gauge) => {
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -118,7 +119,8 @@ export const gaugeAddApi = async (gaugeType, gauge) => {
         const responseGauge = extractGauge(widgets[0]);
         return { admin, responseGauge };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 

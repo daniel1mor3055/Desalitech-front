@@ -34,6 +34,7 @@ const initialState = {
     fetching: true,
     posting: false,
     error: null,
+    postingError: null,
     currentPlacement: 0,
 };
 
@@ -91,6 +92,7 @@ function dashboardFetchStart(state) {
         ...state,
         fetching: true,
         error: null,
+        postingError: null,
     };
 }
 
@@ -108,6 +110,7 @@ function dashboardPostStart(state) {
         ...state,
         posting: true,
         error: null,
+        postingError: null,
     };
 }
 
@@ -116,7 +119,7 @@ function dashboardPostFail(state, action) {
     return {
         ...state,
         posting: false,
-        error: action.payload.error
+        postingError: action.payload.error.data.code,
     };
 }
 
@@ -177,6 +180,7 @@ function gaugeDeleteSuccess(state, action) {
         posting: false,
         error: null,
         [gaugeArrayOptions[action.payload.gaugeType]]: newGauge,
+        postingError: null,
     };
 }
 
@@ -289,6 +293,7 @@ function gaugeChangeSuccess(state, action) {
         posting: false,
         error: null,
         [gaugeArrayOptions[action.payload.gaugeType]]: newGauge,
+        postingError: null,
     };
 }
 
@@ -305,6 +310,7 @@ function gaugeAddSuccess(state, action) {
         error: null,
         currentPlacement: state.currentPlacement + 1,
         [gaugeArrayOptions[action.payload.gaugeType]]: state[gaugeArrayOptions[action.payload.gaugeType]].concat(action.payload.responseGauge),
+        postingError: null,
     };
 }
 

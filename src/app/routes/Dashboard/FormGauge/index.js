@@ -68,16 +68,16 @@ class FormGauge extends Component {
                             validationSchema={Yup.object().shape({
                                 measuredTag: Yup.string().required('Please select tag name to measure'),
                                 lLFromOptionsCheckBox: Yup.bool(),
-                                lLFromOptions: Yup.string(),
+                                lLFromOptions: Yup.string().nullable(),
                                 lL: Yup.number(),
                                 lFromOptionsCheckBox: Yup.bool(),
-                                lFromOptions: Yup.string(),
+                                lFromOptions: Yup.string().nullable(),
                                 l: Yup.number(),
                                 hFromOptionsCheckBox: Yup.bool(),
-                                hFromOptions: Yup.string(),
+                                hFromOptions: Yup.string().nullable(),
                                 h: Yup.number(),
                                 hHFromOptionsCheckBox: Yup.bool(),
-                                hHFromOptions: Yup.string(),
+                                hHFromOptions: Yup.string().nullable(),
                                 hH: Yup.number(),
                             })}
                         >

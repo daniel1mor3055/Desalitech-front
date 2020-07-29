@@ -126,7 +126,7 @@ class Dashboard extends PureComponent {
         this.props.onTimeSeriesAdd(timeSeries);
     };
 
-    handleGaugesSubmit = (values) => {
+    handleGaugesSubmit = async (values) => {
         const { newGaugetype } = this.state;
         const { currentPlacement, tagsList } = this.props;
         const {
@@ -147,7 +147,12 @@ class Dashboard extends PureComponent {
             hH: !hHFromOptionsCheckBox ? hH : newHh.tagId,
         };
 
-        this.props.onGaugeAdd(newGaugetype, gauge);
+        await this.props.onGaugeAdd(newGaugetype, gauge);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     handleTagsSubmit = (values) => {
@@ -194,96 +199,96 @@ class Dashboard extends PureComponent {
             throw new Error('Could not fetch dashboard');
         }
 
-            return (
-                <div className="Dashboard app-wrapper">
+        return (
+            <div className="Dashboard app-wrapper">
 
-                    {fetching ? <CircularIndeterminate/> :
-                        <>
-                            <div className="dashboard animated slideInUpTiny animation-duration-3">
-                                <div className="add-dashboard-option">
-                                    <IconButton onClick={this.handleOpenSelectorWidgetType}>
-                                        <i className="zmdi zmdi-plus-circle-o text-white"/>
-                                    </IconButton>
-                                </div>
-
-                                <WidgetTypesSelector
-                                    open={widgetTypesSelectorOpen}
-                                    handleClose={this.handleCloseSelectorWidgetType}
-                                    handleChoose={this.handleChooseSelectorWidgetType}/>
-
-
-                                <FormGauge handleClose={this.handleCloseWidgetForm}
-                                           handleSubmit={this.handleGaugesSubmit}
-                                           open={gaugeFormOpen}
-                                />
-
-                                <FormTag handleClose={this.handleCloseWidgetForm}
-                                         handleSubmit={this.handleTagsSubmit}
-                                         open={tagFormOpen}/>
-
-                                <FormTrigger handleClose={this.handleCloseWidgetForm}
-                                             handleSubmit={this.handleTriggersSubmit}
-                                             open={triggerFormOpen}/>
-
-
-                                <FormSeeq handleClose={this.handleCloseWidgetForm}
-                                          handleSubmit={this.handleSeeqsSubmit}
-                                          open={seeqFormOpen}/>
-
-                                <FormTimeSeries handleClose={this.handleCloseWidgetForm}
-                                                handleSubmit={this.handleTimeSeriesSubmit}
-                                                open={timeSeriesFormOpen}/>
-
-                                {timeSeries.map((timeSeries) => {
-                                    const { startDate, endDate, times, tags, placement, currentPickedRange } = timeSeries;
-                                    return (
-                                        <TimeSeries
-                                            onTimeSeriesChange={this.props.onTimeSeriesChange}
-                                            onTimeSeriesDelete={this.props.onTimeSeriesDelete}
-                                            startDate={startDate}
-                                            endDate={endDate}
-                                            tags={tags}
-                                            times={times}
-                                            placement={placement}
-                                            currentPickedRange={currentPickedRange}
-                                            key={placement}/>);
-                                })}
-                                <div className="justify-content-around d-flex flex-wrap">
-                                    {middleGauges.map((middleGauge) => {
-                                        const { placement } = middleGauge;
-                                        return <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge} key={placement}/>;
-                                    })}
-                                    {leftGauges.map((leftGauge) => {
-                                        const { placement } = leftGauge;
-                                        return <Gauge gaugeType={'LEFT'} gaugeData={leftGauge} key={placement}/>;
-                                    })}
-                                    {rightGauges.map((rightGauge) => {
-                                        const { placement } = rightGauge;
-                                        return <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge} key={placement}/>;
-                                    })}
-                                </div>
-                                <div className="justify-content-around d-flex flex-wrap">
-                                    {tags.map((tag) => {
-                                        const { tagId, tagName, tagValue, tagUnits, placement } = tag;
-                                        return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue}
-                                                    tagUnits={tagUnits}
-                                                    placement={placement} key={placement}/>;
-                                    })}
-                                    {triggers.map((trigger) => {
-                                        const { controllerTag, tag, placement } = trigger;
-                                        return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}
-                                                        key={placement}/>;
-                                    })}
-                                </div>
-                                {seeqs.map((seeq) => {
-                                        const { url, placement } = seeq;
-                                        return <Seeq url={url} placement={placement} key={placement}/>;
-                                    }
-                                )}
+                {fetching ? <CircularIndeterminate/> :
+                    <>
+                        <div className="dashboard animated slideInUpTiny animation-duration-3">
+                            <div className="add-dashboard-option">
+                                <IconButton onClick={this.handleOpenSelectorWidgetType}>
+                                    <i className="zmdi zmdi-plus-circle-o text-white"/>
+                                </IconButton>
                             </div>
-                        </>}
-                </div>
-            );
+
+                            <WidgetTypesSelector
+                                open={widgetTypesSelectorOpen}
+                                handleClose={this.handleCloseSelectorWidgetType}
+                                handleChoose={this.handleChooseSelectorWidgetType}/>
+
+
+                            <FormGauge handleClose={this.handleCloseWidgetForm}
+                                       handleSubmit={this.handleGaugesSubmit}
+                                       open={gaugeFormOpen}
+                            />
+
+                            <FormTag handleClose={this.handleCloseWidgetForm}
+                                     handleSubmit={this.handleTagsSubmit}
+                                     open={tagFormOpen}/>
+
+                            <FormTrigger handleClose={this.handleCloseWidgetForm}
+                                         handleSubmit={this.handleTriggersSubmit}
+                                         open={triggerFormOpen}/>
+
+
+                            <FormSeeq handleClose={this.handleCloseWidgetForm}
+                                      handleSubmit={this.handleSeeqsSubmit}
+                                      open={seeqFormOpen}/>
+
+                            <FormTimeSeries handleClose={this.handleCloseWidgetForm}
+                                            handleSubmit={this.handleTimeSeriesSubmit}
+                                            open={timeSeriesFormOpen}/>
+
+                            {timeSeries.map((timeSeries) => {
+                                const { startDate, endDate, times, tags, placement, currentPickedRange } = timeSeries;
+                                return (
+                                    <TimeSeries
+                                        onTimeSeriesChange={this.props.onTimeSeriesChange}
+                                        onTimeSeriesDelete={this.props.onTimeSeriesDelete}
+                                        startDate={startDate}
+                                        endDate={endDate}
+                                        tags={tags}
+                                        times={times}
+                                        placement={placement}
+                                        currentPickedRange={currentPickedRange}
+                                        key={placement}/>);
+                            })}
+                            <div className="justify-content-around d-flex flex-wrap">
+                                {middleGauges.map((middleGauge) => {
+                                    const { placement } = middleGauge;
+                                    return <Gauge gaugeType={'MIDDLE'} gaugeData={middleGauge} key={placement}/>;
+                                })}
+                                {leftGauges.map((leftGauge) => {
+                                    const { placement } = leftGauge;
+                                    return <Gauge gaugeType={'LEFT'} gaugeData={leftGauge} key={placement}/>;
+                                })}
+                                {rightGauges.map((rightGauge) => {
+                                    const { placement } = rightGauge;
+                                    return <Gauge gaugeType={'RIGHT'} gaugeData={rightGauge} key={placement}/>;
+                                })}
+                            </div>
+                            <div className="justify-content-around d-flex flex-wrap">
+                                {tags.map((tag) => {
+                                    const { tagId, tagName, tagValue, tagUnits, placement } = tag;
+                                    return <Tag tagId={tagId} tagName={tagName} tagValue={tagValue}
+                                                tagUnits={tagUnits}
+                                                placement={placement} key={placement}/>;
+                                })}
+                                {triggers.map((trigger) => {
+                                    const { controllerTag, tag, placement } = trigger;
+                                    return <Trigger controllerTag={controllerTag} tag={tag} placement={placement}
+                                                    key={placement}/>;
+                                })}
+                            </div>
+                            {seeqs.map((seeq) => {
+                                    const { url, placement } = seeq;
+                                    return <Seeq url={url} placement={placement} key={placement}/>;
+                                }
+                            )}
+                        </div>
+                    </>}
+            </div>
+        );
     }
 }
 
@@ -302,6 +307,7 @@ const mapStateToProps = ({ dashboard, tags }) => {
         error: dashboard.error,
         tagsList: tags.tags,
         currentPlacement: dashboard.currentPlacement,
+        postingError: dashboard.postingError,
     };
 };
 
