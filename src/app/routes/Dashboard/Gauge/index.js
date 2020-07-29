@@ -38,19 +38,23 @@ class Gauge extends Component {
     };
 
     handleFormSubmit = (values) => {
-        const { lL, l, h, hH, measuredTag } = values;
+        const {
+            measuredTag, lLFromOptionsCheckBox, lLFromOptions, lL, lFromOptionsCheckBox,
+            lFromOptions, l, hFromOptionsCheckBox, hFromOptions, h, hHFromOptionsCheckBox, hHFromOptions, hH
+        } = values;
+
         const { gaugeType, gaugeData: { placement }, tagsList } = this.props;
-        const newLl = tagsList.find(o => o.tagName === lL);
-        const newL = tagsList.find(o => o.tagName === l);
-        const newH = tagsList.find(o => o.tagName === h);
-        const newHh = tagsList.find(o => o.tagName === hH);
+        const newLl = tagsList.find(o => o.tagName === lLFromOptions);
+        const newL = tagsList.find(o => o.tagName === lFromOptions);
+        const newH = tagsList.find(o => o.tagName === hFromOptions);
+        const newHh = tagsList.find(o => o.tagName === hHFromOptions);
         const gauge = {
             measuredTag: tagsList.find(o => o.tagName === measuredTag).tagId,
-            placement,
-            lL: newLl == null ? lL : newLl.tagId,
-            l: newL == null ? l : newL.tagId,
-            h: newH == null ? h : newH.tagId,
-            hH: newHh == null ? hH : newHh.tagId,
+            placement: placement,
+            lL: !lLFromOptionsCheckBox ? lL : newLl.tagId,
+            l: !lFromOptionsCheckBox ? l : newL.tagId,
+            h: !hFromOptionsCheckBox ? h : newH.tagId,
+            hH: !hHFromOptionsCheckBox ? hH : newHh.tagId,
         };
 
         this.props.onGaugeChange(gaugeType, gauge);
