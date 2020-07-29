@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 import moment from 'moment';
 
@@ -10,7 +10,7 @@ import TimeSeries from '../Dashboard/TimeSeries';
 import IconButton from "@material-ui/core/IconButton";
 import FormTimeSeries from "../Dashboard/FormTimeSeries";
 
-class Charts extends Component {
+class Charts extends PureComponent {
     constructor(props) {
         super(props);
 

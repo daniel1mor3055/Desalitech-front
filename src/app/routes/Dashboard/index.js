@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 
 import 'react-dates/initialize';
@@ -31,7 +31,7 @@ import FormSeeq from "./FormSeeq";
 import FormTimeSeries from "./FormTimeSeries";
 import moment from "moment";
 
-class Dashboard extends Component {
+class Dashboard extends PureComponent {
     constructor(props) {
         super(props);
 

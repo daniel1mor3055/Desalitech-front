@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +11,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 
-class DataTableHead extends React.Component {
+class DataTableHead extends Component {
     createSortHandler = property => event => {
         this.props.onRequestSort(event, property);
     };
@@ -79,7 +79,7 @@ DataTableHead.propTypes = {
 };
 
 
-class DataTable extends React.Component {
+class DataTable extends Component {
     constructor(props, context) {
         super(props, context);
 

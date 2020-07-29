@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {PureComponent} from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
@@ -8,7 +8,7 @@ import UserInfo from 'app/components/UserInfo';
 import { COLLAPSED_DRAWER, FIXED_DRAWER, HORIZONTAL_NAVIGATION } from 'store/actionTypes';
 import { toggleCollapsedNav, updateWindowWidth } from 'store/actions/Setting';
 
-class SideNav extends React.PureComponent {
+class SideNav extends PureComponent {
 
     onToggleCollapsedNav = (e) => {
         const val = !this.props.navCollapsed;
