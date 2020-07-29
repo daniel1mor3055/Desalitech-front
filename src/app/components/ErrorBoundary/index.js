@@ -27,6 +27,7 @@ class ErrorBoundary extends Component {
                         <div className="error-code mb-4 animated zoomInDown">Error</div>
                         <h2 className="text-center fw-regular title bounceIn animation-delay-10 animated">
                             Something went wrong
+                            {console.log(hasError.message)}
                         </h2>
                     </div>
                 </div> : children
