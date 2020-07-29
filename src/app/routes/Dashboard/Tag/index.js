@@ -35,7 +35,7 @@ class Tag extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = async (values) => {
         const { tagName } = values;
         const { placement, tagsList } = this.props;
 
@@ -43,7 +43,11 @@ class Tag extends Component {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
             placement,
         };
-        this.props.onTagChange(tag);
+        await this.props.onTagChange(tag);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getFormInitialValues = (tagName) => {
@@ -57,14 +61,19 @@ class Tag extends Component {
         this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
+    handleDeleteWidget = async () => {
         const { tagId, placement } = this.props;
 
         const tag = {
             tagId,
             placement,
         };
-        this.props.onTagDelete(tag);
+        await this.props.onTagDelete(tag);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {
@@ -107,9 +116,10 @@ Tag.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ tags }) => {
+const mapStateToProps = ({ tags, dashboard }) => {
     return {
         tagsList: tags.tags,
+        postingError: dashboard.postingError,
     };
 };
 

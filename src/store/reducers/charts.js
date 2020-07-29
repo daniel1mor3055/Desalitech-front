@@ -17,8 +17,8 @@ const initialState = {
         placement: 0,
     }],
     posting: false,
-    error: null,
     currentPlacement: 1,
+    postingError: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -42,7 +42,7 @@ function chartsPostStart(state) {
     return {
         ...state,
         posting: true,
-        error: null,
+        postingError: null,
     };
 }
 
@@ -50,7 +50,7 @@ function chartsPostFail(state, action) {
     return {
         ...state,
         posting: false,
-        error: action.payload.error,
+        postingError: action.payload.error.data.code,
     };
 }
 
@@ -66,7 +66,7 @@ function timeSeriesChangeSuccess(state, action) {
     return {
         ...state,
         posting: false,
-        error: null,
+        postingError: null,
         timeSeries: newTimeSeries,
     };
 }
@@ -78,7 +78,7 @@ function timeSeriesDeleteSuccess(state, action) {
     return {
         ...state,
         posting: false,
-        error: null,
+        postingError: null,
         timeSeries: newTimeSeries,
     };
 }
@@ -87,7 +87,7 @@ function timeSeriesAddSuccess(state, action) {
     return {
         ...state,
         posting: false,
-        error: null,
+        postingError: null,
         currentPlacement: state.currentPlacement + 1,
         timeSeries: state.timeSeries.concat(action.payload.responseTimeSeries),
     };

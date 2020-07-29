@@ -35,7 +35,7 @@ class Trigger extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = async (values) => {
         const { tagName, controllerTagName } = values;
         const { placement, tagsList } = this.props;
 
@@ -44,7 +44,11 @@ class Trigger extends Component {
             controllerTagId: tagsList.find(o => o.tagName === controllerTagName).tagId,
             placement
         };
-        this.props.onTriggerChange(trigger);
+        await this.props.onTriggerChange(trigger);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getFormInitialValues = (tag, controllerTag) => {
@@ -58,7 +62,7 @@ class Trigger extends Component {
         this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
+    handleDeleteWidget = async () => {
         const { placement, tag, controllerTag } = this.props;
 
         const trigger = {
@@ -66,7 +70,11 @@ class Trigger extends Component {
             controllerTagId: controllerTag.tagId,
             placement,
         };
-        this.props.onTriggerDelete(trigger);
+        await this.props.onTriggerDelete(trigger);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {
@@ -109,9 +117,10 @@ Trigger.propTypes = {
     placement: PropTypes.number.isRequired,
 };
 
-const mapStateToProps = ({ tags }) => {
+const mapStateToProps = ({ tags, dashboard }) => {
     return {
         tagsList: tags.tags,
+        postingError: dashboard.postingError,
     };
 };
 

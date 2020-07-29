@@ -13,6 +13,7 @@ export const timeSeriesChangeApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(chartData);
         return { admin, responseTimeSeries };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };

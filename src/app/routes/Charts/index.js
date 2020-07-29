@@ -33,7 +33,7 @@ class Charts extends PureComponent {
         this.setState({ addTimeSeriesFormOpen: false });
     };
 
-    handleAddTimeSeriesFormSubmit = (values) => {
+    handleAddTimeSeriesFormSubmit = async (values) => {
         const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
@@ -48,7 +48,11 @@ class Charts extends PureComponent {
             placement: currentPlacement,
             tags,
         };
-        this.props.onTimeSeriesAdd(timeSeries);
+        await this.props.onTimeSeriesAdd(timeSeries);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getAddTimeSeriesFormInitialValues = () => {
@@ -61,11 +65,7 @@ class Charts extends PureComponent {
 
     render() {
         const { addTimeSeriesFormOpen } = this.state;
-        const { timeSeries, error, tagsList } = this.props;
-
-        if (error) {
-            throw new Error('Error in charts');
-        }
+        const { timeSeries, tagsList } = this.props;
 
         return (
             <div className="Charts app-wrapper">
@@ -116,8 +116,8 @@ const mapStateToProps = ({ charts, tags }) => {
     return {
         tagsList: tags.tags,
         timeSeries: charts.timeSeries,
-        error: charts.error,
         currentPlacement: charts.currentPlacement,
+        postingError: charts.postingError,
     };
 };
 

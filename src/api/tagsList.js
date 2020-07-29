@@ -24,6 +24,7 @@ export const postTagApi = async (tagData) => {
         const response = await axios.post(`/system/tag-list`, tagDataToPass);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };

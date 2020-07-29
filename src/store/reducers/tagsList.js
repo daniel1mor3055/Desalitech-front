@@ -12,6 +12,7 @@ const initialState = {
     fetching: true,
     posting: false,
     error: null,
+    postingError: null,
 };
 
 
@@ -39,7 +40,7 @@ function postTagStart(state) {
     return {
         ...state,
         posting: true,
-        error: null,
+        postingError: null,
     };
 }
 
@@ -55,7 +56,7 @@ function postTagSuccess(state, action) {
     return {
         ...state,
         posting: false,
-        error: null,
+        postingError: null,
         tags: newTags,
     };
 }
@@ -64,7 +65,7 @@ function postTagFail(state, action) {
     return {
         ...state,
         posting: false,
-        error: action.payload.error,
+        postingError: action.payload.error.data.code,
     };
 }
 
@@ -89,7 +90,7 @@ function fetchTagsFail(state, action) {
     return {
         ...state,
         fetching: false,
-        error: action.payload.error,
+        error: action.payload.error.data.code,
     };
 }
 

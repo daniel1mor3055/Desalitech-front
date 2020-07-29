@@ -29,6 +29,7 @@ export const setEmailNotificationApi = async (emailNotification) => {
         const response = await axios.post(`/system/alarm-list`, dataToPass);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };

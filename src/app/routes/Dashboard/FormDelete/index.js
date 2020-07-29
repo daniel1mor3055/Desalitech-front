@@ -14,7 +14,7 @@ const styles = {};
 const FormDelete = ({open, handleClose, handleSubmit}) => {
     return (
         <Dialog
-            open={open}
+            open={open}onTime
             onClose={handleClose}
             aria-labelledby="form-dialog-title"
         >

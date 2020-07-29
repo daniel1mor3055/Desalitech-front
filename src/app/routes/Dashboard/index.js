@@ -107,7 +107,7 @@ class Dashboard extends PureComponent {
         this.handleCloseSelectorWidgetType(event);
     };
 
-    handleTimeSeriesSubmit = (values) => {
+    handleTimeSeriesSubmit = async (values) => {
         const { currentPlacement, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
@@ -123,7 +123,11 @@ class Dashboard extends PureComponent {
             tags,
             detail1: 'Day',
         };
-        this.props.onTimeSeriesAdd(timeSeries);
+        await this.props.onTimeSeriesAdd(timeSeries);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     handleGaugesSubmit = async (values) => {
@@ -155,7 +159,7 @@ class Dashboard extends PureComponent {
         }
     };
 
-    handleTagsSubmit = (values) => {
+    handleTagsSubmit = async (values) => {
         const { tagName } = values;
         const { currentPlacement, tagsList } = this.props;
 
@@ -163,10 +167,14 @@ class Dashboard extends PureComponent {
             tagId: tagsList.find(o => o.tagName === tagName).tagId,
             placement: currentPlacement,
         };
-        this.props.onTagAdd(tag);
+        await this.props.onTagAdd(tag);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleTriggersSubmit = (values) => {
+    handleTriggersSubmit = async (values) => {
         const { tagName, controllerTagName } = values;
         const { currentPlacement, tagsList } = this.props;
 
@@ -175,10 +183,15 @@ class Dashboard extends PureComponent {
             controllerTagId: tagsList.find(o => o.tagName === controllerTagName).tagId,
             placement: currentPlacement,
         };
-        this.props.onTriggerAdd(trigger);
+        await this.props.onTriggerAdd(trigger);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
-    handleSeeqsSubmit = (values) => {
+    handleSeeqsSubmit = async (values) => {
         const { url } = values;
         const { currentPlacement } = this.props;
 
@@ -186,7 +199,12 @@ class Dashboard extends PureComponent {
             url,
             placement: currentPlacement,
         };
-        this.props.onSeeqAdd(seeq);
+        await this.props.onSeeqAdd(seeq);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {

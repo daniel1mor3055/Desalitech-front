@@ -41,8 +41,13 @@ class TagList extends PureComponent {
         this.setState({ openEditModal: false });
     };
 
-    handleSubmit = (values) => {
-        this.props.onPostTag(values);
+    handleSubmit = async (values) => {
+        await this.props.onPostTag(values);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getSearchOptions = () => {
@@ -169,6 +174,7 @@ const mapStateToProps = ({ tags }) => {
         tagsList: tags.tags,
         fetching: tags.fetching,
         error: tags.error,
+        postingError: tags.postingError,
     };
 };
 

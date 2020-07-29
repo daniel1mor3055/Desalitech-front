@@ -49,7 +49,8 @@ export const timeSeriesAddApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -64,7 +65,8 @@ export const timeSeriesChangeApi = async (timeSeries) => {
         const responseTimeSeries = extractTimeSeries(widgets[0]);
         return { admin, responseTimeSeries };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -76,7 +78,8 @@ export const timeSeriesDeleteApi = async (timeSeries) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -104,7 +107,8 @@ export const gaugeDeleteApi = async (gaugeType, gauge) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -135,7 +139,8 @@ export const tagChangeApi = async (tag) => {
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -147,7 +152,8 @@ export const tagDeleteApi = async (tag) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -162,7 +168,8 @@ export const tagAddApi = async (tag) => {
         const responseTag = extractTag(widgets[0]);
         return { admin, responseTag };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -177,7 +184,8 @@ export const triggerChangeApi = async (trigger) => {
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -189,7 +197,8 @@ export const triggerDeleteApi = async (trigger) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -204,7 +213,8 @@ export const triggerAddApi = async (trigger) => {
         const responseTrigger = extractTrigger(widgets[0]);
         return { admin, responseTrigger };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -219,7 +229,8 @@ export const seeqChangeApi = async (seeq) => {
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -231,7 +242,8 @@ export const seeqDeleteApi = async (seeq) => {
         const response = await axios.post('/system/dashboard/delete-widget', dataToPost);
         return response;
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 
@@ -246,7 +258,8 @@ export const seeqAddApi = async (seeq) => {
         const responseSeeq = extractSeeq(widgets[0]);
         return { admin, responseSeeq };
     } catch (err) {
-        throw err;
+        camelizeJson(err.response);
+        throw err.response;
     }
 };
 

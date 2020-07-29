@@ -90,7 +90,7 @@ class Gauge extends Component {
         this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
+    handleDeleteWidget = async () => {
         const { gaugeData: { lL, l, h, hH, tags, placement }, gaugeType } = this.props;
 
         const gauge = {
@@ -102,8 +102,13 @@ class Gauge extends Component {
             hH: hH.tagId == null || hH.tagId === '' ? hH.value : hH.tagId,
         };
 
-        this.props.onGaugeDelete(gaugeType, gauge);
+        await this.props.onGaugeDelete(gaugeType, gauge);
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
+
     static getDerivedStateFromProps = (props, state) => {
         const { gaugeData: { lL, l, h, hH } } = props;
         return {

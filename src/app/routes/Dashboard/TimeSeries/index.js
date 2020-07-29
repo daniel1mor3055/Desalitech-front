@@ -108,7 +108,7 @@ class TimeSeries extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = async (values) => {
         const { startDate, endDate, placement, currentPickedRange, tagsList } = this.props;
         const tags = Object.keys(values).map((key) => {
             const newTag = tagsList.find(o => o.tagName === values[key]);
@@ -123,7 +123,15 @@ class TimeSeries extends Component {
             tags,
             detail1: currentPickedRange,
         };
-        this.props.onTimeSeriesChange(timeSeries);
+        await this.props.onTimeSeriesChange(timeSeries);
+
+        const { dashboardPostingError, chartsPostingError } = this.props;
+        if (dashboardPostingError) {
+            throw new Error(dashboardPostingError);
+        }
+        if (chartsPostingError) {
+            throw new Error(chartsPostingError);
+        }
     };
 
     getFormInitialValues = (tags) => {
@@ -142,7 +150,7 @@ class TimeSeries extends Component {
         this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
+    handleDeleteWidget = async () => {
         const { startDate, endDate, placement, currentPickedRange, tags } = this.props;
 
         const timeSeries = {
@@ -152,7 +160,15 @@ class TimeSeries extends Component {
             tags,
             detail1: currentPickedRange,
         };
-        this.props.onTimeSeriesDelete(timeSeries);
+        await this.props.onTimeSeriesDelete(timeSeries);
+
+        const { dashboardPostingError, chartsPostingError } = this.props;
+        if (dashboardPostingError) {
+            throw new Error(dashboardPostingError);
+        }
+        if (chartsPostingError) {
+            throw new Error(chartsPostingError);
+        }
     };
 
     render() {
@@ -236,9 +252,11 @@ TimeSeries.propTypes = {
 };
 
 
-const mapStateToProps = ({ tags }) => {
+const mapStateToProps = ({ tags, dashboard, charts }) => {
     return {
         tagsList: tags.tags,
+        dashboardPostingError: dashboard.postingError,
+        chartsPostingError: charts.postingError,
     };
 };
 

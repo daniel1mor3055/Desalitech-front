@@ -34,7 +34,7 @@ class Seeq extends Component {
         });
     };
 
-    handleFormSubmit = (values) => {
+    handleFormSubmit = async (values) => {
         const { url } = values;
         const { placement } = this.props;
 
@@ -42,7 +42,12 @@ class Seeq extends Component {
             url,
             placement
         };
-        this.props.onSeeqChange(seeq);
+        await this.props.onSeeqChange(seeq);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     getFormInitialValues = (url) => {
@@ -55,13 +60,18 @@ class Seeq extends Component {
         this.setState({ deleteFormOpen: true });
     };
 
-    handleDeleteWidget = () => {
+    handleDeleteWidget = async () => {
         const { url, placement } = this.props;
         const seeq = {
             url,
             placement,
         };
-        this.props.onSeeqDelete(seeq);
+        await this.props.onSeeqDelete(seeq);
+
+        const { postingError } = this.props;
+        if (postingError) {
+            throw new Error(postingError);
+        }
     };
 
     render() {
@@ -99,6 +109,12 @@ Seeq.propTypes = {
     url: PropTypes.string.isRequired,
 };
 
+const mapStateToProps = ({ dashboard }) => {
+    return {
+        postingError: dashboard.postingError,
+    };
+};
+
 const mapDispatchedToProps = dispatch => {
     return {
         onSeeqChange: (seeq) => dispatch(seeqChange(seeq)),
@@ -106,4 +122,4 @@ const mapDispatchedToProps = dispatch => {
     };
 };
 
-export default withRouter(connect(null, mapDispatchedToProps)(Seeq));
+export default withRouter(connect(mapStateToProps, mapDispatchedToProps)(Seeq));

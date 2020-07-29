@@ -13,6 +13,7 @@ const initialState = {
     posting: false,
     fetching: true,
     error: null,
+    postingError: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -64,7 +65,7 @@ function setEmailNotificationStart(state) {
     return {
         ...state,
         posting: true,
-        error: null,
+        postingError: null,
     };
 }
 
@@ -73,7 +74,7 @@ function setEmailNotificationSuccess(state, action) {
         ...state,
         emailNotification: action.payload.emailNotification,
         posting: false,
-        error: null,
+        postingError: null,
     };
 }
 
@@ -83,7 +84,7 @@ function setEmailNotificationFail(state, action) {
         alarms: [],
         posting: false,
         emailNotification: false,
-        error: action.payload.error,
+        postingError: action.payload.error.data.code,
     };
 }
 
