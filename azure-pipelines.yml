@@ -16,8 +16,10 @@ steps:
     versionSpec: 'v12.18.1'
 - script: |
     npm install
+  displayName: 'Install dependencies'
 - script: |
     npm run build
+  displayName: 'Build client code'
 - task: AzureCLI@2
   displayName: 'Upload static website to Azure account storage check'
   inputs:
