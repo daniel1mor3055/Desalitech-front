@@ -15,7 +15,7 @@ steps:
   inputs:
     versionSpec: 'v12.18.1'
 - script: |
-    npm install
+    npm install --production
   displayName: 'Install dependencies'
 - script: |
     npm run build
