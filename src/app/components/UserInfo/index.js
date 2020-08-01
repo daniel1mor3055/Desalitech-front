@@ -6,6 +6,7 @@ import { Auth0Context } from "Auth0Provider";
 import config from 'auth_config';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import deleteAllCookies from '../../../utils/deleteAllCookies';
 
 class UserInfo extends Component {
     static contextType = Auth0Context;
@@ -29,6 +30,7 @@ class UserInfo extends Component {
 
     logoutHandler = (e) => {
         e.preventDefault();
+        deleteAllCookies()
         const redirectPath = encodeURIComponent('https://desalitech.z16.web.core.windows.net');
         window.location.assign('https://' + config.domain + '/v2/logout?returnTo=' + redirectPath);
     };
