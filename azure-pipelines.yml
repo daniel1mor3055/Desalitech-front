@@ -30,4 +30,4 @@ steps:
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: "az storage blob upload-batch --account-name desalitech --account-key 7M5021cKg2hh4pxCHrvFmtQfav9pwRRfR3A3bVOYnUmR3IM7RGZJX8HBDl3ux7i6CLo8y3UCVQAL8Iu0O2m5NQ== --destination '$web' --source ."
-    workingDirectory: '$(Build.DefaultWorkingDirectory)/$(Build.BuildId)/build'
+    workingDirectory: '/build'
