@@ -11,7 +11,7 @@ class UserInfoPopup extends Component {
 
     logoutHandler = (e) => {
         e.preventDefault();
-        const redirectPath = encodeURIComponent('http://localhost:3000/');
+        const redirectPath = encodeURIComponent('https://desalitech.z16.web.core.windows.net/');
         window.location.assign('https://' + config.domain + '/v2/logout?returnTo=' + redirectPath);
     };
 
