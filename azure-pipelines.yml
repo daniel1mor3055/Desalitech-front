@@ -24,7 +24,7 @@ steps:
     npm run build
   displayName: 'Build client code'
 - task: AzureCLI@2
-  displayName: 'Upload static website to Azure account storage check'
+  displayName: 'Upload static website to Azure account storage'
   inputs:
     azureSubscription: 'Desalitech azure connection'
     scriptType: 'bash'
