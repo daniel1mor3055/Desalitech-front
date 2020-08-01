@@ -6,7 +6,8 @@
 trigger:
   batch: true
   branches:
-    - develop
+    include:
+      - develop
 
 pool:
   vmImage: 'ubuntu-latest'
