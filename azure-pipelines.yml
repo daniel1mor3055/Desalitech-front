@@ -19,7 +19,7 @@ steps:
 - script: |
     npm run build
 - task: AzureCLI@2
-  displayName: 'Upload static website to Azure account storage'
+  displayName: 'Upload static website to Azure account storage check'
   inputs:
     azureSubscription: 'Desalitech Azure Subscription 1(69b96a18-d18a-4f3d-87f5-09f2064c6b03)'
     scriptType: 'bash'
