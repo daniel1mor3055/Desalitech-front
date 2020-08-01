@@ -29,7 +29,7 @@ class UserInfo extends Component {
 
     logoutHandler = (e) => {
         e.preventDefault();
-        const redirectPath = encodeURIComponent('https://desalitech.z16.web.core.windows.net/');
+        const redirectPath = encodeURIComponent('https://desalitech.z16.web.core.windows.net');
         window.location.assign('https://' + config.domain + '/v2/logout?returnTo=' + redirectPath);
     };
 
