@@ -81,3 +81,12 @@ export const dashboardIsCurrentLocation = () => {
 export const pollAllSystems = () => {
     return window.location.pathname.includes('/app/system-select-active-alarms');
 };
+
+export const handleApiError = (err) => {
+    if (err.hasOwnProperty('response')) {
+        camelizeJson(err.response);
+        throw new Error(err.response.data.code);
+    } else {
+        throw err;
+    }
+}

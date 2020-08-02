@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { camelizeJson, extractSystemId } from './utils';
+import { camelizeJson, extractSystemId, handleApiError } from './utils';
 
 
 export const fetchSystemNameApi = async () => {
@@ -12,13 +12,6 @@ export const fetchSystemNameApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };

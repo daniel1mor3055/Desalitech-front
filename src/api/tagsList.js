@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { camelizeJson, capitalizeJson, extractSystemId } from "./utils";
+import { camelizeJson, capitalizeJson, extractSystemId, handleApiError } from "./utils";
 import { AXIOS_TIMEOUT } from 'constants/globalConstats';
 
 
@@ -10,14 +10,7 @@ export const fetchTagsApi = async () => {
         camelizeJson(response.data);
         return response.data;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };
 
@@ -32,13 +25,6 @@ export const postTagApi = async (tagData) => {
         const response = await axios.post(`/system/tag-list`, tagDataToPass,AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { camelizeJson, capitalizeJson, extractSystemId } from './utils';
+import { camelizeJson, capitalizeJson, extractSystemId, handleApiError } from './utils';
 import { AXIOS_TIMEOUT } from 'constants/globalConstats';
 
 
@@ -14,14 +14,7 @@ export const fetchAlarmsApi = async () => {
         });
         return response.data;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };
 
@@ -34,16 +27,9 @@ export const setEmailNotificationApi = async (emailNotification) => {
             emailNotification: emailNotification,
         };
         capitalizeJson(dataToPass);
-        const response = await axios.post(`/system/alarm-list`, dataToPass,AXIOS_TIMEOUT);
+        const response = await axios.post(`/system/alarm-list`, dataToPass, AXIOS_TIMEOUT);
         return response;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };

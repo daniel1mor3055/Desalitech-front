@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { camelizeJson, extractSystemId, dashboardIsCurrentLocation, pollAllSystems } from './utils';
+import { camelizeJson, extractSystemId, dashboardIsCurrentLocation, pollAllSystems, handleApiError } from './utils';
 
 export const fetchPollingApi = async () => {
     const sysId = extractSystemId();
@@ -15,13 +15,6 @@ export const fetchPollingApi = async () => {
         });
         return response.data;
     } catch (err) {
-        if (err.hasOwnProperty('response')) {
-            camelizeJson(err.response);
-            throw {
-                message: err.response.data.code,
-            };
-        } else {
-            throw err;
-        }
+        handleApiError(err);
     }
 };
