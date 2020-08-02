@@ -115,7 +115,7 @@ class SidenavContent extends Component {
                                  icon={"zmdi-chart"}/>
                     <SidenavItem relativePath={`alarm-list?sysId=${encodedSysId}`} id={"Alarms History"}
                                  icon={"zmdi-notifications-active"}/>
-                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"Tags List"}
+                    <SidenavItem relativePath={`tag-list?sysId=${encodedSysId}`} id={"Tag List"}
                                  icon={"zmdi-tag"}/>
                 </SidenavList>
                 <StatusIndicator systemStatus={systemStatus}/>
