@@ -71,7 +71,7 @@ class UserInfo extends Component {
                     </MenuItem>
                     <MenuItem onClick={this.closeMenuHandler}>
                         <i className="zmdi zmdi-settings zmdi-hc-fw mr-2"/>
-                        <span>Setting</span>
+                        <span>Settings</span>
                     </MenuItem>
                     <MenuItem onClick={this.logoutHandler}>
                         <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-2"/>

@@ -38,7 +38,7 @@ class UserInfoPopup extends Component {
                 </span>
                 <span className="jr-link dropdown-item text-muted">
                     <i className="zmdi zmdi-settings zmdi-hc-fw mr-1"/>
-                  <span>Setting</span>
+                  <span>Settings</span>
                 </span>
                 <span className="jr-link dropdown-item text-muted" onClick={this.logoutHandler}>
                     <i className="zmdi zmdi-sign-in zmdi-hc-fw mr-1"/>
